@@ -1,4 +1,15 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Itan - Creative Director Portfolio
+
+A modern, minimal, and artsy video portfolio for Creative Director Itan, showcasing work in Film Direction, Music Production, and Audiovisual Engineering.
+
+## Features
+
+- Modern, minimal design with a focus on video content
+- Responsive grid layout that adapts to different screen sizes
+- Tag-based filtering to sort videos by category
+- Dynamic hover animations for improved user experience
+- Embedded videos from YouTube and Vimeo
+- Bio and contact sections
 
 ## Getting Started
 
@@ -16,18 +27,44 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/components/` - React components used throughout the site
+- `src/data/videos.js` - Database of all video content with tags
+- `src/app/` - Main application files
+- `public/images/` - Static assets including profile image
 
-## Learn More
+## Customizing Content
 
-To learn more about Next.js, take a look at the following resources:
+### Adding or Editing Videos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To add or edit videos, modify the `src/data/videos.js` file. Each video should follow this format:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```javascript
+{
+  id: [unique_id],
+  title: "Video Title",
+  url: "https://www.youtube.com/watch?v=XXXXXX", // or Vimeo URL
+  tags: ["tag1", "tag2"],
+  platform: "youtube" // or "vimeo"
+}
+```
+
+### Updating Personal Information
+
+To update the bio information, edit the `Bio.jsx` component in the `src/components/` directory.
+
+### Changing Contact Information
+
+Update the contact details in the `Contact.jsx` component.
+
+## Technologies Used
+
+- **Next.js** - React framework for production
+- **React** - JavaScript library for building user interfaces
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **React Player** - For embedding video content
 
 ## Deploy on Vercel
 
