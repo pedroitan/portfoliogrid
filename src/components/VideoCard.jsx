@@ -87,12 +87,12 @@ export default function VideoCard({ video }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="absolute inset-0 bg-black/30 flex flex-col justify-center items-center p-4 text-white backdrop-blur-[0px]"
+          className="absolute inset-0 bg-black/30 flex flex-col justify-end items-start p-3 text-white backdrop-blur-[0px]"
         >
-          <h3 className="text-xl font-bold mb-2">{video.title}</h3>
-          <div className="flex flex-wrap gap-2 justify-center">
+          <h3 className="text-base font-bold mb-1">{video.title}</h3>
+          <div className="flex flex-wrap gap-1 justify-start">
             {video.tags.map(tag => (
-              <span key={tag} className="px-2 py-1 bg-white/20 rounded-full text-sm">
+              <span key={tag} className="px-1.5 py-0.5 bg-white/20 rounded-full text-xs">
                 {tag}
               </span>
             ))}
