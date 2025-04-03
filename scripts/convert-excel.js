@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Read the Excel file
-const workbook = XLSX.readFile(path.join(__dirname, 'Portfolio Youtube urls .xlsx'));
+const workbook = XLSX.readFile(path.join(__dirname, '../src/data/Portfolio Youtube urls .xlsx'));
 const sheetName = workbook.SheetNames[0];
 const worksheet = workbook.Sheets[sheetName];
 const data = XLSX.utils.sheet_to_json(worksheet);
@@ -53,9 +53,20 @@ const jsContent = `// Array of all videos with metadata
 // thumbnailImage is optional - if provided, it will be used instead of the video thumbnail
 // Add your custom thumbnail images to /public/images/thumbnails/ directory
 export const videos = ${JSON.stringify(videos, null, 2)};
+
+// Extract all unique tags from videos for filtering
+export const allTags = (() => {
+  const tagSet = new Set();
+  videos.forEach(video => {
+    if (video.tags && Array.isArray(video.tags)) {
+      video.tags.forEach(tag => tagSet.add(tag));
+    }
+  });
+  return Array.from(tagSet);
+})();
 `;
 
 // Write to videos.js
-fs.writeFileSync(path.join(__dirname, 'videos.js'), jsContent);
+fs.writeFileSync(path.join(__dirname, '../src/data/videos.js'), jsContent);
 
 console.log(`Successfully converted ${videos.length} videos from Excel to videos.js`);
