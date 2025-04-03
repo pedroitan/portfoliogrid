@@ -588,3 +588,14 @@ export const videos = [
     "thumbnailImage": null
   }
 ];
+
+// Extract all unique tags from videos for filtering
+export const allTags = (() => {
+  const tagSet = new Set();
+  videos.forEach(video => {
+    if (video.tags && Array.isArray(video.tags)) {
+      video.tags.forEach(tag => tagSet.add(tag));
+    }
+  });
+  return Array.from(tagSet);
+})();

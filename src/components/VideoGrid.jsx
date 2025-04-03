@@ -11,7 +11,7 @@ export default function VideoGrid() {
   
   const filteredVideos = activeTag === 'all'
     ? videos
-    : videos.filter(video => video.tags.includes(activeTag));
+    : videos.filter(video => video.tags && Array.isArray(video.tags) && video.tags.includes(activeTag));
   
   return (
     <section id="portfolio" className="py-4 bg-black min-h-screen">
