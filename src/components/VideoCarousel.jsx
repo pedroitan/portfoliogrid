@@ -35,9 +35,9 @@ export default function VideoCarousel() {
       title: "FARM Oxe - Trilha Sonora & Produção Musical"
     },
     engineer: {
-      url: "https://www.youtube.com/watch?v=OxGBbz3771E", // BUDTALKS
-      thumbnail: "/images/thumbnails/budtalks.jpg", // Will download this thumbnail
-      title: "BUDTALKS - Direção Técnica & Audiovisual"
+      url: "https://www.youtube.com/watch?v=WaB3ys94Yj4", // Ludmilla NBA Halftime Show Making Off
+      thumbnail: "/images/thumbnails/ludmilla-making-off.jpg", // Will download this thumbnail
+      title: "Ludmilla NBA Halftime Show - Making Off"
     }
   };
   
