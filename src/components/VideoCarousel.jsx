@@ -35,9 +35,9 @@ export default function VideoCarousel() {
       title: "IZA - Making Of"
     },
     engineer: {
-      url: "https://www.youtube.com/watch?v=gxTSuCtx510", // Using IZA video again temporarily
-      thumbnail: "/images/thumbnails/iza-uma-vida.jpg", // Add a placeholder image path
-      title: "IZA - Engenharia de Áudio"
+      url: "https://www.youtube.com/watch?v=X_gNdioT-1I", // Ludmilla NBA Halftime Show
+      thumbnail: "/images/thumbnails/ludmilla-nba.jpg", // Will download this thumbnail
+      title: "Ludmilla NBA Halftime Show"
     }
   };
   
