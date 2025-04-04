@@ -13,16 +13,16 @@ export default function Contact() {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl font-bold mb-6">Contact</h2>
+          <h2 className="text-3xl font-bold mb-6">Contato</h2>
           <p className="mb-8">
-            Interested in collaborating or have a project in mind? Get in touch.
+            Interessado em colaborar ou tem um projeto em mente? Entre em contato.
           </p>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-900/50 p-6 rounded-lg">
-              <h3 className="text-xl font-medium mb-4">Reach Out</h3>
-              <p className="mb-4">Email: contact@itan.work</p>
-              <p className="mb-4">Phone: +55 (21) 99999-9999</p>
+              <h3 className="text-xl font-medium mb-4">Fale Comigo</h3>
+              <p className="mb-4">Email: contato@pedroitan.com</p>
+              <p className="mb-4">Telefone: 21 9 8841-9463</p>
               <div className="flex justify-center space-x-4 mt-6">
                 <a href="#" className="text-white hover:text-gray-300 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -47,25 +47,25 @@ export default function Contact() {
             </div>
             
             <div className="bg-gray-900/50 p-6 rounded-lg">
-              <h3 className="text-xl font-medium mb-4">Work Inquiries</h3>
+              <h3 className="text-xl font-medium mb-4">Propostas de Trabalho</h3>
               <form className="space-y-4">
                 <div>
                   <input 
                     type="text" 
-                    placeholder="Name" 
+                    placeholder="Nome" 
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   />
                 </div>
                 <div>
                   <input 
                     type="email" 
-                    placeholder="Email" 
+                    placeholder="E-mail" 
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   />
                 </div>
                 <div>
                   <textarea 
-                    placeholder="Message" 
+                    placeholder="Mensagem" 
                     rows="4"
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   ></textarea>
@@ -76,7 +76,7 @@ export default function Contact() {
                   className="w-full py-2 bg-white text-black font-medium rounded hover:bg-gray-200 transition"
                   type="button"
                 >
-                  Send Message
+                  Enviar Mensagem
                 </motion.button>
               </form>
             </div>
