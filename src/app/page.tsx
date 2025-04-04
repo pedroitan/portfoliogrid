@@ -3,9 +3,10 @@ import VideoGrid from '../components/VideoGrid';
 import Bio from '../components/Bio';
 import Contact from '../components/Contact';
 import ItalExpertiseNav from '../components/ItalExpertiseNav.jsx';
-import FeaturedVideo from '../components/FeaturedVideo';
+import VideoCarousel from '../components/VideoCarousel';
 import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
 import { ExpertiseProvider } from '../context/ExpertiseContext';
+import ExpertiseSwipeContainer from '../components/ExpertiseSwipeContainer';
 
 export default function Home() {
   return (
@@ -14,16 +15,19 @@ export default function Home() {
       
       <main>
         <ExpertiseProvider>
-          <section className="pt-[5vh] pb-0 flex items-center justify-center flex-col w-full">
-            <div className="flex justify-center mb-4 w-full">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-wide">ITAN</h1>
-            </div>
-            <ItalExpertiseNav />
-          </section>
+          <div className="flex justify-center mb-4 w-full">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-wide">ITAN</h1>
+          </div>
           
-          <FeaturedVideo />
-          
-          <ExpertiseDescriptions />
+          <ExpertiseSwipeContainer>
+            <section className="pt-2 pb-0 flex items-center justify-center flex-col w-full">
+              <ItalExpertiseNav />
+            </section>
+            
+            <VideoCarousel />
+            
+            <ExpertiseDescriptions />
+          </ExpertiseSwipeContainer>
         </ExpertiseProvider>
         
         <VideoGrid />

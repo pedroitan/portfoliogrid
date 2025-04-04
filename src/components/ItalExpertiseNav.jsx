@@ -33,12 +33,18 @@ export default function ItalExpertiseNav() {
     { name: 'Audiovisual Engineer', url: '#engineer', icon: Monitor }
   ];
 
+  // Get the current active URL from the active expertise
+  const getActiveItemUrl = () => {
+    return `#${activeExpertise}`;
+  };
+
   return (
     <div className="relative h-12 mb-2 mt-1">
       <NavBar 
         items={navItems} 
         className="static sm:static mt-0 transform-none sm:transform-none"
         onNavItemClick={handleNavClick}
+        activeItemUrl={getActiveItemUrl()}
       />
     </div>
   );

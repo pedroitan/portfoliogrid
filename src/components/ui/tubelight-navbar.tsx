@@ -16,11 +16,22 @@ interface NavBarProps {
   items: NavItem[]
   className?: string
   onNavItemClick?: (itemName: string) => void
+  activeItemUrl?: string
 }
 
-export function NavBar({ items, className, onNavItemClick }: NavBarProps) {
+export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name)
   const [mounted, setMounted] = useState(false)
+  
+  // Update activeTab when activeItemUrl changes
+  useEffect(() => {
+    if (activeItemUrl) {
+      const matchingItem = items.find(item => item.url === activeItemUrl);
+      if (matchingItem) {
+        setActiveTab(matchingItem.name);
+      }
+    }
+  }, [activeItemUrl, items]);
 
   useEffect(() => {
     setMounted(true)

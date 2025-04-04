@@ -40,6 +40,13 @@ body {
   background-size: cover !important;
 }
 
+/* Mobile swipe gestures */
+.swipe-area {
+  touch-action: pan-y; /* Allow vertical scrolling but capture horizontal swipes */
+  -webkit-user-select: none; /* Prevent text selection during swipe */
+  user-select: none;
+}
+
 /* Hide the play button on video thumbnails */
 .react-player__preview-overlay {
   display: none !important;

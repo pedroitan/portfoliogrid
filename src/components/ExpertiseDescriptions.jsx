@@ -39,9 +39,10 @@ export default function ExpertiseDescriptions() {
   return (
     <div className="px-4 mb-6">
       <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        key={activeExpertise}
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 25 }}
         className="bg-black/20 backdrop-blur-sm rounded-lg p-4"
       >
         {mounted && descriptions[activeExpertise]}
