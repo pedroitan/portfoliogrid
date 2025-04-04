@@ -8,7 +8,7 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`px-1.5 py-0.5 text-[0.7rem] rounded-full transition-colors ${
+        className={`px-1.5 py-0.5 md:px-2 md:py-1 text-[0.7rem] md:text-[0.77rem] rounded-full transition-colors ${
           activeTag === 'all' ? 'bg-white text-black' : 'bg-black text-white border border-white'
         }`}
         onClick={() => setActiveTag('all')}
@@ -21,7 +21,7 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
           key={tag}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={`px-1.5 py-0.5 text-[0.7rem] rounded-full transition-colors ${
+          className={`px-1.5 py-0.5 md:px-2 md:py-1 text-[0.7rem] md:text-[0.77rem] rounded-full transition-colors ${
             activeTag === tag ? 'bg-white text-black' : 'bg-black text-white border border-white'
           }`}
           onClick={() => setActiveTag(tag)}

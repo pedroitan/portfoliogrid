@@ -97,8 +97,8 @@ export default function VideoCard({ video }) {
           animate={{ opacity: 1 }}
           className="absolute inset-0 bg-black/60 flex flex-col justify-end items-start p-2 text-white backdrop-blur-[0px]"
         >
-          <h3 className="text-[0.78rem] font-bold mb-0.5">{video.title}</h3>
-          {video.description && <p className="text-[0.66rem] opacity-80">{video.description}</p>}
+          <h3 className="text-[0.78rem] md:text-[0.86rem] font-bold mb-0.5">{video.title}</h3>
+          {video.description && <p className="text-[0.66rem] md:text-[0.73rem] opacity-80">{video.description}</p>}
         </motion.div>
       )}
       {/* Modal for displaying the video */}
