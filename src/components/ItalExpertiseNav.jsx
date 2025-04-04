@@ -45,7 +45,7 @@ export default function ItalExpertiseNav() {
   };
 
   return (
-    <div className="relative h-12 mb-2 mt-1 z-50">
+    <div className="relative h-12 mb-2 mt-4 md:mt-1 z-50">
       <NavBar 
         items={navItems} 
         className="static sm:static mt-0 transform-none sm:transform-none"
