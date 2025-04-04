@@ -15,9 +15,15 @@ export default function ExpertiseDescriptions() {
   const descriptions = {
     director: (
       <p className="text-white/90 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
-        Como <strong>Diretor de Cinema</strong>, Itan combina visão artística e habilidades técnicas para criar narrativas visuais impactantes. 
-        Especializando-se em videoclipes, documentários e conteúdo de marca, ele traz uma abordagem única que equilibra estética contemporânea 
-        com storytelling autêntico. Cada projeto reflete seu compromisso com a excelência visual e a expressão criativa.
+        Tudo parte de uma ideia 💡<br/>
+        Do desejo de comunicar um sentimento<br/>
+        Daqueles que não tem palavras que alcancem<br/>
+        Só a magia de um espetáculo pode traduzir!<br/>
+        Só a expressão de um artista pode sintetizar!<br/>
+        Na verdade muitos artistas,<br/>
+        Porque nada se faz sozinho!<br/>
+        A Música como fio condutor,<br/>
+        Arte e Tecnologia amplificando mensagens!
       </p>
     ),
     music: (
