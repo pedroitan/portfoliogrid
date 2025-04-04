@@ -4,11 +4,15 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useExpertise } from '../context/ExpertiseContext';
 import ReactPlayer from 'react-player';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Modal from './Modal';
 
 export default function VideoCarousel() {
   const [isClient, setIsClient] = useState(false);
   const [showControls, setShowControls] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [key, setKey] = useState(Date.now()); // Add a key to force re-render of ReactPlayer
   const videoRef = useRef(null);
   
   const { activeExpertise, setActiveExpertise } = useExpertise();
@@ -21,13 +25,25 @@ export default function VideoCarousel() {
   ];
   
   const featuredVideos = {
-    director: "https://www.youtube.com/watch?v=gxTSuCtx510", // IZA Uma Vida é pouco pra te amar
-    music: "https://www.youtube.com/watch?v=9XIFvM0Zppw", // IZA Uma Vida é pouco pra te amar Making Off
-    engineer: "https://www.youtube.com/watch?v=gxTSuCtx510" // Using IZA video again temporarily
+    director: {
+      url: "https://www.youtube.com/watch?v=gxTSuCtx510", // IZA Uma Vida é pouco pra te amar
+      thumbnail: "/images/thumbnails/iza-uma-vida.jpg", // Add a placeholder image path
+      title: "IZA - Uma Vida É Pouco"
+    },
+    music: {
+      url: "https://www.youtube.com/watch?v=9XIFvM0Zppw", // IZA Uma Vida é pouco pra te amar Making Off
+      thumbnail: "/images/thumbnails/iza-making-of.jpg", // Add a placeholder image path
+      title: "IZA - Making Of"
+    },
+    engineer: {
+      url: "https://www.youtube.com/watch?v=gxTSuCtx510", // Using IZA video again temporarily
+      thumbnail: "/images/thumbnails/iza-uma-vida.jpg", // Add a placeholder image path
+      title: "IZA - Engenharia de Áudio"
+    }
   };
   
-  // Current featured video URL based on active expertise
-  const featuredVideoUrl = featuredVideos[activeExpertise];
+  // Current featured video based on active expertise
+  const featuredVideo = featuredVideos[activeExpertise];
   
   useEffect(() => {
     setIsClient(true);
@@ -59,6 +75,32 @@ export default function VideoCarousel() {
 
   const hideIndicators = () => {
     setShowControls(false);
+  };
+  
+  const handleClick = () => {
+    setModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    // Force ReactPlayer to re-render and reset its state
+    setKey(Date.now());
+  };
+  
+  // Fix Vimeo URLs if they're manage links
+  const getProperUrl = (url) => {
+    if (url.includes('vimeo.com/manage/videos/')) {
+      // Extract ID and format correctly
+      const parts = url.split('/');
+      const id = parts[parts.indexOf('videos') + 1];
+      return `https://vimeo.com/${id}`;
+    }
+    // Fix youtu.be short URLs
+    if (url.includes('youtu.be/')) {
+      const id = url.split('/').pop().split('?')[0];
+      return `https://www.youtube.com/watch?v=${id}`;
+    }
+    return url;
   };
   
   return (
@@ -93,37 +135,88 @@ export default function VideoCarousel() {
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 25 }}
-        className="aspect-video relative rounded-lg overflow-hidden shadow-2xl border border-white/10"
+        className="aspect-video relative rounded-lg overflow-hidden shadow-2xl border border-white/10 cursor-pointer"
         key={activeExpertise} // Key changes to trigger animation on expertise change
+        onClick={handleClick}
       >
         {isClient && (
-          <ReactPlayer
-            url={featuredVideoUrl}
-            width="100%"
-            height="100%"
-            controls={true}
-            light={false}
-            playing={false}
-            config={{
-              youtube: {
-                playerVars: { 
-                  showinfo: 0,
-                  rel: 0,
-                  modestbranding: 1,
-                  disablekb: 1,
-                  controls: 1,
-                  cc_load_policy: 0,
-                  iv_load_policy: 3, // hide annotations
-                  autohide: 1,
-                  fs: 1, // allow fullscreen
-                  playsinline: 1,
-                  loop: 0,
-                  showsearch: 0,
-                  enablejsapi: 1
-                }
+          <div className="w-full h-full relative">
+            {featuredVideo.thumbnail ? (
+              <Image 
+                src={featuredVideo.thumbnail} 
+                alt={featuredVideo.title}
+                fill
+                style={{ objectFit: 'cover' }}
+                className="w-full h-full"
+              />
+            ) : (
+              <div className="w-full h-full relative">
+                <ReactPlayer
+                  url={getProperUrl(featuredVideo.url)}
+                  width="100%"
+                  height="100%"
+                  light={true}
+                  key={key}
+                  playing={false}
+                  controls={false}
+                  config={{
+                    youtube: {
+                      playerVars: { showinfo: 0, rel: 0 }
+                    },
+                    vimeo: {
+                      playerOptions: { background: true }
+                    }
+                  }}
+                />
+                {/* This overlay hides the play button */}
+                <div className="absolute inset-0 bg-transparent z-10" style={{ pointerEvents: 'none' }}></div>
+              </div>
+            )}
+            
+            {/* Title overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-2 backdrop-blur-sm">
+              <h3 className="text-sm md:text-base font-medium text-white">{featuredVideo.title}</h3>
+            </div>
+            
+            {/* Hide YouTube controls */}
+            <style jsx>{`
+              :global(.react-player__preview-overlay),
+              :global(.react-player__shadow),
+              :global(.react-player__play-icon) {
+                display: none !important;
               }
-            }}
-          />
+            `}</style>
+          </div>
+        )}
+        
+        {/* Modal for playing the video */}
+        {modalOpen && (
+          <Modal onClose={handleCloseModal}>
+            <div className="w-full h-full bg-black rounded-lg overflow-hidden">
+              <ReactPlayer
+                url={getProperUrl(featuredVideo.url)}
+                width="100%"
+                height="100%"
+                controls={true}
+                playing={true}
+                key={key}
+                config={{
+                  youtube: {
+                    playerVars: { 
+                      showinfo: 0,
+                      rel: 0,
+                      modestbranding: 1,
+                      disablekb: 1,
+                      controls: 1,
+                      cc_load_policy: 0,
+                      iv_load_policy: 3,
+                      autohide: 1
+                    }
+                  }
+                }}
+              />
+            </div>
+          </Modal>
         )}
       </motion.div>
     </div>
