@@ -53,7 +53,8 @@ export default function Modal({ isOpen, onClose, videoUrl }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={onClose}
         >
           <motion.div 
             ref={modalRef}
@@ -61,13 +62,15 @@ export default function Modal({ isOpen, onClose, videoUrl }) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-            className="relative w-full max-w-5xl aspect-video bg-black"
+            className="relative w-full max-w-5xl aspect-video bg-black overflow-visible"
+            onClick={(e) => e.stopPropagation()} // Prevent clicks on the modal from closing it
           >
             <button
               onClick={onClose}
-              className="absolute -top-10 right-0 text-white text-xl font-bold z-10 hover:text-gray-300"
+              className="absolute -right-3 -top-3 md:right-0 md:top-0 text-white bg-black/80 rounded-full w-8 h-8 flex items-center justify-center z-20 hover:bg-white hover:text-black transition-colors"
+              aria-label="Close modal"
             >
-              Close ×
+              ×
             </button>
             <div className="w-full h-full">
               <ReactPlayer
