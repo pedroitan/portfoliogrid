@@ -6,12 +6,11 @@ import { useExpertise } from '../context/ExpertiseContext';
 import ReactPlayer from 'react-player';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Modal from './Modal';
 
 export default function VideoCarousel() {
   const [isClient, setIsClient] = useState(false);
   const [showControls, setShowControls] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [key, setKey] = useState(Date.now()); // Add a key to force re-render of ReactPlayer
   const videoRef = useRef(null);
   
@@ -77,14 +76,13 @@ export default function VideoCarousel() {
     setShowControls(false);
   };
   
-  const handleClick = () => {
-    setModalOpen(true);
+  const handleVideoClick = () => {
+    setIsPlaying(true);
   };
   
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    // Force ReactPlayer to re-render and reset its state
-    setKey(Date.now());
+  const handleVideoReset = () => {
+    setIsPlaying(false);
+    setKey(Date.now()); // Force ReactPlayer to re-render and reset its state
   };
   
   // Fix Vimeo URLs if they're manage links
@@ -135,88 +133,105 @@ export default function VideoCarousel() {
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 25 }}
-        className="aspect-video relative rounded-lg overflow-hidden shadow-2xl border border-white/10 cursor-pointer"
+        className="aspect-video relative rounded-lg overflow-hidden shadow-2xl border border-white/10"
         key={activeExpertise} // Key changes to trigger animation on expertise change
-        onClick={handleClick}
       >
         {isClient && (
           <div className="w-full h-full relative">
-            {featuredVideo.thumbnail ? (
-              <Image 
-                src={featuredVideo.thumbnail} 
-                alt={featuredVideo.title}
-                fill
-                style={{ objectFit: 'cover' }}
-                className="w-full h-full"
-              />
+            {!isPlaying ? (
+              <div 
+                className="w-full h-full relative cursor-pointer"
+                onClick={handleVideoClick}
+              >
+                <style jsx global>{`
+                  .react-player__preview-overlay,
+                  .react-player__shadow,
+                  .react-player__play-icon {
+                    display: none !important;
+                  }
+                `}</style>
+                {featuredVideo.thumbnail ? (
+                  <Image 
+                    src={featuredVideo.thumbnail} 
+                    alt={featuredVideo.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className="w-full h-full"
+                  />
+                ) : (
+                  <div className="w-full h-full relative">
+                    <ReactPlayer
+                      url={getProperUrl(featuredVideo.url)}
+                      width="100%"
+                      height="100%"
+                      light={true}
+                      key={key}
+                      playing={false}
+                      controls={false}
+                      config={{
+                        youtube: {
+                          playerVars: { showinfo: 0, rel: 0 }
+                        },
+                        vimeo: {
+                          playerOptions: { background: true }
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+                
+                {/* Play button overlay */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors duration-300">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center">
+                    <div className="w-0 h-0 border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent border-l-[16px] border-l-white ml-1"></div>
+                  </div>
+                </div>
+                
+                {/* Title overlay */}
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-2 backdrop-blur-sm">
+                  <h3 className="text-sm md:text-base font-medium text-white">{featuredVideo.title}</h3>
+                </div>
+              </div>
             ) : (
               <div className="w-full h-full relative">
                 <ReactPlayer
                   url={getProperUrl(featuredVideo.url)}
                   width="100%"
                   height="100%"
-                  light={true}
+                  controls={true}
+                  playing={true}
                   key={key}
-                  playing={false}
-                  controls={false}
                   config={{
                     youtube: {
-                      playerVars: { showinfo: 0, rel: 0 }
-                    },
-                    vimeo: {
-                      playerOptions: { background: true }
+                      playerVars: { 
+                        showinfo: 0,
+                        rel: 0,
+                        modestbranding: 1,
+                        disablekb: 1,
+                        controls: 1,
+                        cc_load_policy: 0,
+                        iv_load_policy: 3,
+                        autohide: 1
+                      }
                     }
                   }}
+                  onEnded={handleVideoReset}
                 />
-                {/* This overlay hides the play button */}
-                <div className="absolute inset-0 bg-transparent z-10" style={{ pointerEvents: 'none' }}></div>
+                
+                {/* Close button */}
+                <button 
+                  onClick={handleVideoReset}
+                  className="absolute top-3 right-3 z-10 w-8 h-8 bg-black/70 rounded-full flex items-center justify-center"
+                  aria-label="Close video"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 4L4 12" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M4 4L12 12" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </button>
               </div>
             )}
-            
-            {/* Title overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-2 backdrop-blur-sm">
-              <h3 className="text-sm md:text-base font-medium text-white">{featuredVideo.title}</h3>
-            </div>
-            
-            {/* Hide YouTube controls */}
-            <style jsx>{`
-              :global(.react-player__preview-overlay),
-              :global(.react-player__shadow),
-              :global(.react-player__play-icon) {
-                display: none !important;
-              }
-            `}</style>
           </div>
-        )}
-        
-        {/* Modal for playing the video */}
-        {modalOpen && (
-          <Modal onClose={handleCloseModal}>
-            <div className="w-full h-full bg-black rounded-lg overflow-hidden">
-              <ReactPlayer
-                url={getProperUrl(featuredVideo.url)}
-                width="100%"
-                height="100%"
-                controls={true}
-                playing={true}
-                key={key}
-                config={{
-                  youtube: {
-                    playerVars: { 
-                      showinfo: 0,
-                      rel: 0,
-                      modestbranding: 1,
-                      disablekb: 1,
-                      controls: 1,
-                      cc_load_policy: 0,
-                      iv_load_policy: 3,
-                      autohide: 1
-                    }
-                  }
-                }}
-              />
-            </div>
-          </Modal>
         )}
       </motion.div>
     </div>
