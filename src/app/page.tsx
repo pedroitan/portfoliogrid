@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import VideoGrid from '../components/VideoGrid';
 import Bio from '../components/Bio';
 import Contact from '../components/Contact';
+import ItalExpertiseNav from '../components/ItalExpertiseNav';
 
 export default function Home() {
   return (
@@ -9,13 +10,11 @@ export default function Home() {
       <Header />
       
       <main>
-        <section className="h-[15vh] flex items-center justify-center">
+        <section className="h-[20vh] flex items-center justify-center flex-col">
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold">ITAN</h1>
-            <p className="text-sm md:text-base mt-1 opacity-80">
-              Film Director · Music Producer · Audiovisual Engineer
-            </p>
           </div>
+          <ItalExpertiseNav />
         </section>
         
         <VideoGrid />
