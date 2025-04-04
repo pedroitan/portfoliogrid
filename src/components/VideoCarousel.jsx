@@ -30,9 +30,9 @@ export default function VideoCarousel() {
       title: "IZA - Uma Vida É Pouco"
     },
     music: {
-      url: "https://www.youtube.com/watch?v=9XIFvM0Zppw", // IZA Uma Vida é pouco pra te amar Making Off
-      thumbnail: "/images/thumbnails/iza-making-of.jpg", // Add a placeholder image path
-      title: "IZA - Making Of"
+      url: "https://www.youtube.com/watch?v=VCAQVijLiR4", // FARM Oxe
+      thumbnail: "/images/thumbnails/farm-oxe.jpg", // Will download this thumbnail
+      title: "FARM Oxe - Trilha Sonora & Produção Musical"
     },
     engineer: {
       url: "https://www.youtube.com/watch?v=X_gNdioT-1I", // Ludmilla NBA Halftime Show
