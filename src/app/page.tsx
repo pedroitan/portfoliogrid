@@ -16,7 +16,7 @@ export default function Home() {
       <main>
         <ExpertiseProvider>
           <ExpertiseSwipeContainer>
-            <section className="pt-2 pb-0 flex items-center justify-center flex-col w-full">
+            <section className="pt-6 md:pt-2 pb-0 flex items-center justify-center flex-col w-full">
               <ItalExpertiseNav />
             </section>
             
