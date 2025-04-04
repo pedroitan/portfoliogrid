@@ -98,13 +98,16 @@ export default function ExpertiseSwipeContainer({ children }) {
     setIsSwiping(false);
   };
   
+  // Only apply touch handlers on mobile devices
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  
   return (
     <div 
       className="swipe-area w-full flex flex-col"
       ref={containerRef}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      onTouchStart={isMobile ? handleTouchStart : undefined}
+      onTouchMove={isMobile ? handleTouchMove : undefined}
+      onTouchEnd={isMobile ? handleTouchEnd : undefined}
     >
       <div className="flex-1 w-full">
         {children}

@@ -17,6 +17,12 @@ export default function ItalExpertiseNav() {
     // Update hash and expertise state
     window.location.hash = expertise;
     setActiveExpertise(expertise);
+    
+    // Force a small delay to ensure state updates properly
+    setTimeout(() => {
+      // Refresh active state to ensure UI is in sync
+      setActiveExpertise(expertise);
+    }, 10);
   };
   
   // Set initial hash if needed
@@ -39,7 +45,7 @@ export default function ItalExpertiseNav() {
   };
 
   return (
-    <div className="relative h-12 mb-2 mt-1">
+    <div className="relative h-12 mb-2 mt-1 z-50">
       <NavBar 
         items={navItems} 
         className="static sm:static mt-0 transform-none sm:transform-none"
