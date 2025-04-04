@@ -10,7 +10,7 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
     setMounted(true);
   }, []);
   return (
-    <div className="flex flex-wrap justify-center gap-3 my-6 max-w-3xl mx-auto">
+    <div className="flex flex-wrap justify-center gap-3 my-3 max-w-3xl mx-auto">
       <div className="flex items-center justify-center flex-wrap gap-3 bg-black/20 border border-white/10 backdrop-blur-lg py-2 px-3 rounded-full shadow-lg">
       <motion.button
         whileHover={{ scale: 1.05 }}

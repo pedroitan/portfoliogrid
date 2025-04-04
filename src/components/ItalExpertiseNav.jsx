@@ -9,7 +9,7 @@ export default function ItalExpertiseNav() {
   const { activeExpertise, setActiveExpertise } = useExpertise();
   
   // Handle click on navbar items
-  const handleNavClick = (itemName: string) => {
+  const handleNavClick = (itemName) => {
     let expertise = 'director';
     if (itemName === 'Music Producer') expertise = 'music';
     else if (itemName === 'Audiovisual Engineer') expertise = 'engineer';
@@ -26,6 +26,7 @@ export default function ItalExpertiseNav() {
       window.location.hash = activeExpertise;
     }
   }, []);
+  
   const navItems = [
     { name: 'Film Director', url: '#director', icon: Film },
     { name: 'Music Producer', url: '#music', icon: Music },

@@ -2,8 +2,10 @@ import Header from '../components/Header';
 import VideoGrid from '../components/VideoGrid';
 import Bio from '../components/Bio';
 import Contact from '../components/Contact';
-import ItalExpertiseNav from '../components/ItalExpertiseNav';
+import ItalExpertiseNav from '../components/ItalExpertiseNav.jsx';
 import FeaturedVideo from '../components/FeaturedVideo';
+import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
+import { ExpertiseProvider } from '../context/ExpertiseContext';
 
 export default function Home() {
   return (
@@ -11,14 +13,18 @@ export default function Home() {
       <Header />
       
       <main>
-        <section className="pt-[15vh] pb-4 flex items-center justify-center flex-col">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold">ITAN</h1>
-          </div>
-          <ItalExpertiseNav />
-        </section>
-        
-        <FeaturedVideo />
+        <ExpertiseProvider>
+          <section className="pt-[5vh] pb-0 flex items-center justify-center flex-col">
+            <div className="text-center">
+              <h1 className="text-3xl md:text-4xl font-bold">ITAN</h1>
+            </div>
+            <ItalExpertiseNav />
+          </section>
+          
+          <FeaturedVideo />
+          
+          <ExpertiseDescriptions />
+        </ExpertiseProvider>
         
         <VideoGrid />
         <Bio />

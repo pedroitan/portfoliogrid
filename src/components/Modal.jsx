@@ -87,6 +87,25 @@ export default function Modal({ isOpen, onClose, videoUrl }) {
                 height="100%"
                 playing={true}
                 controls={true}
+                config={{
+                  youtube: {
+                    playerVars: { 
+                      showinfo: 0,
+                      rel: 0,
+                      modestbranding: 1,
+                      disablekb: 1,
+                      controls: 1,
+                      cc_load_policy: 0,
+                      iv_load_policy: 3, // hide annotations
+                      autohide: 1,
+                      fs: 1, // allow fullscreen
+                      playsinline: 1,
+                      loop: 0,
+                      showsearch: 0,
+                      enablejsapi: 1
+                    }
+                  }
+                }}
               />
             </div>
           </motion.div>

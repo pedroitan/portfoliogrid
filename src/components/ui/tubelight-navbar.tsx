@@ -15,9 +15,10 @@ interface NavItem {
 interface NavBarProps {
   items: NavItem[]
   className?: string
+  onNavItemClick?: (itemName: string) => void
 }
 
-export function NavBar({ items, className }: NavBarProps) {
+export function NavBar({ items, className, onNavItemClick }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name)
   const [mounted, setMounted] = useState(false)
 
@@ -41,7 +42,10 @@ export function NavBar({ items, className }: NavBarProps) {
             <Link
               key={item.name}
               href={item.url}
-              onClick={() => setActiveTab(item.name)}
+              onClick={() => {
+                setActiveTab(item.name)
+                if (onNavItemClick) onNavItemClick(item.name)
+              }}
               className={cn(
                 "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
                 "text-white/80 hover:text-white",
