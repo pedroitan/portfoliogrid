@@ -15,10 +15,6 @@ export default function Home() {
       
       <main>
         <ExpertiseProvider>
-          <div className="flex justify-center mb-4 w-full">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-wide">ITAN</h1>
-          </div>
-          
           <ExpertiseSwipeContainer>
             <section className="pt-2 pb-0 flex items-center justify-center flex-col w-full">
               <ItalExpertiseNav />
