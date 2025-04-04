@@ -9,6 +9,7 @@ import Modal from './Modal';
 export default function VideoCard({ video }) {
   const [isHovered, setIsHovered] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [key, setKey] = useState(Date.now()); // Add a key to force re-render of ReactPlayer
   
   // Fix Vimeo URLs if they're manage links
   const getProperUrl = (url) => {
@@ -28,6 +29,12 @@ export default function VideoCard({ video }) {
   
   const handleClick = () => {
     setModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    // Force ReactPlayer to re-render and reset its state
+    setKey(Date.now());
   };
   
   return (
@@ -59,6 +66,7 @@ export default function VideoCard({ video }) {
               width="100%"
               height="100%"
               light={true}
+              key={key} // Add key to force re-render
               playing={false}
               controls={false}
               config={{
@@ -103,7 +111,7 @@ export default function VideoCard({ video }) {
       {/* Modal for displaying the video */}
       <Modal 
         isOpen={modalOpen} 
-        onClose={() => setModalOpen(false)} 
+        onClose={handleCloseModal} 
         videoUrl={video.url} 
       />
     </motion.div>

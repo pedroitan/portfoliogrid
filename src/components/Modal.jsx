@@ -36,12 +36,14 @@ export default function Modal({ isOpen, onClose, videoUrl }) {
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchend', handleClickOutside); // Add touch event support for mobile
       document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
     }
     
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchend', handleClickOutside); // Clean up touch event
       document.body.style.overflow = 'auto'; // Re-enable scrolling when modal is closed
     };
   }, [isOpen, onClose]);
@@ -55,6 +57,11 @@ export default function Modal({ isOpen, onClose, videoUrl }) {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
           onClick={onClose}
+          onTouchEnd={(e) => {
+            if (e.target === e.currentTarget) {
+              onClose();
+            }
+          }}
         >
           <motion.div 
             ref={modalRef}
@@ -64,6 +71,7 @@ export default function Modal({ isOpen, onClose, videoUrl }) {
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
             className="relative w-full max-w-5xl aspect-video bg-black overflow-visible"
             onClick={(e) => e.stopPropagation()} // Prevent clicks on the modal from closing it
+            onTouchEnd={(e) => e.stopPropagation()} // Also stop touch events from propagating
           >
             <button
               onClick={onClose}
