@@ -11,9 +11,9 @@ export default function FeaturedVideo() {
   
   // Featured video URLs for each expertise area
   const featuredVideos = {
-    director: "https://www.youtube.com/watch?v=X_gNdioT-1I", // Ludmilla NBA
-    music: "https://www.youtube.com/watch?v=D6UKL5qPOOc", // MC Poze
-    engineer: "https://www.youtube.com/watch?v=cSz3DuYjsOE" // PUMP
+    director: "https://www.youtube.com/watch?v=gxTSuCtx510", // IZA Uma Vida é pouco pra te amar
+    music: "https://www.youtube.com/watch?v=9XIFvM0Zppw", // IZA Uma Vida é pouco pra te amar Making Off
+    engineer: "https://www.youtube.com/watch?v=gxTSuCtx510" // Using IZA video again temporarily
   };
   
   // Current featured video URL based on active expertise
@@ -24,7 +24,7 @@ export default function FeaturedVideo() {
   }, []);
   
   return (
-    <div className="max-w-4xl mx-auto mt-1 mb-2 px-4">
+    <div className="max-w-4xl mx-auto mt-2 mb-6 px-4">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

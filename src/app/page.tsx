@@ -14,9 +14,9 @@ export default function Home() {
       
       <main>
         <ExpertiseProvider>
-          <section className="pt-[5vh] pb-0 flex items-center justify-center flex-col">
-            <div className="text-center">
-              <h1 className="text-3xl md:text-4xl font-bold">ITAN</h1>
+          <section className="pt-[5vh] pb-0 flex items-center justify-center flex-col w-full">
+            <div className="flex justify-center mb-4 w-full">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-wide">ITAN</h1>
             </div>
             <ItalExpertiseNav />
           </section>
