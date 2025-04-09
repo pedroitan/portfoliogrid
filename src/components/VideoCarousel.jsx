@@ -18,9 +18,9 @@ export default function VideoCarousel() {
   
   // Featured video URLs for each expertise area
   const expertiseOptions = [
-    { id: 'director', label: 'Film Director' },
-    { id: 'music', label: 'Music Producer' },
-    { id: 'engineer', label: 'Audiovisual Engineer' }
+    { id: 'director', label: 'Direção Criativa' },
+    { id: 'music', label: 'Música' },
+    { id: 'engineer', label: 'Tecnologia' }
   ];
   
   const featuredVideos = {
@@ -103,7 +103,7 @@ export default function VideoCarousel() {
   
   return (
     <div 
-      className="max-w-4xl mx-auto mt-2 mb-6 px-4 relative"
+      className="max-w-6xl mx-auto mt-2 mb-6 px-4 relative"
       onMouseEnter={showIndicators}
       onMouseLeave={hideIndicators}
       ref={videoRef}
@@ -133,7 +133,7 @@ export default function VideoCarousel() {
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 25 }}
-        className="aspect-video relative rounded-lg overflow-hidden shadow-2xl border border-white/10"
+        className="aspect-video w-full md:w-[90%] lg:w-[85%] xl:w-[80%] mx-auto relative rounded-lg overflow-hidden shadow-2xl border border-white/10"
         key={activeExpertise} // Key changes to trigger animation on expertise change
       >
         {isClient && (

@@ -14,17 +14,14 @@ export default function ExpertiseDescriptions() {
 
   const descriptions = {
     director: (
-      <p className="text-white/90 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">
-        Tudo parte de uma ideia 💡<br/>
-        Do desejo de comunicar um sentimento<br/>
-        Daqueles que não tem palavras que alcancem<br/>
-        Só a magia de um espetáculo pode traduzir!<br/>
-        Só a expressão de um artista pode sintetizar!<br/>
-        Na verdade muitos artistas,<br/>
-        Porque nada se faz sozinho!<br/>
-        A Música como fio condutor,<br/>
-        Arte e Tecnologia amplificando mensagens!
-      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-10 text-white/90 text-sm md:text-base max-w-3xl mx-auto">
+        <p className="text-justify leading-relaxed">
+          Tudo parte de uma ideia 💡 Do desejo de comunicar um sentimento. Daqueles que não tem palavras que alcancem. Só a magia de um espetáculo pode traduzir!
+        </p>
+        <p className="text-justify leading-relaxed">
+          Só a expressão de um artista pode sintetizar! Na verdade muitos artistas, porque nada se faz sozinho! A Música como fio condutor, Arte e Tecnologia amplificando mensagens!
+        </p>
+      </div>
     ),
     music: (
       <p className="text-white/90 text-sm md:text-base leading-relaxed max-w-3xl mx-auto">

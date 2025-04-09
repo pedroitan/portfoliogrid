@@ -13,9 +13,9 @@ export default function ExpertiseSwipeContainer({ children }) {
   
   // Define the expertise options
   const expertiseOptions = [
-    { id: 'director', label: 'Film Director' },
-    { id: 'music', label: 'Music Producer' },
-    { id: 'engineer', label: 'Audiovisual Engineer' }
+    { id: 'director', label: 'Direção Criativa' },
+    { id: 'music', label: 'Música' },
+    { id: 'engineer', label: 'Tecnologia' }
   ];
   
   // Listen for hash changes (in case navbar is clicked directly)
