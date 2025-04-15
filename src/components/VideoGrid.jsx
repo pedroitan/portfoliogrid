@@ -14,7 +14,7 @@ export default function VideoGrid() {
     : videos.filter(video => video.tags && Array.isArray(video.tags) && video.tags.includes(activeTag));
   
   return (
-    <section id="portfolio" className="py-4 bg-black min-h-screen w-full">
+    <section id="portfolio" className="py-4 bg-black min-h-screen w-full scroll-mt-16">
       <div className="w-full">
         <TagFilter tags={allTags} activeTag={activeTag} setActiveTag={setActiveTag} />
         

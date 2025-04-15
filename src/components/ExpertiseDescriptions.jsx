@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useExpertise } from '../context/ExpertiseContext';
+import PortfolioButton from './PortfolioButton';
 
 export default function ExpertiseDescriptions() {
   const { activeExpertise } = useExpertise();
@@ -49,6 +50,10 @@ export default function ExpertiseDescriptions() {
         className="bg-black/20 backdrop-blur-sm rounded-lg p-4"
       >
         {mounted && descriptions[activeExpertise]}
+        
+        <div className="flex justify-center mt-6">
+          <PortfolioButton />
+        </div>
       </motion.div>
     </div>
   );
