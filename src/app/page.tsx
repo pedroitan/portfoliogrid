@@ -2,7 +2,7 @@ import Header from '../components/Header';
 import VideoGrid from '../components/VideoGrid';
 import Bio from '../components/Bio';
 import Contact from '../components/Contact';
-import ItalExpertiseNav from '../components/ItalExpertiseNav.jsx';
+import ItalExpertiseNav from '../components/ItalExpertiseNav';
 import VideoCarousel from '../components/VideoCarousel';
 import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
 import { ExpertiseProvider } from '../context/ExpertiseContext';
@@ -32,7 +32,7 @@ export default function Home() {
       </main>
       
       <footer className="py-8 bg-black text-white text-center">
-        <p>© {new Date().getFullYear()} Itan. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Itan. All Rights Reserved.</p>
       </footer>
     </div>
   );
