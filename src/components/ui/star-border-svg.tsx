@@ -32,7 +32,7 @@ export const StarBorderSVG: React.FC<StarBorderSVGProps> = ({
     };
     update();
     // Listen for resize
-    const ro = new (window as any).ResizeObserver(update);
+    const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
   }, []);

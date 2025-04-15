@@ -25,7 +25,7 @@ export default function ItalExpertiseNav() {
     if (typeof window !== 'undefined' && !window.location.hash) {
       window.location.hash = activeExpertise;
     }
-  }, []);
+  }, [activeExpertise]);
   const navItems = [
     { name: 'Film Director', url: '#director', icon: Film },
     { name: 'Music Producer', url: '#music', icon: Music },
