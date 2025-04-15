@@ -155,6 +155,7 @@ export default function VideoCarousel() {
                     src={featuredVideo.thumbnail} 
                     alt={featuredVideo.title}
                     fill
+                    priority={true}
                     style={{ objectFit: 'cover' }}
                     className="w-full h-full"
                   />

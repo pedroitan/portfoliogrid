@@ -1,0 +1,105 @@
+/* Star Border Animations */
+.star-border-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 1px;
+}
+
+.star-border-top {
+  position: absolute;
+  width: 300%;
+  height: 12px;
+  top: -5px;
+  left: -100%;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-repeat: repeat-x;
+  animation: moveLeft 6s infinite linear;
+}
+
+.star-border-top {
+  position: absolute;
+  top: -5px;
+  left: -100%;
+  width: 300%;
+  height: 12px;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-repeat: repeat-x;
+  animation: moveLeft 6s infinite linear;
+  transform: rotate(0deg);
+  pointer-events: none;
+}
+
+.star-border-bottom {
+  position: absolute;
+  bottom: -5px;
+  left: -100%;
+  width: 300%;
+  height: 12px;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-repeat: repeat-x;
+  animation: moveRight 6s infinite linear;
+  transform: rotate(0deg);
+  pointer-events: none;
+}
+
+.star-border-left {
+  position: absolute;
+  left: -5px;
+  top: -100%;
+  width: 12px;
+  height: 300%;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-repeat: repeat-y;
+  animation: moveDown 6s infinite linear;
+  transform: rotate(0deg);
+  pointer-events: none;
+}
+
+.star-border-right {
+  position: absolute;
+  right: -5px;
+  top: -100%;
+  width: 12px;
+  height: 300%;
+  opacity: 0.2;
+  background-image: radial-gradient(circle, white 1px, transparent 1px);
+  background-size: 10px 10px;
+  background-repeat: repeat-y;
+  animation: moveUp 6s infinite linear;
+  transform: rotate(0deg);
+  pointer-events: none;
+}
+
+@keyframes moveLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.33%); }
+}
+
+@keyframes moveRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(33.33%); }
+}
+
+@keyframes moveDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(33.33%); }
+}
+
+@keyframes moveUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-33.33%); }
+}
+
+@keyframes moveRight {
+  from { transform: translateX(-33.33%); }
+  to { transform: translateX(0); }
+}

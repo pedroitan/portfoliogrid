@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import ReactPlayer from 'react-player';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Modal from './Modal';
+
+// Import ReactPlayer dynamically to prevent hydration errors
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 export default function VideoCard({ video }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -55,6 +58,7 @@ export default function VideoCard({ video }) {
               src={`/images/thumbnails/${video.thumbnailImage}`} 
               alt={video.title}
               fill
+              priority={true}
               style={{ objectFit: 'cover' }}
               className="w-full h-full"
             />
