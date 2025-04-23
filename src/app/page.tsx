@@ -12,14 +12,13 @@ export default function Home() {
   return (
     <div className="bg-black min-h-screen text-white">
       <Header />
-      
       <main>
         <ExpertiseProvider>
           <ExpertiseSwipeContainer>
-            <section className="pt-6 md:pt-2 pb-0 flex items-center justify-center flex-col w-full">
+            <section className="pt-[80px] md:pt-2 pb-0 mb-[-10px] flex items-center justify-center flex-col w-full">
               <ItalExpertiseNav />
             </section>
-            
+            <div className="m-0 p-0" style={{ height: 0, minHeight: 0, marginBottom: '-10px' }} />
             <VideoCarousel />
             
             <ExpertiseDescriptions />

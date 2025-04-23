@@ -44,7 +44,7 @@ export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavB
         className,
       )}
     >
-      <div className="flex items-center justify-center gap-3 bg-black/20 border border-white/10 backdrop-blur-lg py-1 px-1 rounded-full shadow-lg mx-auto w-fit relative z-50 pointer-events-auto">
+      <div className="flex items-center justify-center gap-1 bg-black/20 border border-white/10 backdrop-blur-lg py-0.5 px-1 rounded-full shadow-lg mx-auto w-fit relative z-50 pointer-events-auto">
         {items.map((item) => {
           const Icon = item.icon
           const isActive = activeTab === item.name
@@ -58,15 +58,13 @@ export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavB
                 if (onNavItemClick) onNavItemClick(item.name)
               }}
               className={cn(
-                "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
+                "relative cursor-pointer text-xs font-semibold px-3 py-1 rounded-full transition-colors",
                 "text-white/80 hover:text-white z-50 pointer-events-auto",
                 isActive && "bg-white/10 text-white",
               )}
             >
               <span className="hidden md:inline">{item.name}</span>
-              <span className="md:hidden">
-                <Icon size={18} strokeWidth={2.5} />
-              </span>
+              <span className="md:hidden">{item.name}</span>
               {isActive && (
                 mounted && (
                   <motion.div
