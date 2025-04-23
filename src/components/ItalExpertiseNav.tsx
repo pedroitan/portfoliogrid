@@ -11,8 +11,8 @@ export default function ItalExpertiseNav() {
   // Handle click on navbar items
   const handleNavClick = (itemName: string) => {
     let expertise = 'director';
-    if (itemName === 'Music Producer') expertise = 'music';
-    else if (itemName === 'Audiovisual Engineer') expertise = 'engineer';
+    if (itemName === 'Produção Musical') expertise = 'music';
+    else if (itemName === 'Tecnologia') expertise = 'engineer';
     
     // Update hash and expertise state
     window.location.hash = expertise;
@@ -27,9 +27,9 @@ export default function ItalExpertiseNav() {
     }
   }, [activeExpertise]);
   const navItems = [
-    { name: 'Film Director', url: '#director', icon: Film },
-    { name: 'Music Producer', url: '#music', icon: Music },
-    { name: 'Audiovisual Engineer', url: '#engineer', icon: Monitor }
+    { name: 'Direção Audiovisual', url: '#director', icon: Film },
+    { name: 'Produção Musical', url: '#music', icon: Music },
+    { name: 'Tecnologia', url: '#engineer', icon: Monitor }
   ];
 
   return (

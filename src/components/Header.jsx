@@ -23,7 +23,7 @@ export default function Header() {
           <div className="space-x-3 md:space-x-6">
             <Link href="#portfolio" className="text-white hover:text-gray-300 transition text-xs md:text-base">Portfolio</Link>
             <Link href="#bio" className="text-white hover:text-gray-300 transition text-xs md:text-base">Bio</Link>
-            <Link href="#contact" className="text-white hover:text-gray-300 transition text-xs md:text-base">Contact</Link>
+            <Link href="#contact" className="text-white hover:text-gray-300 transition text-xs md:text-base">Contato</Link>
           </div>
         </nav>
       </div>
