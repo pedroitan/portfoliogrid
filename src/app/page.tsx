@@ -1,12 +1,3 @@
-import Header from '../components/Header';
-import VideoGrid from '../components/VideoGrid';
-import Bio from '../components/Bio';
-import Contact from '../components/Contact';
-import ItalExpertiseNav from '../components/ItalExpertiseNav';
-import VideoCarousel from '../components/VideoCarousel';
-import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
-import { ExpertiseProvider } from '../context/ExpertiseContext';
-import ExpertiseSwipeContainer from '../components/ExpertiseSwipeContainer';
 import HeroVideo from '../components/HeroVideo';
 
 export default function Home() {
@@ -15,7 +6,6 @@ export default function Home() {
       {/* HERO SECTION - Fullscreen video with overlay */}
       <HeroVideo 
         videoUrl="https://www.youtube.com/watch?v=gxTSuCtx510" 
-        posterUrl="/images/thumbnails/iza-uma-vida.jpg" 
       />
 
       {/* Main content hidden behind hero for now */}

@@ -7,7 +7,8 @@ import { Menu } from "lucide-react";
 // Dynamically import ReactPlayer to avoid SSR issues
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
-export default function HeroVideo({ videoUrl, posterUrl }: { videoUrl: string; posterUrl: string }) {
+// Removed unused prop: posterUrl
+export default function HeroVideo({ videoUrl }: { videoUrl: string }) {
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
       {/* Fullscreen video background - bulletproof mobile fit */}

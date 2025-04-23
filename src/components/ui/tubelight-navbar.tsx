@@ -46,7 +46,6 @@ export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavB
     >
       <div className="flex items-center justify-center gap-1 bg-black/20 border border-white/10 backdrop-blur-lg py-0.5 px-1 rounded-full shadow-lg mx-auto w-fit relative z-50 pointer-events-auto">
         {items.map((item) => {
-          const Icon = item.icon
           const isActive = activeTab === item.name
 
           return (
