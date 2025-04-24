@@ -1,5 +1,5 @@
-import HeroVideo from '../components/HeroVideo';
-// import Header from '../components/Header'; 
+import HeroVideoDynamic from '../components/HeroVideoDynamic';
+// import HeroVideo from '../components/HeroVideo'; 
 import ExpertiseSwipeContainer from '../components/ExpertiseSwipeContainer';
 import ItalExpertiseNav from '../components/ItalExpertiseNav';
 import VideoCarousel from '../components/VideoCarousel';
@@ -7,20 +7,18 @@ import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
 import VideoGrid from '../components/VideoGrid';
 import Bio from '../components/Bio';
 import Contact from '../components/Contact';
-import { ExpertiseProvider } from '../context/ExpertiseContext';
+import { ExpertiseProvider, useExpertise } from '../context/ExpertiseContext';
 
 export default function Home() {
   return (
-    <div className="bg-black min-h-screen text-white">
-      {/* HERO SECTION - Fullscreen video with overlay */}
-      <HeroVideo 
-        videoUrl="https://www.youtube.com/watch?v=gxTSuCtx510" 
-      />
+    <ExpertiseProvider>
+      <div className="bg-black min-h-screen text-white">
+        {/* HERO SECTION - Fullscreen video with overlay */}
+        <HeroVideoDynamic />
 
-      {/* Main content */}
-      {/* <Header /> */}
-      <main>
-        <ExpertiseProvider>
+        {/* Main content */}
+        {/* <Header /> */}
+        <main>
           <ExpertiseSwipeContainer>
             <section className="pt-[80px] md:pt-2 pb-0 mb-[-10px] flex items-center justify-center flex-col w-full">
               <ItalExpertiseNav />
@@ -29,14 +27,14 @@ export default function Home() {
             <VideoCarousel />
             <ExpertiseDescriptions />
           </ExpertiseSwipeContainer>
-        </ExpertiseProvider>
-        <VideoGrid />
-        <Bio />
-        <Contact />
-      </main>
-      <footer className="py-8 bg-black text-white text-center">
-        <p>&copy; {new Date().getFullYear()} Itan. All Rights Reserved.</p>
-      </footer>
-    </div>
+          <VideoGrid />
+          <Bio />
+          <Contact />
+        </main>
+        <footer className="py-8 bg-black text-white text-center">
+          <p>&copy; {new Date().getFullYear()} Itan. All Rights Reserved.</p>
+        </footer>
+      </div>
+    </ExpertiseProvider>
   );
 }
