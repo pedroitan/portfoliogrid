@@ -8,9 +8,9 @@ import { useExpertise } from "../context/ExpertiseContext";
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const featuredVideos: Record<string, string> = {
-  director: "https://www.youtube.com/watch?v=gxTSuCtx510",
-  music: "https://www.youtube.com/watch?v=9XIFvM0Zppw",
-  engineer: "https://www.youtube.com/watch?v=gxTSuCtx510"
+  director: "https://www.youtube.com/watch?v=9XIFvM0Zppw", // IZA Uma Vida é pouco pra te amar Making Off (was music)
+  music: "https://www.youtube.com/watch?v=VCAQVijLiR4",    // FARM Oxe (new for music)
+  engineer: "https://www.youtube.com/watch?v=WaB3ys94Yj4"  // Ludmilla NBA Halftime Show
 };
 
 export default function HeroVideoDynamic() {
@@ -48,6 +48,15 @@ export default function HeroVideoDynamic() {
 
       {/* Subtract light effect overlay for contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/80 mix-blend-lighten z-10 pointer-events-none" />
+
+      {/* NAVBAR above scroll down button, with custom position for scroll arrows */}
+      <div className="absolute left-1/2 top-8 -translate-x-1/2 z-30 w-full flex justify-center pointer-events-none">
+        <div className="max-w-2xl w-full px-2 relative flex justify-center items-start">
+          {/* ItalExpertiseNav is the navbar */}
+          {/* @ts-ignore - ItalExpertiseNav may be .jsx or .tsx */}
+          {require('./ItalExpertiseNav').default && React.createElement(require('./ItalExpertiseNav').default, { navBarClassName: 'justify-center items-center', arrowPosition: 'top-centered' })}
+        </div>
+      </div>
 
       {/* Name in the center - Satoshi with mix-blend-mode */}
       <h1

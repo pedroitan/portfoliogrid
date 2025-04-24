@@ -5,7 +5,7 @@ import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useExpertise } from "../context/ExpertiseContext";
 import { useEffect } from "react";
 
-export default function ItalExpertiseNav() {
+export default function ItalExpertiseNav({ navBarClassName = '', arrowPosition = '' }) {
   const { activeExpertise, setActiveExpertise } = useExpertise();
   
   // Handle click on navbar items
@@ -45,11 +45,16 @@ export default function ItalExpertiseNav() {
   };
 
   return (
-    <div className="relative h-12 mb-2 mt-[100px] md:mt-1 md:mb-2 z-50 md:static md:h-12"
-         style={{ marginTop: 0 }}>
-      <NavBar 
-        items={navItems} 
-        className="static sm:static mt-0 transform-none sm:transform-none"
+    <div
+      className={
+        `relative z-50 w-full flex justify-center items-center pointer-events-auto ` +
+        (arrowPosition === 'top-centered' ? 'mt-0 mb-2' : 'h-12 mb-2 mt-[100px] md:mt-1 md:mb-2 md:static md:h-12')
+      }
+      style={arrowPosition === 'top-centered' ? { marginTop: 0, position: 'relative', top: 0 } : { marginTop: 0 }}
+    >
+      <NavBar
+        items={navItems}
+        className={`static sm:static mt-0 transform-none sm:transform-none ${navBarClassName}`}
         onNavItemClick={handleNavClick}
         activeItemUrl={getActiveItemUrl()}
       />
