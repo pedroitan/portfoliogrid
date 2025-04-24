@@ -1,7 +1,6 @@
 import HeroVideoDynamic from '../components/HeroVideoDynamic';
 // import HeroVideo from '../components/HeroVideo'; 
 import ExpertiseSwipeContainer from '../components/ExpertiseSwipeContainer';
-import ItalExpertiseNav from '../components/ItalExpertiseNav';
 import VideoCarousel from '../components/VideoCarousel';
 import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
 import VideoGrid from '../components/VideoGrid';

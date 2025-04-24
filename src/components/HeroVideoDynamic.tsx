@@ -3,6 +3,7 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import { useExpertise } from "../context/ExpertiseContext";
+import ItalExpertiseNav from './ItalExpertiseNav';
 
 // Dynamically import ReactPlayer to avoid SSR issues
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
@@ -52,9 +53,7 @@ export default function HeroVideoDynamic() {
       {/* NAVBAR above scroll down button, with custom position for scroll arrows */}
       <div className="absolute left-1/2 top-8 -translate-x-1/2 z-30 w-full flex justify-center pointer-events-none">
         <div className="max-w-2xl w-full px-2 relative flex justify-center items-start">
-          {/* ItalExpertiseNav is the navbar */}
-          {/* @ts-ignore - ItalExpertiseNav may be .jsx or .tsx */}
-          {require('./ItalExpertiseNav').default && React.createElement(require('./ItalExpertiseNav').default, { navBarClassName: 'justify-center items-center', arrowPosition: 'top-centered' })}
+          <ItalExpertiseNav navBarClassName="justify-center items-center" arrowPosition="top-centered" />
         </div>
       </div>
 

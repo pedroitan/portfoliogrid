@@ -5,7 +5,9 @@ import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useExpertise } from "../context/ExpertiseContext";
 import { useEffect } from "react";
 
-export default function ItalExpertiseNav({ navBarClassName = '', arrowPosition = '' }) {
+export default function ItalExpertiseNav(props) {
+  const navBarClassName = props.navBarClassName || '';
+  const arrowPosition = props.arrowPosition || '';
   const { activeExpertise, setActiveExpertise } = useExpertise();
   
   // Handle click on navbar items
