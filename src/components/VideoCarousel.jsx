@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useExpertise } from '../context/ExpertiseContext';
-import ReactPlayer from 'react-player';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -101,6 +100,22 @@ export default function VideoCarousel() {
     return url;
   };
   
+  const isYoutubeVideo = featuredVideo.url && (
+    featuredVideo.url.includes('youtube.com') || 
+    featuredVideo.url.includes('youtu.be')
+  );
+  // Extract YouTube video ID
+  const getYoutubeId = (url) => {
+    if (!url) return null;
+    if (url.includes('youtu.be')) {
+      return url.split('/').pop().split('?')[0];
+    }
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+  const youtubeId = isYoutubeVideo ? getYoutubeId(featuredVideo.url) : null;
+
   return (
     <div 
       className="max-w-6xl mx-auto mt-2 mb-6 px-4 relative"
@@ -161,23 +176,54 @@ export default function VideoCarousel() {
                   />
                 ) : (
                   <div className="w-full h-full relative">
-                    <ReactPlayer
-                      url={getProperUrl(featuredVideo.url)}
-                      width="100%"
-                      height="100%"
-                      light={true}
-                      key={key}
-                      playing={false}
-                      controls={false}
-                      config={{
-                        youtube: {
-                          playerVars: { showinfo: 0, rel: 0 }
-                        },
-                        vimeo: {
-                          playerOptions: { background: true }
-                        }
-                      }}
-                    />
+                    {isYoutubeVideo && youtubeId ? (
+                      <div
+                        className="absolute top-0 left-0 w-full h-full overflow-hidden"
+                        style={{ background: 'red' }} // DEBUG: red background
+                      >
+                        <div style={{position: 'absolute', top: 0, left: 0, zIndex: 10000, color: 'white', background: 'black', padding: 8, fontWeight: 'bold'}}>YOUTUBE IFRAME ACTIVE</div>
+                        <iframe
+                          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0&modestbranding=1&controls=0`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title="YouTube video player"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: '50%',
+                            height: '100vh',
+                            width: '177.78vh', // 16/9 aspect ratio, based on height
+                            transform: 'translateX(-50%)',
+                            border: '5px solid lime', // DEBUG: visible border
+                            background: 'black',
+                            pointerEvents: 'auto',
+                            display: 'block',
+                            zIndex: 9999,
+                            maxWidth: 'none',
+                            minWidth: 'none',
+                            minHeight: 'none',
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <ReactPlayer
+                        url={getProperUrl(featuredVideo.url)}
+                        width="100%"
+                        height="100%"
+                        light={true}
+                        key={key}
+                        playing={false}
+                        controls={false}
+                        config={{
+                          youtube: {
+                            playerVars: { showinfo: 0, rel: 0 }
+                          },
+                          vimeo: {
+                            playerOptions: { background: true }
+                          }
+                        }}
+                      />
+                    )}
                   </div>
                 )}
                 
@@ -195,29 +241,69 @@ export default function VideoCarousel() {
               </div>
             ) : (
               <div className="w-full h-full relative">
-                <ReactPlayer
-                  url={getProperUrl(featuredVideo.url)}
-                  width="100%"
-                  height="100%"
-                  controls={true}
-                  playing={true}
-                  key={key}
-                  config={{
-                    youtube: {
-                      playerVars: { 
-                        showinfo: 0,
-                        rel: 0,
-                        modestbranding: 1,
-                        disablekb: 1,
-                        controls: 1,
-                        cc_load_policy: 0,
-                        iv_load_policy: 3,
-                        autohide: 1
+                {isYoutubeVideo && youtubeId ? (
+                  <div
+                    className="absolute top-0 left-0 w-full h-full overflow-hidden"
+                    style={{ background: 'red' }} // DEBUG: red background
+                  >
+                    <div style={{position: 'absolute', top: 0, left: 0, zIndex: 10000, color: 'white', background: 'black', padding: 8, fontWeight: 'bold'}}>YOUTUBE IFRAME ACTIVE</div>
+                    <iframe
+                      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&controls=1`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title="YouTube video player"
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: '50%',
+                        height: '100vh',
+                        width: '177.78vh', // 16/9 aspect ratio, based on height
+                        transform: 'translateX(-50%)',
+                        border: '5px solid lime', // DEBUG: visible border
+                        background: 'black',
+                        pointerEvents: 'auto',
+                        display: 'block',
+                        zIndex: 9999,
+                        maxWidth: 'none',
+                        minWidth: 'none',
+                        minHeight: 'none',
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <ReactPlayer
+                    url={getProperUrl(featuredVideo.url)}
+                    width="177.78vw" // 16/9 * 100vw
+                    height="100vh"
+                    controls={true}
+                    playing={true}
+                    key={key}
+                    config={{
+                      youtube: {
+                        playerVars: { 
+                          showinfo: 0,
+                          rel: 0,
+                          modestbranding: 1,
+                          disablekb: 1,
+                          controls: 1,
+                          cc_load_policy: 0,
+                          iv_load_policy: 3,
+                          autohide: 1
+                        }
                       }
-                    }
-                  }}
-                  onEnded={handleVideoReset}
-                />
+                    }}
+                    style={{
+                      position: 'absolute',
+                      left: '50%',
+                      top: 0,
+                      transform: 'translateX(-50%)',
+                      border: 'none',
+                      background: 'black',
+                      pointerEvents: 'auto',
+                    }}
+                    onEnded={handleVideoReset}
+                  />
+                )}
                 
                 {/* Close button */}
                 <button 

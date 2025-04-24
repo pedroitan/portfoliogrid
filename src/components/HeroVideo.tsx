@@ -41,11 +41,6 @@ export default function HeroVideo({ videoUrl }: { videoUrl: string }) {
       {/* Subtract light effect overlay for contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/80 mix-blend-lighten z-10 pointer-events-none" />
 
-      {/* Menu button top right */}
-      <button className="absolute top-6 right-8 z-20 bg-black/40 hover:bg-black/70 text-white rounded-full p-3 transition-all shadow-lg">
-        <Menu size={28} />
-      </button>
-
       {/* Name in the center - Satoshi with mix-blend-mode */}
       <h1
         className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl md:text-8xl tracking-tight text-center select-none lowercase font-satoshi"
@@ -59,10 +54,22 @@ export default function HeroVideo({ videoUrl }: { videoUrl: string }) {
         itan
       </h1>
 
-      {/* Scroll down message at the bottom */}
+      {/* Scroll down message at the bottom with animation restored */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center animate-bounce text-white opacity-90 select-none">
-        <span className="text-lg md:text-xl font-medium tracking-wide" style={{ fontFamily: '"PP Neue Montreal", "Inter", sans-serif' }}>
-          Scroll Down
+        <span
+          className="text-lg md:text-xl font-medium tracking-wide font-satoshi cursor-pointer"
+          onClick={() => {
+            // Try both hash and scrollIntoView for robust navigation
+            const portfolioSection = document.getElementById('portfolio');
+            if (portfolioSection) {
+              portfolioSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              // Fallback: update hash to trigger navigation
+              window.location.hash = 'portfolio';
+            }
+          }}
+        >
+          Projetos
         </span>
         <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="mt-1 animate-pulse">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />

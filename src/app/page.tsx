@@ -1,4 +1,13 @@
 import HeroVideo from '../components/HeroVideo';
+// import Header from '../components/Header'; 
+import ExpertiseSwipeContainer from '../components/ExpertiseSwipeContainer';
+import ItalExpertiseNav from '../components/ItalExpertiseNav';
+import VideoCarousel from '../components/VideoCarousel';
+import ExpertiseDescriptions from '../components/ExpertiseDescriptions';
+import VideoGrid from '../components/VideoGrid';
+import Bio from '../components/Bio';
+import Contact from '../components/Contact';
+import { ExpertiseProvider } from '../context/ExpertiseContext';
 
 export default function Home() {
   return (
@@ -8,9 +17,8 @@ export default function Home() {
         videoUrl="https://www.youtube.com/watch?v=gxTSuCtx510" 
       />
 
-      {/* Main content hidden behind hero for now */}
-      {/*
-      <Header />
+      {/* Main content */}
+      {/* <Header /> */}
       <main>
         <ExpertiseProvider>
           <ExpertiseSwipeContainer>
@@ -29,7 +37,6 @@ export default function Home() {
       <footer className="py-8 bg-black text-white text-center">
         <p>&copy; {new Date().getFullYear()} Itan. All Rights Reserved.</p>
       </footer>
-      */}
     </div>
   );
 }

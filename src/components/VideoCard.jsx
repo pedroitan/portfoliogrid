@@ -51,7 +51,7 @@ export default function VideoCard({ video }) {
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleClick}
     >
-      <div className="w-full h-full overflow-hidden">
+      <div className="w-full h-full overflow-hidden relative bg-black">
         {video.thumbnailImage ? (
           <div className="w-full h-full relative">
             <Image 
@@ -64,11 +64,24 @@ export default function VideoCard({ video }) {
             />
           </div>
         ) : (
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative" style={{overflow: 'hidden'}}>
             <ReactPlayer
               url={getProperUrl(video.url)}
               width="100%"
               height="100%"
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                border: 'none',
+                background: 'black',
+                pointerEvents: 'auto',
+                display: 'block',
+                zIndex: 1,
+                maxWidth: '100%',
+                minWidth: 0,
+                minHeight: 0,
+              }}
               light={true}
               key={key} // Add key to force re-render
               playing={false}
