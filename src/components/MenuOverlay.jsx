@@ -43,7 +43,7 @@ export default function MenuOverlay({ open, onClose, onSelect }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center transition-all duration-300 font-satoshi pointer-events-auto"
+      className="fixed inset-0 z-[9999] flex items-center justify-center transition-all duration-300 font-satoshi pointer-events-auto backdrop-blur-[1px]"
       style={{ pointerEvents: 'auto', background: 'rgba(0,0,0,0.6)' }}
     >
       {/* Close button */}
