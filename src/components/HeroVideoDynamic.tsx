@@ -9,7 +9,7 @@ import ItalExpertiseNav from './ItalExpertiseNav';
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const featuredVideos: Record<string, string> = {
-  director: "https://www.youtube.com/watch?v=9XIFvM0Zppw", // IZA Uma Vida é pouco pra te amar Making Off (was music)
+  director: "/videos/IZA_LIVE_UMA_VIDA_E_POUCO_PARA_TE_AMAR_4K_V02.mp4", // IZA Uma Vida é pouco pra te amar (local, per user request)
   music: "https://www.youtube.com/watch?v=VCAQVijLiR4",    // FARM Oxe (new for music)
   engineer: "https://www.youtube.com/watch?v=WaB3ys94Yj4"  // Ludmilla NBA Halftime Show
 };
@@ -32,6 +32,24 @@ export default function HeroVideoDynamic() {
           height="100dvh"
           playsinline
           config={{
+            file: {
+              attributes: {
+                style: {
+                  width: '100vw',
+                  height: '100dvh',
+                  objectFit: 'cover',
+                  minWidth: '100vw',
+                  minHeight: '100dvh',
+                  maxWidth: '100vw',
+                  maxHeight: '100dvh',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  zIndex: 1,
+                  pointerEvents: 'none',
+                }
+              }
+            },
             youtube: { playerVars: { showinfo: 0, rel: 0, modestbranding: 1 } },
           }}
           style={{
@@ -41,6 +59,10 @@ export default function HeroVideoDynamic() {
             width: '100vw',
             height: '100dvh',
             objectFit: 'cover',
+            minWidth: '100vw',
+            minHeight: '100dvh',
+            maxWidth: '100vw',
+            maxHeight: '100dvh',
             zIndex: 1,
             pointerEvents: 'none',
           }}
