@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { useExpertise } from "../context/ExpertiseContext";
 import ItalExpertiseNav from './ItalExpertiseNav';
@@ -9,14 +9,15 @@ import ItalExpertiseNav from './ItalExpertiseNav';
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const featuredVideos: Record<string, string> = {
-  director: "/videos/IZA_LIVE_UMA_VIDA_E_POUCO_PARA_TE_AMAR_4K_V02.mp4", // IZA Uma Vida é pouco pra te amar (local, per user request)
-  music: "https://www.youtube.com/watch?v=VCAQVijLiR4",    // FARM Oxe (new for music)
-  engineer: "https://www.youtube.com/watch?v=WaB3ys94Yj4"  // Ludmilla NBA Halftime Show
+  director: "https://itan.b-cdn.net/IZA_LIVE_UMA_VIDA_E_POUCO_PARA_TE_AMAR_4K_V02.mp4", // IZA Uma Vida é pouco pra te amar (Bunny.net CDN)
+  music: "https://itan.b-cdn.net/Dilsinho,%20Paula%20Fernandes%20-%20%20Me%20Ensina%20(Ao%20Vivo%20No%20Casa%20Filtr).mp4", // Produção Musical section (Bunny.net CDN, Dilsinho & Paula Fernandes)
+  engineer: "https://itan.b-cdn.net/Ludmilla%20-%20Live%20At%20Half%20Time%20Show%20NBA%20-%20With%20Budweiser.mp4"  // Tecnologia section (Bunny.net CDN)
 };
 
 export default function HeroVideoDynamic() {
   const { activeExpertise } = useExpertise();
   const videoUrl = featuredVideos[activeExpertise] || featuredVideos.director;
+  const [muted, setMuted] = useState(false);
 
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
@@ -26,7 +27,7 @@ export default function HeroVideoDynamic() {
           url={videoUrl}
           playing
           loop
-          muted
+          muted={muted}
           controls={false}
           width="100vw"
           height="100dvh"
@@ -67,6 +68,27 @@ export default function HeroVideoDynamic() {
             pointerEvents: 'none',
           }}
         />
+        {/* Mute/Unmute Button */}
+        <button
+          className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+          style={{ pointerEvents: 'auto' }}
+          aria-label={muted ? 'Desativar som' : 'Ativar som'}
+          onClick={() => setMuted((m) => !m)}
+        >
+          {/* Unmuted icon when NOT muted, Muted icon when muted */}
+          {!muted ? (
+            // Unmuted icon
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v6h4l5 5V4l-5 5H9z" />
+            </svg>
+          ) : (
+            // Muted icon
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v6h4l5 5V4l-5 5H9z" />
+              <line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" strokeWidth="2" />
+            </svg>
+          )}
+        </button>
       </div>
 
       {/* Subtract light effect overlay for contrast */}
