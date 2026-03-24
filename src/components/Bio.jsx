@@ -1,51 +1,33 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function Bio() {
+  const t = useTranslations('bio');
+
   return (
-    <section id="bio" className="py-20 bg-black text-white">
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+    <section id="bio" className="py-24 bg-black text-white">
+      <div className="container mx-auto px-6 md:px-16 lg:px-32">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto"
+          className="max-w-2xl"
         >
-          <h2 className="text-3xl font-bold mb-6">ITAN</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <p className="mb-4">
-                Creative Director with expertise in Film Direction, Music Production, and Audiovisual Engineering.
-              </p>
-              <p className="mb-4">
-                Specializing in creating immersive visual experiences that blend artistic vision with technical excellence.
-              </p>
-              <div className="mt-6">
-                <h3 className="text-xl font-medium mb-2">Areas of Expertise:</h3>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Film Direction</li>
-                  <li>Music Production</li>
-                  <li>Audiovisual Engineering</li>
-                </ul>
-              </div>
-            </div>
-            <div className="flex justify-center items-center">
-              <div className="w-64 h-64 bg-gray-800 rounded-full overflow-hidden flex items-center justify-center">
-                <img 
-                  src="/images/profile.jpg" 
-                  alt="Itan" 
-                  className="w-full h-full object-cover" 
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.style.display = 'none';
-                    e.target.parentNode.innerHTML = '<div className="flex items-center justify-center h-full w-full text-4xl font-bold">ITAN</div>';
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+          <p className="text-xs tracking-[0.3em] uppercase text-white/40 mb-6 font-satoshi">
+            {t('tagline')}
+          </p>
+          <h2 className="text-5xl md:text-7xl font-bold font-satoshi tracking-tight lowercase mb-10">
+            {t('title')}
+          </h2>
+          <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-6 font-satoshi">
+            {t('p1')}
+          </p>
+          <p className="text-white/60 text-base md:text-lg leading-relaxed font-satoshi">
+            {t('p2')}
+          </p>
         </motion.div>
       </div>
     </section>

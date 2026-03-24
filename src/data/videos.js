@@ -547,7 +547,7 @@ export const videos = [
     "id": 42,
     "title": "AVATARES FITDANCE (Motion Capture, 3D Modeling)",
     "description": "Direção Técnica",
-    "url": "https://www.instagram.com/dncoficial_/",
+    "url": "",
     "tags": [
       "direção técnica"
     ],
@@ -558,7 +558,7 @@ export const videos = [
     "id": 43,
     "title": "AVATARES FITDANCE (Motion Capture, 3D Modeling)",
     "description": "Direção Técnica",
-    "url": "https://www.instagram.com/hyppeoficial/",
+    "url": "",
     "tags": [
       "direção técnica"
     ],

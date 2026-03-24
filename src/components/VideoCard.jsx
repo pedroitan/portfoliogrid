@@ -5,30 +5,16 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Modal from './Modal';
+import { getProperUrl, toDisplayTitle } from '@/lib/utils';
 
 // Import ReactPlayer dynamically to prevent hydration errors
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
-export default function VideoCard({ video }) {
+export default function VideoCard({ video, priority = false }) {
   const [isHovered, setIsHovered] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [key, setKey] = useState(Date.now()); // Add a key to force re-render of ReactPlayer
   
-  // Fix Vimeo URLs if they're manage links
-  const getProperUrl = (url) => {
-    if (url.includes('vimeo.com/manage/videos/')) {
-      // Extract ID and format correctly
-      const parts = url.split('/');
-      const id = parts[parts.indexOf('videos') + 1];
-      return `https://vimeo.com/${id}`;
-    }
-    // Fix youtu.be short URLs
-    if (url.includes('youtu.be/')) {
-      const id = url.split('/').pop().split('?')[0];
-      return `https://www.youtube.com/watch?v=${id}`;
-    }
-    return url;
-  };
   
   const handleClick = () => {
     setModalOpen(true);
@@ -58,7 +44,7 @@ export default function VideoCard({ video }) {
               src={`/images/thumbnails/${video.thumbnailImage}`} 
               alt={video.title}
               fill
-              priority={true}
+              priority={priority}
               style={{ objectFit: 'cover' }}
               className="w-full h-full"
             />
@@ -114,7 +100,7 @@ export default function VideoCard({ video }) {
           animate={{ opacity: 1 }}
           className="absolute inset-0 bg-black/60 flex flex-col justify-end items-start p-2 text-white backdrop-blur-[0px]"
         >
-          <h3 className="text-[0.78rem] md:text-[0.95rem] font-bold mb-0.5">{video.title}</h3>
+          <h3 className="text-[0.78rem] md:text-[0.95rem] font-bold mb-0.5">{toDisplayTitle(video.title)}</h3>
           {video.description && <p className="text-[0.66rem] md:text-[0.8rem] opacity-80">{video.description}</p>}
         </motion.div>
       )}

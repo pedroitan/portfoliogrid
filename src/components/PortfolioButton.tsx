@@ -1,9 +1,12 @@
 "use client";
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from "@/components/ui/neon-button";
 
 export default function PortfolioButton() {
+  const t = useTranslations('portfolio');
+
   const scrollToPortfolio = () => {
     // Find the portfolio section
     const portfolioSection = document.querySelector('#portfolio');
@@ -20,7 +23,7 @@ export default function PortfolioButton() {
       size="lg"
       className="text-base font-medium hover:scale-105 transition-transform duration-300 px-10 py-2"
     >
-      Portfolio
+      {t('button')}
     </Button>
   );
 }

@@ -1,0 +1,53 @@
+{
+  "hero": {
+    "scrollDown": "view portfolio"
+  },
+  "nav": {
+    "audiovisual": "Creative Direction",
+    "music": "Music Production",
+    "technology": "Technology"
+  },
+  "expertise": {
+    "director": {
+      "p1": "Everything starts with an idea 💡 The desire to communicate a feeling. One that words cannot reach. Only the magic of a spectacle can translate it!",
+      "p2": "Only the expression of an artist can synthesize it! Many artists, in fact, because nothing is made alone! Music as the guiding thread, Art and Technology amplifying messages!"
+    },
+    "music": "As a <bold>Music Producer</bold>, Itan draws on his deep understanding of music theory and audio technology to create original compositions and captivating soundtracks. Working across electronic, hip-hop, and experimental genres, he builds sonic landscapes that perfectly complement the visual element of each audiovisual project.",
+    "engineer": "As an <bold>Audiovisual Engineer</bold>, Itan masters the technical aspects of production, from image and sound capture to advanced post-production. His expertise in camera systems, lighting, workflows, and digital technology ensures each project reaches the highest technical standard without compromising the original creative vision."
+  },
+  "menu": {
+    "portfolio": "Portfolio",
+    "bio": "Bio",
+    "contact": "Contact",
+    "closeLabel": "Close menu"
+  },
+  "bio": {
+    "title": "itan",
+    "tagline": "Art × Technology × Strategy",
+    "p1": "I direct experiences that make people feel what words can't reach. From the NBA Finals halftime show with Ludmilla to a Latin Grammy nomination with Dilsinho and Paula Fernandes — each project is born from an idea that only takes shape when Art, Technology and Strategy converge.",
+    "p2": "I work at the intersection of the artist's vision and technical precision. Nothing is made alone — and that's exactly why I know how to build the right collaborations to make every show unforgettable."
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Interested in collaborating or have a project in mind? Get in touch.",
+    "infoTitle": "Get in Touch",
+    "formTitle": "Send a message",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "messagePlaceholder": "Message",
+    "submit": "Send Message",
+    "sentFeedback": "✓ Opening email client..."
+  },
+  "portfolio": {
+    "button": "Portfolio"
+  },
+  "footer": {
+    "rights": "All Rights Reserved.",
+    "tagline": "Art × Technology × Strategy",
+    "email": "contato@pedroitan.com"
+  },
+  "header": {
+    "openMenu": "Open menu",
+    "switchLang": "PT"
+  }
+}

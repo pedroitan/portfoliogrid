@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { useExpertise } from '../context/ExpertiseContext';
 import Image from 'next/image';
+import { getProperUrl } from '@/lib/utils';
+
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 export default function VideoCarousel() {
   const [isClient, setIsClient] = useState(false);
@@ -63,22 +67,6 @@ export default function VideoCarousel() {
     setKey(Date.now()); // Force ReactPlayer to re-render and reset its state
   };
   
-  // Fix Vimeo URLs if they're manage links
-  const getProperUrl = (url) => {
-    if (url.includes('vimeo.com/manage/videos/')) {
-      // Extract ID and format correctly
-      const parts = url.split('/');
-      const id = parts[parts.indexOf('videos') + 1];
-      return `https://vimeo.com/${id}`;
-    }
-    // Fix youtu.be short URLs
-    if (url.includes('youtu.be/')) {
-      const id = url.split('/').pop().split('?')[0];
-      return `https://www.youtube.com/watch?v=${id}`;
-    }
-    return url;
-  };
-  
   const isYoutubeVideo = featuredVideo.url && (
     featuredVideo.url.includes('youtube.com') || 
     featuredVideo.url.includes('youtu.be')
@@ -134,54 +122,23 @@ export default function VideoCarousel() {
                   />
                 ) : (
                   <div className="w-full h-full relative">
-                    {isYoutubeVideo && youtubeId ? (
-                      <div
-                        className="absolute top-0 left-0 w-full h-full overflow-hidden"
-                        style={{ background: 'red' }} // DEBUG: red background
-                      >
-                        <div style={{position: 'absolute', top: 0, left: 0, zIndex: 10000, color: 'white', background: 'black', padding: 8, fontWeight: 'bold'}}>YOUTUBE IFRAME ACTIVE</div>
-                        <iframe
-                          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0&modestbranding=1&controls=0`}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          title="YouTube video player"
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: '50%',
-                            height: '100vh',
-                            width: '177.78vh', // 16/9 aspect ratio, based on height
-                            transform: 'translateX(-50%)',
-                            border: '5px solid lime', // DEBUG: visible border
-                            background: 'black',
-                            pointerEvents: 'auto',
-                            display: 'block',
-                            zIndex: 9999,
-                            maxWidth: 'none',
-                            minWidth: 'none',
-                            minHeight: 'none',
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <ReactPlayer
-                        url={getProperUrl(featuredVideo.url)}
-                        width="100%"
-                        height="100%"
-                        light={true}
-                        key={key}
-                        playing={false}
-                        controls={false}
-                        config={{
-                          youtube: {
-                            playerVars: { showinfo: 0, rel: 0 }
-                          },
-                          vimeo: {
-                            playerOptions: { background: true }
-                          }
-                        }}
-                      />
-                    )}
+                    <ReactPlayer
+                      url={getProperUrl(featuredVideo.url)}
+                      width="100%"
+                      height="100%"
+                      light={true}
+                      key={key}
+                      playing={false}
+                      controls={false}
+                      config={{
+                        youtube: {
+                          playerVars: { showinfo: 0, rel: 0 }
+                        },
+                        vimeo: {
+                          playerOptions: { background: true }
+                        }
+                      }}
+                    />
                   </div>
                 )}
                 
@@ -199,69 +156,33 @@ export default function VideoCarousel() {
               </div>
             ) : (
               <div className="w-full h-full relative">
-                {isYoutubeVideo && youtubeId ? (
-                  <div
-                    className="absolute top-0 left-0 w-full h-full overflow-hidden"
-                    style={{ background: 'red' }} // DEBUG: red background
-                  >
-                    <div style={{position: 'absolute', top: 0, left: 0, zIndex: 10000, color: 'white', background: 'black', padding: 8, fontWeight: 'bold'}}>YOUTUBE IFRAME ACTIVE</div>
-                    <iframe
-                      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1&controls=1`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title="YouTube video player"
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: '50%',
-                        height: '100vh',
-                        width: '177.78vh', // 16/9 aspect ratio, based on height
-                        transform: 'translateX(-50%)',
-                        border: '5px solid lime', // DEBUG: visible border
-                        background: 'black',
-                        pointerEvents: 'auto',
-                        display: 'block',
-                        zIndex: 9999,
-                        maxWidth: 'none',
-                        minWidth: 'none',
-                        minHeight: 'none',
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <ReactPlayer
-                    url={getProperUrl(featuredVideo.url)}
-                    width="177.78vw" // 16/9 * 100vw
-                    height="100vh"
-                    controls={true}
-                    playing={true}
-                    key={key}
-                    config={{
-                      youtube: {
-                        playerVars: { 
-                          showinfo: 0,
-                          rel: 0,
-                          modestbranding: 1,
-                          disablekb: 1,
-                          controls: 1,
-                          cc_load_policy: 0,
-                          iv_load_policy: 3,
-                          autohide: 1
-                        }
+                <ReactPlayer
+                  url={getProperUrl(featuredVideo.url)}
+                  width="100%"
+                  height="100%"
+                  controls={true}
+                  playing={true}
+                  key={key}
+                  config={{
+                    youtube: {
+                      playerVars: { 
+                        showinfo: 0,
+                        rel: 0,
+                        modestbranding: 1,
+                        controls: 1,
+                        iv_load_policy: 3,
+                        autohide: 1
                       }
-                    }}
-                    style={{
-                      position: 'absolute',
-                      left: '50%',
-                      top: 0,
-                      transform: 'translateX(-50%)',
-                      border: 'none',
-                      background: 'black',
-                      pointerEvents: 'auto',
-                    }}
-                    onEnded={handleVideoReset}
-                  />
-                )}
+                    }
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    border: 'none',
+                  }}
+                  onEnded={handleVideoReset}
+                />
                 
                 {/* Close button */}
                 <button 

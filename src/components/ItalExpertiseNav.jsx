@@ -1,6 +1,7 @@
 'use client';
 
 import { Film, Music, Monitor } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useExpertise } from "../context/ExpertiseContext";
 import { useEffect } from "react";
@@ -10,21 +11,11 @@ export default function ItalExpertiseNav(props) {
   const arrowPosition = props.arrowPosition || '';
   const { activeExpertise, setActiveExpertise } = useExpertise();
   
-  // Handle click on navbar items
-  const handleNavClick = (itemName) => {
-    let expertise = 'director';
-    if (itemName === 'Produção Musical') expertise = 'music';
-    else if (itemName === 'Tecnologia') expertise = 'engineer';
-    
-    // Update hash and expertise state
+  // Handle click on navbar items — match by url hash (locale-independent)
+  const handleNavClick = (itemUrl) => {
+    const expertise = itemUrl.replace('#', '') || 'director';
     window.location.hash = expertise;
     setActiveExpertise(expertise);
-    
-    // Force a small delay to ensure state updates properly
-    setTimeout(() => {
-      // Refresh active state to ensure UI is in sync
-      setActiveExpertise(expertise);
-    }, 10);
   };
   
   // Set initial hash if needed
@@ -35,10 +26,12 @@ export default function ItalExpertiseNav(props) {
     }
   }, []);
   
+  const t = useTranslations('nav');
+
   const navItems = [
-    { name: 'Direção Audiovisual', url: '#director', icon: Film },
-    { name: 'Produção Musical', url: '#music', icon: Music },
-    { name: 'Tecnologia', url: '#engineer', icon: Monitor }
+    { name: t('audiovisual'), url: '#director', icon: Film },
+    { name: t('music'), url: '#music', icon: Music },
+    { name: t('technology'), url: '#engineer', icon: Monitor },
   ];
 
   // Get the current active URL from the active expertise

@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+import { Volume2, VolumeX } from "lucide-react";
 import { useExpertise } from "../context/ExpertiseContext";
 import ItalExpertiseNav from './ItalExpertiseNav';
 
@@ -18,11 +20,17 @@ export default function HeroVideoDynamic() {
   const { activeExpertise } = useExpertise();
   const videoUrl = featuredVideos[activeExpertise] || featuredVideos.director;
   const [muted, setMuted] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
+  const t = useTranslations('hero');
 
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
       {/* Fullscreen video background - bulletproof mobile fit */}
       <div className="fixed top-0 left-0 w-screen h-[100dvh] z-1 overflow-hidden pointer-events-none">
+        <div
+          className="w-full h-full transition-opacity duration-1000"
+          style={{ opacity: videoReady ? 1 : 0 }}
+        >
         <ReactPlayer
           url={videoUrl}
           playing
@@ -32,6 +40,7 @@ export default function HeroVideoDynamic() {
           width="100vw"
           height="100dvh"
           playsinline
+          onReady={() => setVideoReady(true)}
           config={{
             file: {
               attributes: {
@@ -68,26 +77,15 @@ export default function HeroVideoDynamic() {
             pointerEvents: 'none',
           }}
         />
+        </div>
         {/* Mute/Unmute Button */}
         <button
-          className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+          className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
           style={{ pointerEvents: 'auto' }}
           aria-label={muted ? 'Desativar som' : 'Ativar som'}
           onClick={() => setMuted((m) => !m)}
         >
-          {/* Unmuted icon when NOT muted, Muted icon when muted */}
-          {!muted ? (
-            // Unmuted icon
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v6h4l5 5V4l-5 5H9z" />
-            </svg>
-          ) : (
-            // Muted icon
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v6h4l5 5V4l-5 5H9z" />
-              <line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" strokeWidth="2" />
-            </svg>
-          )}
+          {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
         </button>
       </div>
 
@@ -125,7 +123,7 @@ export default function HeroVideoDynamic() {
             else window.location.hash = '#portfolio';
           }}
         >
-          ver portfólio
+          {t('scrollDown')}
         </span>
       </div>
     </section>

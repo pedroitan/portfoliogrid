@@ -1,27 +1,15 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import ReactPlayer from 'react-player';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getProperUrl } from '@/lib/utils';
+
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 export default function Modal({ isOpen, onClose, videoUrl }) {
   const modalRef = useRef();
   
-  // Fix Vimeo URLs if they're manage links
-  const getProperUrl = (url) => {
-    if (url.includes('vimeo.com/manage/videos/')) {
-      const parts = url.split('/');
-      const id = parts[parts.indexOf('videos') + 1];
-      return `https://vimeo.com/${id}`;
-    }
-    // Fix youtu.be short URLs
-    if (url.includes('youtu.be/')) {
-      const id = url.split('/').pop().split('?')[0];
-      return `https://www.youtube.com/watch?v=${id}`;
-    }
-    return url;
-  };
-
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') onClose();

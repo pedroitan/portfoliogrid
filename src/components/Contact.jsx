@@ -1,8 +1,28 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function Contact() {
+  const t = useTranslations('contact');
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [sent, setSent] = useState(false);
+
+  const handleChange = (e) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, email, message } = form;
+    const subject = encodeURIComponent(`Contato via portfólio — ${name}`);
+    const body = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\n${message}`);
+    window.location.href = `mailto:contato@pedroitan.com?subject=${subject}&body=${body}`;
+    setSent(true);
+    setTimeout(() => setSent(false), 5000);
+  };
+
   return (
     <section id="contact" className="py-20 bg-black text-white">
       <div className="container mx-auto px-4">
@@ -13,70 +33,74 @@ export default function Contact() {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h2 className="text-3xl font-bold mb-6">Contato</h2>
-          <p className="mb-8">
-            Interessado em colaborar ou tem um projeto em mente? Entre em contato.
-          </p>
+          <h2 className="text-3xl font-bold mb-6">{t('title')}</h2>
+          <p className="mb-8">{t('subtitle')}</p>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-900/50 p-6 rounded-lg">
-              <h3 className="text-xl font-medium mb-4">Fale Comigo</h3>
+              <h3 className="text-xl font-medium mb-4">{t('infoTitle')}</h3>
               <p className="mb-4">Email: contato@pedroitan.com</p>
-              <p className="mb-4">Telefone: 21 9 8841-9463</p>
+              <p className="mb-4">+55 21 9 8841-9463</p>
               <div className="flex justify-center space-x-4 mt-6">
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                <a href="https://instagram.com/pedroitan" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 transition" aria-label="Instagram">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                   </svg>
                 </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
+                <a href="mailto:contato@pedroitan.com" className="text-white hover:text-gray-300 transition" aria-label="Email">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-                <a href="#" className="text-white hover:text-gray-300 transition">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 0 0 .497-3.753C20.18 7.773 21.692 5.25 22 4.009z"></path>
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
                   </svg>
                 </a>
               </div>
             </div>
             
             <div className="bg-gray-900/50 p-6 rounded-lg">
-              <h3 className="text-xl font-medium mb-4">Propostas de Trabalho</h3>
-              <form className="space-y-4">
+              <h3 className="text-xl font-medium mb-4">{t('formTitle')}</h3>
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div>
-                  <input 
-                    type="text" 
-                    placeholder="Nome" 
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder={t('namePlaceholder')}
+                    required
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   />
                 </div>
                 <div>
-                  <input 
-                    type="email" 
-                    placeholder="E-mail" 
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder={t('emailPlaceholder')}
+                    required
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   />
                 </div>
                 <div>
-                  <textarea 
-                    placeholder="Mensagem" 
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder={t('messagePlaceholder')}
                     rows="4"
+                    required
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   ></textarea>
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-full py-2 bg-white text-black font-medium rounded hover:bg-gray-200 transition"
-                  type="button"
+                  className="w-full py-2 bg-white text-black font-medium rounded hover:bg-gray-200 transition disabled:opacity-50"
+                  type="submit"
                 >
-                  Enviar Mensagem
+                  {sent ? t('sentFeedback') : t('submit')}
                 </motion.button>
               </form>
             </div>

@@ -1,23 +1,7 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import Header from "../components/Header";
-
-export const metadata: Metadata = {
-  title: "Itan | Creative Director Portfolio",
-  description: "Portfolio of Itan - Film Director, Music Producer, Audiovisual Engineer",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className="antialiased bg-black text-white">
-        <Header />
-        {children}
-      </body>
-    </html>
-  );
+  return children;
 }

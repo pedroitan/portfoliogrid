@@ -1,16 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import MenuOverlay from './MenuOverlay';
-import Bio from './Bio';
-import Contact from './Contact';
 import { Menu } from 'lucide-react';
-import Link from 'next/link';
+import { Link, useRouter, usePathname } from '@/i18n/navigation';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeOverlay, setActiveOverlay] = useState(null); // 'bio' | 'contact' | null
+  const t = useTranslations('header');
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const switchLocale = () => {
+    const nextLocale = locale === 'pt' ? 'en' : 'pt';
+    router.replace(pathname, { locale: nextLocale });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,12 +27,9 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Overlay close handler
-  const closeOverlay = () => setActiveOverlay(null);
-
   return (
     <>
-      <header className={`fixed w-full z-20 transition-all duration-300 ${scrolled ? 'bg-transparent' : 'bg-transparent'} mt-3 md:mt-0 md:pl-[120px] md:pr-[120px]`}> 
+      <header className={`fixed w-full z-20 transition-all duration-500 ${scrolled ? 'bg-black/70 backdrop-blur-md' : 'bg-transparent'} mt-3 md:mt-0 md:pl-[120px] md:pr-[120px]`}>
         <div className="w-full flex items-center justify-between px-4 py-4">
           <Link
             href="/"
@@ -34,40 +38,28 @@ export default function Header() {
           >
             itan
           </Link>
-          <button
-            className="text-white p-2 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 transition shadow-lg"
-            aria-label="Abrir menu"
-            onClick={() => setMenuOpen(true)}
-            style={{ marginLeft: 'auto', marginRight: 0 }}
-          >
-            <Menu size={32} />
-          </button>
+          <div className="flex items-center gap-3" style={{ marginLeft: 'auto', marginRight: 0 }}>
+            <button
+              onClick={switchLocale}
+              className="text-white/70 hover:text-white text-xs font-semibold tracking-widest uppercase transition border border-white/20 rounded-full px-3 py-1.5 bg-white/5 hover:bg-white/10"
+              aria-label={`Switch to ${t('switchLang')}`}
+            >
+              {t('switchLang')}
+            </button>
+            <button
+              className="text-white p-2 rounded-full border border-white/30 bg-white/10 hover:bg-white/20 transition shadow-lg"
+              aria-label={t('openMenu')}
+              onClick={() => setMenuOpen(true)}
+            >
+              <Menu size={32} />
+            </button>
+          </div>
         </div>
       </header>
-      <MenuOverlay 
-        open={menuOpen} 
+      <MenuOverlay
+        open={menuOpen}
         onClose={() => setMenuOpen(false)}
-        onSelect={section => {
-          setMenuOpen(false);
-          setTimeout(() => setActiveOverlay(section), 250); // Wait for menu close animation
-        }}
       />
-      {activeOverlay === 'bio' && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-md">
-          <button className="absolute top-6 right-8 text-white text-3xl font-bold opacity-80 hover:opacity-100 transition z-[100000]" onClick={closeOverlay} aria-label="Fechar bio">×</button>
-          <div className="max-w-3xl w-full mx-auto px-4 py-8 bg-black/70 rounded-xl overflow-y-auto max-h-[90vh]">
-            <Bio overlay />
-          </div>
-        </div>
-      )}
-      {activeOverlay === 'contact' && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 backdrop-blur-md">
-          <button className="absolute top-6 right-8 text-white text-3xl font-bold opacity-80 hover:opacity-100 transition z-[100000]" onClick={closeOverlay} aria-label="Fechar contato">×</button>
-          <div className="max-w-3xl w-full mx-auto px-4 py-8 bg-black/70 rounded-xl overflow-y-auto max-h-[90vh]">
-            <Contact overlay />
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -15,7 +15,7 @@ interface NavItem {
 interface NavBarProps {
   items: NavItem[]
   className?: string
-  onNavItemClick?: (itemName: string) => void
+  onNavItemClick?: (itemUrl: string) => void
   activeItemUrl?: string
 }
 
@@ -54,7 +54,7 @@ export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavB
               href={item.url}
               onClick={() => {
                 setActiveTab(item.name)
-                if (onNavItemClick) onNavItemClick(item.name)
+                if (onNavItemClick) onNavItemClick(item.url)
               }}
               className={cn(
                 "relative cursor-pointer text-xs font-semibold px-3 py-1 rounded-full transition-colors",

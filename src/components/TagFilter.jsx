@@ -3,9 +3,12 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
+const INITIAL_LIMIT = 12;
+
 export default function TagFilter({ tags, activeTag, setActiveTag }) {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   
   useEffect(() => {
     setMounted(true);
@@ -24,7 +27,9 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
   }, []);
   
   // Prepare tags for display
-  const displayTags = isMobile ? getDisplayTags(tags, activeTag) : tags;
+  const mobileTags = isMobile ? getDisplayTags(tags, activeTag) : tags;
+  const displayTags = showAll ? mobileTags : getDisplayTags(mobileTags, activeTag).slice(0, INITIAL_LIMIT);
+  const hasMore = mobileTags.length > INITIAL_LIMIT;
   
   function getDisplayTags(allTags, currentTag) {
     // Always include 'todos' tag and current active tag
@@ -78,6 +83,14 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
           )}
         </motion.button>
       ))}
+        {hasMore && (
+          <button
+            onClick={() => setShowAll(prev => !prev)}
+            className="px-2 py-1 text-[0.65rem] md:text-[0.75rem] font-bold uppercase text-white/40 hover:text-white/80 transition"
+          >
+            {showAll ? '−' : `+${mobileTags.length - INITIAL_LIMIT}`}
+          </button>
+        )}
       </div>
     </div>
   );

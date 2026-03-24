@@ -1,43 +1,43 @@
+'use client';
+
 import React, { useState } from 'react';
 import Image from 'next/image';
-
-// Menu items and their corresponding images (3 per item)
-const MENU_ITEMS = [
-  {
-    label: 'Portfolio',
-    anchor: '#portfolio',
-    value: 'portfolio',
-    images: [
-      '/images/thumbnails/iza-uma-vida.jpg',
-      '/images/thumbnails/iza-uma-vida2.jpg',
-      '/images/thumbnails/iza-uma-vida3.jpg',
-    ],
-  },
-  {
-    label: 'Bio',
-    anchor: '#bio',
-    value: 'bio',
-    images: [
-      '/images/thumbnails/farm-oxe.jpg',
-      '/images/thumbnails/farm-oxe2.jpg',
-      '/images/thumbnails/farm-oxe3.jpg',
-    ],
-  },
-  {
-    label: 'Contato',
-    anchor: '#contact',
-    value: 'contact',
-    images: [
-      '/images/thumbnails/ludmilla-making-off.jpg',
-      '/images/thumbnails/ludmilla-making-off2.jpg',
-      '/images/thumbnails/ludmilla-making-off3.jpg',
-    ],
-  },
-];
+import { useTranslations } from 'next-intl';
 
 export default function MenuOverlay({ open, onClose, onSelect }) {
+  const t = useTranslations('menu');
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const [selectedIdx, setSelectedIdx] = useState(null);
+
+  const MENU_ITEMS = [
+    {
+      label: t('portfolio'),
+      anchor: '#portfolio',
+      value: 'portfolio',
+      images: [
+        '/images/thumbnails/iza-uma-vida.jpg',
+        '/images/thumbnails/budtalks.jpg',
+      ],
+    },
+    {
+      label: t('bio'),
+      anchor: '#bio',
+      value: 'bio',
+      images: [
+        '/images/thumbnails/farm-oxe.jpg',
+        '/images/thumbnails/iza-making-of.jpg',
+      ],
+    },
+    {
+      label: t('contact'),
+      anchor: '#contact',
+      value: 'contact',
+      images: [
+        '/images/thumbnails/ludmilla-making-off.jpg',
+        '/images/thumbnails/ludmilla-nba.jpg',
+      ],
+    },
+  ];
 
   if (!open) return null;
 
@@ -50,7 +50,7 @@ export default function MenuOverlay({ open, onClose, onSelect }) {
       <button
         className="fixed md:absolute top-6 right-8 flex items-center justify-center text-white text-3xl tracking-widest font-bold opacity-80 hover:opacity-100 transition w-12 h-12 z-[10000]"
         onClick={onClose}
-        aria-label="Fechar menu"
+        aria-label={t('closeLabel')}
         style={{ pointerEvents: 'auto', left: 'unset', right: '2rem' }}
       >
         ×
@@ -92,13 +92,11 @@ export default function MenuOverlay({ open, onClose, onSelect }) {
                 onMouseLeave={() => setHoveredIdx(null)}
                 onClick={() => {
                   setSelectedIdx(idx);
-                  setTimeout(() => setSelectedIdx(null), 600); // fade for 600ms
-                  if (item.value === 'bio' || item.value === 'contact') {
-                    if (onSelect) onSelect(item.value);
-                  } else {
+                  setTimeout(() => {
+                    setSelectedIdx(null);
                     window.location.hash = item.anchor;
                     onClose();
-                  }
+                  }, 250);
                 }}
               >
                 {item.label}
