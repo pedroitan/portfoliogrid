@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Volume2, VolumeX } from "lucide-react";
 import { useExpertise } from "../context/ExpertiseContext";
 import ItalExpertiseNav from './ItalExpertiseNav';
@@ -10,18 +10,33 @@ import ItalExpertiseNav from './ItalExpertiseNav';
 // Dynamically import ReactPlayer to avoid SSR issues
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
-const featuredVideos: Record<string, string> = {
-  director: "https://itan.b-cdn.net/IZA_LIVE_UMA_VIDA_E_POUCO_PARA_TE_AMAR_4K_V02.mp4", // IZA Uma Vida é pouco pra te amar (Bunny.net CDN)
-  music: "https://itan.b-cdn.net/Dilsinho,%20Paula%20Fernandes%20-%20%20Me%20Ensina%20(Ao%20Vivo%20No%20Casa%20Filtr).mp4", // Produção Musical section (Bunny.net CDN, Dilsinho & Paula Fernandes)
-  engineer: "https://itan.b-cdn.net/Ludmilla%20-%20Live%20At%20Half%20Time%20Show%20NBA%20-%20With%20Budweiser.mp4"  // Tecnologia section (Bunny.net CDN)
+const featuredVideos: Record<string, Record<string, string>> = {
+  director: {
+    pt: "https://itan.b-cdn.net/PORTFOLIO_V5_BR_ICON.mp4",
+    en: "https://itan.b-cdn.net/PORTFOLIO_V5_EN_ICON.mp4",
+  },
+  music: {
+    pt: "https://itan.b-cdn.net/Dilsinho,%20Paula%20Fernandes%20-%20%20Me%20Ensina%20(Ao%20Vivo%20No%20Casa%20Filtr).mp4",
+    en: "https://itan.b-cdn.net/Dilsinho,%20Paula%20Fernandes%20-%20%20Me%20Ensina%20(Ao%20Vivo%20No%20Casa%20Filtr).mp4",
+  },
+  engineer: {
+    pt: "https://itan.b-cdn.net/Ludmilla%20-%20Live%20At%20Half%20Time%20Show%20NBA%20-%20With%20Budweiser.mp4",
+    en: "https://itan.b-cdn.net/Ludmilla%20-%20Live%20At%20Half%20Time%20Show%20NBA%20-%20With%20Budweiser.mp4",
+  },
 };
 
 export default function HeroVideoDynamic() {
   const { activeExpertise } = useExpertise();
-  const videoUrl = featuredVideos[activeExpertise] || featuredVideos.director;
+  const locale = useLocale();
+  const section = featuredVideos[activeExpertise] ?? featuredVideos.director;
+  const videoUrl = section[locale] ?? section.pt;
   const [muted, setMuted] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const t = useTranslations('hero');
+
+  useEffect(() => {
+    setVideoReady(false);
+  }, [videoUrl]);
 
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
