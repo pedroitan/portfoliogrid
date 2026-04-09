@@ -11,6 +11,53 @@ import ItalExpertiseNav from './ItalExpertiseNav';
 // Dynamically import ReactPlayer to avoid SSR issues
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
+function MuteControl({ playerRef }: { playerRef: React.RefObject<ReactPlayerType | null> }) {
+  const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    const unmute = () => {
+      const video = playerRef.current?.getInternalPlayer() as HTMLVideoElement | null;
+      if (video) {
+        video.muted = false;
+        video.play().catch(() => {});
+      }
+      setMuted(false);
+      window.removeEventListener('scroll', unmute);
+      window.removeEventListener('touchstart', unmute);
+      window.removeEventListener('click', unmute);
+    };
+    window.addEventListener('scroll', unmute, { passive: true });
+    window.addEventListener('touchstart', unmute, { passive: true });
+    window.addEventListener('click', unmute);
+    return () => {
+      window.removeEventListener('scroll', unmute);
+      window.removeEventListener('touchstart', unmute);
+      window.removeEventListener('click', unmute);
+    };
+  }, [playerRef]);
+
+  const toggle = useCallback(() => {
+    const video = playerRef.current?.getInternalPlayer() as HTMLVideoElement | null;
+    const next = !muted;
+    if (video) {
+      video.muted = next;
+      if (!next) video.play().catch(() => {});
+    }
+    setMuted(next);
+  }, [muted, playerRef]);
+
+  return (
+    <button
+      className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+      style={{ pointerEvents: 'auto' }}
+      aria-label={muted ? 'Ativar som' : 'Desativar som'}
+      onClick={toggle}
+    >
+      {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
+    </button>
+  );
+}
+
 const PLAYER_CONFIG = {
   file: {
     attributes: {
@@ -68,7 +115,6 @@ export default function HeroVideoDynamic() {
   const locale = useLocale();
   const section = featuredVideos[activeExpertise] ?? featuredVideos.director;
   const videoUrl = section[locale] ?? section.pt;
-  const [muted, setMuted] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const playerRef = useRef<ReactPlayerType | null>(null);
   const t = useTranslations('hero');
@@ -78,32 +124,6 @@ export default function HeroVideoDynamic() {
   }, [videoUrl]);
 
   const handleReady = useCallback(() => setVideoReady(true), []);
-
-  const setVideoMuted = useCallback((val: boolean) => {
-    const video = playerRef.current?.getInternalPlayer();
-    if (video) {
-      video.muted = val;
-      if (!val) video.play().catch(() => {});
-    }
-    setMuted(val);
-  }, []);
-
-  useEffect(() => {
-    const unmute = () => {
-      setVideoMuted(false);
-      window.removeEventListener('scroll', unmute);
-      window.removeEventListener('touchstart', unmute);
-      window.removeEventListener('click', unmute);
-    };
-    window.addEventListener('scroll', unmute, { passive: true });
-    window.addEventListener('touchstart', unmute, { passive: true });
-    window.addEventListener('click', unmute);
-    return () => {
-      window.removeEventListener('scroll', unmute);
-      window.removeEventListener('touchstart', unmute);
-      window.removeEventListener('click', unmute);
-    };
-  }, []);
 
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
@@ -129,15 +149,7 @@ export default function HeroVideoDynamic() {
           style={PLAYER_STYLE}
         />
         </div>
-        {/* Mute/Unmute Button */}
-        <button
-          className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
-          style={{ pointerEvents: 'auto' }}
-          aria-label={muted ? 'Desativar som' : 'Ativar som'}
-          onClick={() => setVideoMuted(!muted)}
-        >
-          {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
-        </button>
+        <MuteControl playerRef={playerRef} />
       </div>
 
       {/* Subtract light effect overlay for contrast */}
