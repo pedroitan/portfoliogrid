@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import type ReactPlayerType from "react-player";
 import { useTranslations, useLocale } from "next-intl";
 import { Volume2, VolumeX } from "lucide-react";
 import { useExpertise } from "../context/ExpertiseContext";
@@ -32,15 +33,22 @@ export default function HeroVideoDynamic() {
   const videoUrl = section[locale] ?? section.pt;
   const [muted, setMuted] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
+  const playerRef = useRef<ReactPlayerType | null>(null);
   const t = useTranslations('hero');
 
   useEffect(() => {
     setVideoReady(false);
   }, [videoUrl]);
 
+  const setVideoMuted = (val: boolean) => {
+    const video = playerRef.current?.getInternalPlayer();
+    if (video) video.muted = val;
+    setMuted(val);
+  };
+
   useEffect(() => {
     const unmute = () => {
-      setMuted(false);
+      setVideoMuted(false);
       window.removeEventListener('scroll', unmute);
       window.removeEventListener('touchstart', unmute);
       window.removeEventListener('click', unmute);
@@ -64,11 +72,12 @@ export default function HeroVideoDynamic() {
           style={{ opacity: videoReady ? 1 : 0 }}
         >
         <ReactPlayer
+          ref={playerRef}
           key={videoUrl}
           url={videoUrl}
           playing
           loop
-          muted={muted}
+          muted
           controls={false}
           width="100vw"
           height="100dvh"
@@ -116,7 +125,7 @@ export default function HeroVideoDynamic() {
           className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
           style={{ pointerEvents: 'auto' }}
           aria-label={muted ? 'Desativar som' : 'Ativar som'}
-          onClick={() => setMuted((m) => !m)}
+          onClick={() => setVideoMuted(!muted)}
         >
           {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
         </button>
