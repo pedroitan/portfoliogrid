@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import type ReactPlayerType from "react-player";
 import { useTranslations, useLocale } from "next-intl";
@@ -10,6 +10,43 @@ import ItalExpertiseNav from './ItalExpertiseNav';
 
 // Dynamically import ReactPlayer to avoid SSR issues
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+
+const PLAYER_CONFIG = {
+  file: {
+    attributes: {
+      style: {
+        width: '100vw',
+        height: '100dvh',
+        objectFit: 'cover',
+        minWidth: '100vw',
+        minHeight: '100dvh',
+        maxWidth: '100vw',
+        maxHeight: '100dvh',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 1,
+        pointerEvents: 'none',
+      }
+    }
+  },
+  youtube: { playerVars: { showinfo: 0, rel: 0, modestbranding: 1 } },
+};
+
+const PLAYER_STYLE = {
+  position: 'absolute' as const,
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100dvh',
+  objectFit: 'cover' as const,
+  minWidth: '100vw',
+  minHeight: '100dvh',
+  maxWidth: '100vw',
+  maxHeight: '100dvh',
+  zIndex: 1,
+  pointerEvents: 'none' as const,
+};
 
 const featuredVideos: Record<string, Record<string, string>> = {
   director: {
@@ -40,11 +77,11 @@ export default function HeroVideoDynamic() {
     setVideoReady(false);
   }, [videoUrl]);
 
-  const setVideoMuted = (val: boolean) => {
+  const setVideoMuted = useCallback((val: boolean) => {
     const video = playerRef.current?.getInternalPlayer();
     if (video) video.muted = val;
     setMuted(val);
-  };
+  }, []);
 
   useEffect(() => {
     const unmute = () => {
@@ -82,42 +119,9 @@ export default function HeroVideoDynamic() {
           width="100vw"
           height="100dvh"
           playsinline
-          onReady={() => setVideoReady(true)}
-          config={{
-            file: {
-              attributes: {
-                style: {
-                  width: '100vw',
-                  height: '100dvh',
-                  objectFit: 'cover',
-                  minWidth: '100vw',
-                  minHeight: '100dvh',
-                  maxWidth: '100vw',
-                  maxHeight: '100dvh',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  zIndex: 1,
-                  pointerEvents: 'none',
-                }
-              }
-            },
-            youtube: { playerVars: { showinfo: 0, rel: 0, modestbranding: 1 } },
-          }}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100dvh',
-            objectFit: 'cover',
-            minWidth: '100vw',
-            minHeight: '100dvh',
-            maxWidth: '100vw',
-            maxHeight: '100dvh',
-            zIndex: 1,
-            pointerEvents: 'none',
-          }}
+          onReady={useCallback(() => setVideoReady(true), [])}
+          config={PLAYER_CONFIG}
+          style={PLAYER_STYLE}
         />
         </div>
         {/* Mute/Unmute Button */}
