@@ -13,7 +13,7 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 const featuredVideos: Record<string, Record<string, string>> = {
   director: {
     pt: "https://itan.b-cdn.net/PORTFOLIO_V5_BR_ICON.mp4",
-    en: "https://itan.b-cdn.net/PORTFOLIO_V5_EN_ICON.mp4",
+    en: "https://itan.b-cdn.net/PORTFOLIO_V5_EN_ICON2.mp4",
   },
   music: {
     pt: "https://itan.b-cdn.net/Dilsinho,%20Paula%20Fernandes%20-%20%20Me%20Ensina%20(Ao%20Vivo%20No%20Casa%20Filtr).mp4",
