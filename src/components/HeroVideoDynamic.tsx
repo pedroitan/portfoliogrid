@@ -47,6 +47,7 @@ export default function HeroVideoDynamic() {
           style={{ opacity: videoReady ? 1 : 0 }}
         >
         <ReactPlayer
+          key={videoUrl}
           url={videoUrl}
           playing
           loop
