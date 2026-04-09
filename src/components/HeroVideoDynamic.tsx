@@ -30,13 +30,30 @@ export default function HeroVideoDynamic() {
   const locale = useLocale();
   const section = featuredVideos[activeExpertise] ?? featuredVideos.director;
   const videoUrl = section[locale] ?? section.pt;
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
   const t = useTranslations('hero');
 
   useEffect(() => {
     setVideoReady(false);
   }, [videoUrl]);
+
+  useEffect(() => {
+    const unmute = () => {
+      setMuted(false);
+      window.removeEventListener('scroll', unmute);
+      window.removeEventListener('touchstart', unmute);
+      window.removeEventListener('click', unmute);
+    };
+    window.addEventListener('scroll', unmute, { passive: true });
+    window.addEventListener('touchstart', unmute, { passive: true });
+    window.addEventListener('click', unmute);
+    return () => {
+      window.removeEventListener('scroll', unmute);
+      window.removeEventListener('touchstart', unmute);
+      window.removeEventListener('click', unmute);
+    };
+  }, []);
 
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
