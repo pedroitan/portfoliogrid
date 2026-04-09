@@ -77,9 +77,14 @@ export default function HeroVideoDynamic() {
     setVideoReady(false);
   }, [videoUrl]);
 
+  const handleReady = useCallback(() => setVideoReady(true), []);
+
   const setVideoMuted = useCallback((val: boolean) => {
     const video = playerRef.current?.getInternalPlayer();
-    if (video) video.muted = val;
+    if (video) {
+      video.muted = val;
+      if (!val) video.play().catch(() => {});
+    }
     setMuted(val);
   }, []);
 
@@ -119,7 +124,7 @@ export default function HeroVideoDynamic() {
           width="100vw"
           height="100dvh"
           playsinline
-          onReady={useCallback(() => setVideoReady(true), [])}
+          onReady={handleReady}
           config={PLAYER_CONFIG}
           style={PLAYER_STYLE}
         />
