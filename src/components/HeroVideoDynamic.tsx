@@ -119,6 +119,11 @@ const VIDEO_STYLE: React.CSSProperties = {
   pointerEvents: 'none',
 };
 
+const mobileVideos: Record<string, string> = {
+  pt: "https://itan.b-cdn.net/PORTFOLIO_V5_VERT_BR_ICON.mp4",
+  en: "https://itan.b-cdn.net/PORTFOLIO_V5_VERT_EN_ICON.mp4",
+};
+
 const featuredVideos: Record<string, Record<string, string>> = {
   director: {
     pt: "https://itan.b-cdn.net/PORTFOLIO_V5_BR_ICON.mp4",
@@ -137,8 +142,19 @@ const featuredVideos: Record<string, Record<string, string>> = {
 export default function HeroVideoDynamic() {
   const { activeExpertise } = useExpertise();
   const locale = useLocale();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   const section = featuredVideos[activeExpertise] ?? featuredVideos.director;
-  const videoUrl = section[locale] ?? section.pt;
+  const videoUrl = isMobile
+    ? (mobileVideos[locale] ?? mobileVideos.pt)
+    : (section[locale] ?? section.pt);
   const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const prevUrlRef = useRef(videoUrl);
