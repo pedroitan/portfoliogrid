@@ -7,14 +7,14 @@ export default function Bio() {
   const t = useTranslations('bio');
 
   return (
-    <section id="bio" className="py-24 bg-black text-white">
+    <section id="bio" className="py-24 text-white relative z-10">
       <div className="container mx-auto px-6 md:px-16 lg:px-32">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="max-w-2xl"
+          className="max-w-2xl mx-auto bg-black/60 backdrop-blur-sm rounded-2xl p-8 md:p-12"
         >
           <p className="text-xs tracking-[0.3em] uppercase text-white/40 mb-6 font-satoshi">
             {t('tagline')}
