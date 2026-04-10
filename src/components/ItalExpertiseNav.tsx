@@ -1,6 +1,6 @@
 'use client';
 
-import { Film, Music, Monitor } from 'lucide-react';
+import { Film } from 'lucide-react';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useExpertise } from "../context/ExpertiseContext";
 import { useEffect } from "react";
