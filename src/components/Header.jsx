@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import MenuOverlay from './MenuOverlay';
 import { Menu } from 'lucide-react';
-import { Link, useRouter, usePathname } from '@/i18n/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -16,6 +16,8 @@ export default function Header() {
 
   const switchLocale = () => {
     const nextLocale = locale === 'pt' ? 'en' : 'pt';
+    sessionStorage.setItem('heroUnmuted', 'true');
+    sessionStorage.removeItem('heroExplicitlyMuted');
     router.replace(pathname, { locale: nextLocale });
   };
 
@@ -31,13 +33,6 @@ export default function Header() {
     <>
       <header className={`fixed w-full z-20 transition-all duration-500 ${scrolled ? 'bg-black/70 backdrop-blur-md' : 'bg-transparent'} mt-3 md:mt-0 md:pl-[120px] md:pr-[120px]`}>
         <div className="w-full flex items-center justify-between px-4 py-4">
-          <Link
-            href="/"
-            className="text-white text-xl font-bold font-satoshi tracking-tight lowercase"
-            style={{ marginLeft: 0, marginRight: 'auto', paddingLeft: 0, paddingRight: 0 }}
-          >
-            itan
-          </Link>
           <div className="flex items-center gap-3" style={{ marginLeft: 'auto', marginRight: 0 }}>
             <button
               onClick={switchLocale}

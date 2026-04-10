@@ -8,6 +8,7 @@ import ItalExpertiseNav from './ItalExpertiseNav';
 
 function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement | null> }) {
   const [muted, setMuted] = useState(true);
+  const userExplicitlyMutedRef = useRef(false);
 
   // Restore unmute preference from sessionStorage after hydration
   useEffect(() => {
@@ -38,10 +39,16 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
     return () => clearInterval(interval);
   }, [muted, videoRef]);
 
-  // First visit: listen for click/touch to unmute
+  // Listen for click/touch on empty areas to unmute (skip interactive elements)
   useEffect(() => {
     if (!muted) return;
-    const unmute = () => {
+    const unmute = (e: MouseEvent | TouchEvent) => {
+      if (userExplicitlyMutedRef.current) {
+        // After user pressed mute button: skip clicks on interactive elements
+        const target = e.target as HTMLElement;
+        if (target.closest('a, button, [role="button"]')) return;
+        if (window.getComputedStyle(target).cursor === 'pointer') return;
+      }
       const v = videoRef.current;
       if (v) {
         v.muted = false;
@@ -67,8 +74,13 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
       v.muted = next;
       if (!next && v.paused) v.play().catch(() => {});
     }
-    if (next) sessionStorage.removeItem('heroUnmuted');
-    else sessionStorage.setItem('heroUnmuted', 'true');
+    if (next) {
+      sessionStorage.removeItem('heroUnmuted');
+      sessionStorage.setItem('heroExplicitlyMuted', 'true');
+      userExplicitlyMutedRef.current = true;
+    } else {
+      sessionStorage.setItem('heroUnmuted', 'true');
+    }
     setMuted(next);
   }, [muted, videoRef]);
 
@@ -174,6 +186,17 @@ export default function HeroVideoDynamic() {
           onCanPlay={handleCanPlay}
           style={VIDEO_STYLE}
         />
+        {/* Logo 'itan' with blend mode — must be sibling of video inside same opacity wrapper */}
+        <span 
+          className="fixed top-8 left-4 md:left-[120px] text-white text-xl font-bold font-satoshi tracking-tight lowercase pointer-events-none"
+          style={{
+            mixBlendMode: 'difference',
+            letterSpacing: '-0.04em',
+            zIndex: 10,
+          }}
+        >
+          itan
+        </span>
         </div>
         <MuteControl videoRef={videoRef} />
       </div>
@@ -190,7 +213,7 @@ export default function HeroVideoDynamic() {
 
       {/* Name in the center - Satoshi with mix-blend-mode */}
       <h1
-        className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl md:text-8xl tracking-tight text-center select-none lowercase font-satoshi"
+        className="hidden absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl md:text-8xl tracking-tight text-center select-none lowercase font-satoshi"
         style={{
           color: '#fff',
           mixBlendMode: 'difference',
