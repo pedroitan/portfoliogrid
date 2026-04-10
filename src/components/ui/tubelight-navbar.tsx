@@ -57,7 +57,7 @@ export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavB
                 if (onNavItemClick) onNavItemClick(item.url)
               }}
               className={cn(
-                "relative cursor-pointer text-xs font-semibold px-3 py-1 rounded-full transition-colors",
+                "relative cursor-pointer text-sm font-semibold px-3 py-1 rounded-full transition-colors",
                 "text-white/80 hover:text-white z-50 pointer-events-auto",
                 isActive && "bg-white/10 text-white",
               )}

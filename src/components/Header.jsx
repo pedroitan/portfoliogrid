@@ -31,7 +31,7 @@ export default function Header() {
 
   return (
     <>
-      <header className={`fixed w-full z-20 transition-all duration-500 ${scrolled ? 'bg-black/70 backdrop-blur-md' : 'bg-transparent'} mt-3 md:mt-0 md:pl-[120px] md:pr-[120px]`}>
+      <header className="fixed w-full z-20 bg-transparent mt-3 md:mt-0 md:pl-[120px] md:pr-[120px]">
         <div className="w-full flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3" style={{ marginLeft: 'auto', marginRight: 0 }}>
             <button

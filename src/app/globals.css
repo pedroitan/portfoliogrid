@@ -79,7 +79,11 @@ body {
 }
 
 .font-satoshi {
-  font-family: var(--font-satoshi), sans-serif !important;
+  font-family: var(--font-poppins), sans-serif !important;
   font-weight: 700 !important;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif !important;
 }
 

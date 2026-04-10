@@ -185,7 +185,7 @@ export default function HeroVideoDynamic() {
         />
         {/* Logo 'itan' with blend mode — must be sibling of video inside same opacity wrapper */}
         <span 
-          className="fixed top-8 left-4 md:left-[120px] text-white text-xl font-bold font-satoshi tracking-tight lowercase pointer-events-none"
+          className="fixed top-8 left-4 md:left-[120px] text-white text-2xl font-bold font-satoshi tracking-tight lowercase pointer-events-none"
           style={{
             mixBlendMode: 'difference',
             letterSpacing: '-0.04em',
