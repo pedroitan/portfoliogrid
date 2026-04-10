@@ -39,12 +39,12 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
     return () => clearInterval(interval);
   }, [muted, videoRef]);
 
-  // Listen for click/touch on empty areas to unmute (skip interactive elements)
+  // Listen for click/touch on empty areas to unmute
   useEffect(() => {
     if (!muted) return;
-    const unmute = (e: MouseEvent | TouchEvent) => {
+
+    const handleClick = (e: MouseEvent) => {
       if (userExplicitlyMutedRef.current) {
-        // After user pressed mute button: skip clicks on interactive elements
         const target = e.target as HTMLElement;
         if (target.closest('a, button, [role="button"]')) return;
         if (window.getComputedStyle(target).cursor === 'pointer') return;
@@ -56,14 +56,12 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
       }
       sessionStorage.setItem('heroUnmuted', 'true');
       setMuted(false);
-      window.removeEventListener('click', unmute);
-      window.removeEventListener('touchstart', unmute);
+      window.removeEventListener('click', handleClick);
     };
-    window.addEventListener('click', unmute);
-    window.addEventListener('touchstart', unmute, { passive: true });
+
+    window.addEventListener('click', handleClick);
     return () => {
-      window.removeEventListener('click', unmute);
-      window.removeEventListener('touchstart', unmute);
+      window.removeEventListener('click', handleClick);
     };
   }, [muted, videoRef]);
 
@@ -103,8 +101,7 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
         className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
         style={{ pointerEvents: 'auto' }}
         aria-label={muted ? 'Ativar som' : 'Desativar som'}
-        onTouchStart={(e) => e.stopPropagation()}
-      onClick={(e) => { e.stopPropagation(); toggle(); }}
+        onClick={(e) => { e.stopPropagation(); toggle(); }}
       >
         {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
       </button>
