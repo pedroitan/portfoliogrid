@@ -1,6 +1,7 @@
 {
   "hero": {
-    "scrollDown": "ver portfólio"
+    "scrollDown": "ver portfólio",
+    "tapToUnmute": "toque para ativar o som"
   },
   "nav": {
     "audiovisual": "Direção Audiovisual",

@@ -72,15 +72,31 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
     setMuted(next);
   }, [muted, videoRef]);
 
+  const t = useTranslations('hero');
+
   return (
-    <button
-      className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
-      style={{ pointerEvents: 'auto' }}
-      aria-label={muted ? 'Ativar som' : 'Desativar som'}
+    <>
+      {/* Tap-to-unmute overlay — visible only when muted */}
+      <div
+        className={`absolute inset-0 z-20 flex flex-col items-center justify-end pb-32 md:pb-28 gap-3 transition-opacity duration-700 ${muted ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        style={{ pointerEvents: muted ? 'auto' : 'none' }}
+      >
+        <span className="animate-pulse text-white/80 text-sm md:text-base font-medium tracking-wide font-satoshi select-none">
+          {t('tapToUnmute')}
+        </span>
+      </div>
+
+      {/* Mute/Unmute button — always visible */}
+      <button
+        className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+        style={{ pointerEvents: 'auto' }}
+        aria-label={muted ? 'Ativar som' : 'Desativar som'}
+        onTouchStart={(e) => e.stopPropagation()}
       onClick={(e) => { e.stopPropagation(); toggle(); }}
-    >
-      {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
-    </button>
+      >
+        {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
+      </button>
+    </>
   );
 }
 

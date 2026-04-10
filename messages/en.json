@@ -1,6 +1,7 @@
 {
   "hero": {
-    "scrollDown": "view portfolio"
+    "scrollDown": "view portfolio",
+    "tapToUnmute": "tap to enable sound"
   },
   "nav": {
     "audiovisual": "Creative Direction",
