@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 const INITIAL_LIMIT = 12;
 
 const TAG_DISPLAY_PT = {
+  'todos': 'Todos',
   'direção audiovisual': 'Direção Criativa',
   'direção criativa': 'Direção Criativa',
   'música': 'Música',
@@ -29,6 +30,7 @@ const TAG_DISPLAY_PT = {
 };
 
 const TAG_DISPLAY_EN = {
+  'todos': 'All',
   'direção audiovisual': 'Creative Direction',
   'direção criativa': 'Creative Direction',
   'música': 'Music',

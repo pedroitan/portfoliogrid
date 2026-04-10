@@ -11,7 +11,7 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <ExpertiseProvider>
-      <div className="bg-black min-h-screen text-white">
+      <div className="min-h-screen text-white">
         <HeroVideoDynamic />
         <main>
           <ExpertiseSwipeContainer>
