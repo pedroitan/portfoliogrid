@@ -40,7 +40,7 @@ export function NavBar({ items, className, onNavItemClick, activeItemUrl }: NavB
   return (
     <div
       className={cn(
-        "relative w-full z-50 pointer-events-auto",
+        "relative w-fit z-50 pointer-events-auto",
         className,
       )}
     >

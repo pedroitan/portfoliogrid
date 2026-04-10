@@ -41,7 +41,7 @@ export default function ItalExpertiseNav({ navBarClassName = '', arrowPosition =
   return (
     <div
       className={
-        `relative z-50 w-full flex justify-center items-center pointer-events-auto ` +
+        `relative z-50 w-fit flex justify-center items-center pointer-events-auto ` +
         (arrowPosition === 'top-centered' ? 'mt-0 mb-2' : 'h-12 mb-2 mt-[100px] md:mt-1 md:mb-2 md:static md:h-12')
       }
       style={arrowPosition === 'top-centered' ? { marginTop: 0, position: 'relative', top: 0 } : { marginTop: 0 }}

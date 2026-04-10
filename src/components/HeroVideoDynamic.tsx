@@ -88,8 +88,7 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
     <>
       {/* Tap-to-unmute overlay — visible only when muted */}
       <div
-        className={`absolute inset-0 z-20 flex flex-col items-center justify-end pb-32 md:pb-28 gap-3 transition-opacity duration-700 ${muted ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        style={{ pointerEvents: muted ? 'auto' : 'none' }}
+        className={`absolute inset-0 z-20 flex flex-col items-center justify-end pb-32 md:pb-28 gap-3 transition-opacity duration-700 pointer-events-none ${muted ? 'opacity-100' : 'opacity-0'}`}
       >
         <span className="animate-pulse text-white/80 text-sm md:text-base font-medium tracking-wide font-satoshi select-none">
           {t('tapToUnmute')}
