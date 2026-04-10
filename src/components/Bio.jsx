@@ -14,7 +14,7 @@ export default function Bio() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="max-w-2xl mx-auto bg-black/60 backdrop-blur-sm rounded-2xl p-8 md:p-12"
+          className="max-w-2xl mx-auto bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12"
         >
           <p className="text-xs tracking-[0.3em] uppercase text-white/40 mb-6 font-satoshi">
             {t('tagline')}

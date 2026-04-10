@@ -97,7 +97,7 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
 
       {/* Mute/Unmute button — always visible */}
       <button
-        className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+        className="fixed bottom-8 right-8 z-[200] bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
         style={{ pointerEvents: 'auto' }}
         aria-label={muted ? 'Ativar som' : 'Desativar som'}
         onClick={(e) => { e.stopPropagation(); toggle(); }}

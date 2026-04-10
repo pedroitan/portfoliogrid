@@ -85,7 +85,7 @@ export default function VideoCarousel() {
 
   return (
     <div 
-      className="max-w-6xl mx-auto mt-2 mb-6 px-4 relative"
+      className="max-w-6xl mx-auto mt-2 mb-6 px-4 relative z-10 bg-black/70 backdrop-blur-sm rounded-2xl py-4"
       onMouseEnter={showIndicators}
       onMouseLeave={hideIndicators}
       ref={videoRef}

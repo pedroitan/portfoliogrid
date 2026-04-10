@@ -101,7 +101,7 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
   
   return (
     <div className="flex flex-wrap justify-center my-2 overflow-x-auto px-2">
-      <div className="max-w-6xl flex items-center justify-center flex-wrap gap-1 bg-black/20 border border-white/10 backdrop-blur-lg py-1 px-2 rounded-lg shadow-lg mx-auto">
+      <div className="max-w-6xl flex items-center justify-center flex-wrap gap-0 bg-black/20 border border-white/10 backdrop-blur-sm py-1 px-2 rounded-lg shadow-lg mx-auto">
       {displayTags.map(tag => (
         <motion.button
           key={tag}

@@ -31,7 +31,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="max-w-3xl mx-auto text-center bg-black/60 backdrop-blur-sm rounded-2xl p-8 md:p-12"
+          className="max-w-3xl mx-auto text-center bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12"
         >
           <h2 className="text-3xl font-bold mb-6">{t('title')}</h2>
           <p className="mb-8">{t('subtitle')}</p>
