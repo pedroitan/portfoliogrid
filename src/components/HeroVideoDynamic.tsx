@@ -1,98 +1,98 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import dynamic from "next/dynamic";
-import type ReactPlayerType from "react-player";
 import { useTranslations, useLocale } from "next-intl";
 import { Volume2, VolumeX } from "lucide-react";
 import { useExpertise } from "../context/ExpertiseContext";
 import ItalExpertiseNav from './ItalExpertiseNav';
 
-// Dynamically import ReactPlayer to avoid SSR issues
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
-
-function MuteControl({ playerRef }: { playerRef: React.RefObject<ReactPlayerType | null> }) {
+function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement | null> }) {
   const [muted, setMuted] = useState(true);
 
+  // Restore unmute preference from sessionStorage after hydration
   useEffect(() => {
-    const unmute = () => {
-      const video = playerRef.current?.getInternalPlayer() as HTMLVideoElement | null;
-      if (video) {
-        video.muted = false;
-        video.play().catch(() => {});
-      }
+    if (sessionStorage.getItem('heroUnmuted') === 'true') {
       setMuted(false);
-      window.removeEventListener('scroll', unmute);
-      window.removeEventListener('touchstart', unmute);
+    }
+  }, []);
+
+  // When muted becomes false, unmute the video element (works for both sessionStorage restore and user click)
+  useEffect(() => {
+    if (muted) return;
+    const interval = setInterval(() => {
+      const v = videoRef.current;
+      if (v && v.readyState >= 2) {
+        v.muted = false;
+        if (v.paused) {
+          v.play().catch(() => {
+            // Browser blocked unmuted play (no user gesture) — revert to muted
+            v.muted = true;
+            v.play().catch(() => {});
+            sessionStorage.removeItem('heroUnmuted');
+            setMuted(true);
+          });
+        }
+        clearInterval(interval);
+      }
+    }, 150);
+    return () => clearInterval(interval);
+  }, [muted, videoRef]);
+
+  // First visit: listen for click/touch to unmute
+  useEffect(() => {
+    if (!muted) return;
+    const unmute = () => {
+      const v = videoRef.current;
+      if (v) {
+        v.muted = false;
+        if (v.paused) v.play().catch(() => {});
+      }
+      sessionStorage.setItem('heroUnmuted', 'true');
+      setMuted(false);
       window.removeEventListener('click', unmute);
+      window.removeEventListener('touchstart', unmute);
     };
-    window.addEventListener('scroll', unmute, { passive: true });
-    window.addEventListener('touchstart', unmute, { passive: true });
     window.addEventListener('click', unmute);
+    window.addEventListener('touchstart', unmute, { passive: true });
     return () => {
-      window.removeEventListener('scroll', unmute);
-      window.removeEventListener('touchstart', unmute);
       window.removeEventListener('click', unmute);
+      window.removeEventListener('touchstart', unmute);
     };
-  }, [playerRef]);
+  }, [muted, videoRef]);
 
   const toggle = useCallback(() => {
-    const video = playerRef.current?.getInternalPlayer() as HTMLVideoElement | null;
+    const v = videoRef.current;
     const next = !muted;
-    if (video) {
-      video.muted = next;
-      if (!next) video.play().catch(() => {});
+    if (v) {
+      v.muted = next;
+      if (!next && v.paused) v.play().catch(() => {});
     }
+    if (next) sessionStorage.removeItem('heroUnmuted');
+    else sessionStorage.setItem('heroUnmuted', 'true');
     setMuted(next);
-  }, [muted, playerRef]);
+  }, [muted, videoRef]);
 
   return (
     <button
       className="absolute bottom-8 right-8 z-30 bg-black/60 text-white rounded-full p-3 shadow-lg hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
       style={{ pointerEvents: 'auto' }}
       aria-label={muted ? 'Ativar som' : 'Desativar som'}
-      onClick={toggle}
+      onClick={(e) => { e.stopPropagation(); toggle(); }}
     >
       {!muted ? <Volume2 size={22} /> : <VolumeX size={22} />}
     </button>
   );
 }
 
-const PLAYER_CONFIG = {
-  file: {
-    attributes: {
-      style: {
-        width: '100vw',
-        height: '100dvh',
-        objectFit: 'cover',
-        minWidth: '100vw',
-        minHeight: '100dvh',
-        maxWidth: '100vw',
-        maxHeight: '100dvh',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 1,
-        pointerEvents: 'none',
-      }
-    }
-  },
-  youtube: { playerVars: { showinfo: 0, rel: 0, modestbranding: 1 } },
-};
-
-const PLAYER_STYLE = {
-  position: 'absolute' as const,
-  top: 0,
-  left: 0,
+const VIDEO_STYLE: React.CSSProperties = {
   width: '100vw',
   height: '100dvh',
-  objectFit: 'cover' as const,
-  minWidth: '100vw',
-  minHeight: '100dvh',
-  maxWidth: '100vw',
-  maxHeight: '100dvh',
+  objectFit: 'cover',
+  position: 'absolute',
+  top: 0,
+  left: 0,
   zIndex: 1,
-  pointerEvents: 'none' as const,
+  pointerEvents: 'none',
 };
 
 const featuredVideos: Record<string, Record<string, string>> = {
@@ -116,40 +116,50 @@ export default function HeroVideoDynamic() {
   const section = featuredVideos[activeExpertise] ?? featuredVideos.director;
   const videoUrl = section[locale] ?? section.pt;
   const [videoReady, setVideoReady] = useState(false);
-  const playerRef = useRef<ReactPlayerType | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const prevUrlRef = useRef(videoUrl);
   const t = useTranslations('hero');
 
+  const videoCallbackRef = useCallback((el: HTMLVideoElement | null) => {
+    videoRef.current = el;
+    if (el) {
+      if (el.readyState >= 3) setVideoReady(true);
+      else setVideoReady(false);
+    }
+  }, []);
+
+  // Reset videoReady only when URL actually changes (not on initial mount)
   useEffect(() => {
-    setVideoReady(false);
+    if (prevUrlRef.current !== videoUrl) {
+      setVideoReady(false);
+      prevUrlRef.current = videoUrl;
+    }
   }, [videoUrl]);
 
-  const handleReady = useCallback(() => setVideoReady(true), []);
+  const handleCanPlay = useCallback(() => setVideoReady(true), []);
+
 
   return (
     <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
-      {/* Fullscreen video background - bulletproof mobile fit */}
+      {/* Fullscreen video background */}
       <div className="fixed top-0 left-0 w-screen h-[100dvh] z-1 overflow-hidden pointer-events-none">
         <div
           className="w-full h-full transition-opacity duration-1000"
           style={{ opacity: videoReady ? 1 : 0 }}
         >
-        <ReactPlayer
-          ref={playerRef}
+        <video
+          ref={videoCallbackRef}
           key={videoUrl}
-          url={videoUrl}
-          playing
+          src={videoUrl}
+          autoPlay
           loop
           muted
-          controls={false}
-          width="100vw"
-          height="100dvh"
-          playsinline
-          onReady={handleReady}
-          config={PLAYER_CONFIG}
-          style={PLAYER_STYLE}
+          playsInline
+          onCanPlay={handleCanPlay}
+          style={VIDEO_STYLE}
         />
         </div>
-        <MuteControl playerRef={playerRef} />
+        <MuteControl videoRef={videoRef} />
       </div>
 
       {/* Subtract light effect overlay for contrast */}
