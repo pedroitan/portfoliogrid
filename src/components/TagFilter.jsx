@@ -2,10 +2,58 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLocale } from 'next-intl';
 
 const INITIAL_LIMIT = 12;
 
+const TAG_DISPLAY_PT = {
+  'direção audiovisual': 'Direção Criativa',
+  'direção criativa': 'Direção Criativa',
+  'música': 'Música',
+  'produção musical': 'Produção Musical',
+  'direção técnica': 'Direção Técnica',
+  'masterização': 'Masterização',
+  'edição vídeo': 'Edição Vídeo',
+  'edição de vídeo': 'Edição Vídeo',
+  'projeção mapeada': 'Projeção Mapeada',
+  'captação ao vivo': 'Captação Ao Vivo',
+  'direção de transmissão': 'Direção de Transmissão',
+  'making off': 'Making Off',
+  'live': 'Live',
+  'moda': 'Moda',
+  'trilha sonora': 'Trilha Sonora',
+  'tecnologia': 'Tecnologia',
+  'talkshow': 'Talkshow',
+  'futebol': 'Futebol',
+  'performance ao vivo': 'Performance Ao Vivo',
+};
+
+const TAG_DISPLAY_EN = {
+  'direção audiovisual': 'Creative Direction',
+  'direção criativa': 'Creative Direction',
+  'música': 'Music',
+  'produção musical': 'Music Production',
+  'direção técnica': 'Technical Direction',
+  'masterização': 'Mastering',
+  'edição vídeo': 'Video Editing',
+  'edição de vídeo': 'Video Editing',
+  'projeção mapeada': 'Projection Mapping',
+  'captação ao vivo': 'Live Capture',
+  'direção de transmissão': 'Broadcast Direction',
+  'making off': 'Making Of',
+  'live': 'Live',
+  'moda': 'Fashion',
+  'trilha sonora': 'Soundtrack',
+  'tecnologia': 'Technology',
+  'talkshow': 'Talkshow',
+  'futebol': 'Football',
+  'performance ao vivo': 'Live Performance',
+};
+
 export default function TagFilter({ tags, activeTag, setActiveTag }) {
+  const locale = useLocale();
+  const TAG_DISPLAY = locale === 'en' ? TAG_DISPLAY_EN : TAG_DISPLAY_PT;
+  const displayTag = (tag) => TAG_DISPLAY[tag.toLowerCase()] ?? tag.replace(/\b\w/g, c => c.toUpperCase());
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -57,12 +105,12 @@ export default function TagFilter({ tags, activeTag, setActiveTag }) {
           key={tag}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={`relative px-2 py-1 md:px-3 md:py-1 text-[0.65rem] md:text-[0.75rem] font-bold uppercase rounded-full transition-colors ${
+          className={`relative px-2 py-1 md:px-3 md:py-1 text-[0.65rem] md:text-[0.75rem] font-bold rounded-full transition-colors font-poppins ${
             activeTag === tag ? 'text-white' : 'text-white/80 hover:text-white'
           }`}
           onClick={() => setActiveTag(tag)}
         >
-          {tag.toUpperCase()}
+          {displayTag(tag)}
           {activeTag === tag && mounted && (
             <motion.div
               layoutId="tag-lamp"

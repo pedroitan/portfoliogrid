@@ -4,6 +4,7 @@ import { Film } from 'lucide-react';
 import { NavBar } from "@/components/ui/tubelight-navbar";
 import { useExpertise } from "../context/ExpertiseContext";
 import { useEffect } from "react";
+import { useTranslations } from 'next-intl';
 
 interface ItalExpertiseNavProps {
   navBarClassName?: string;
@@ -12,11 +13,12 @@ interface ItalExpertiseNavProps {
 
 export default function ItalExpertiseNav({ navBarClassName = '', arrowPosition = '' }: ItalExpertiseNavProps) {
   const { activeExpertise, setActiveExpertise } = useExpertise();
+  const t = useTranslations('nav');
   
   // Handle click on navbar items
   const handleNavClick = (itemName: string) => {
     let expertise = 'director';
-    if (itemName === 'Direção Criativa') expertise = 'director';
+    if (itemName === t('audiovisual')) expertise = 'director';
     else if (itemName === 'Produção Musical') expertise = 'music';
     else if (itemName === 'Tecnologia') expertise = 'engineer';
     
@@ -33,7 +35,7 @@ export default function ItalExpertiseNav({ navBarClassName = '', arrowPosition =
     }
   }, [activeExpertise]);
   const navItems = [
-    { name: 'Direção Criativa', url: '#director', icon: Film },
+    { name: t('audiovisual'), url: '#director', icon: Film },
     // { name: 'Produção Musical', url: '#music', icon: Music },
     // { name: 'Tecnologia', url: '#engineer', icon: Monitor }
   ];
