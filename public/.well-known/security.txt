@@ -1,0 +1,5 @@
+Contact: mailto:contato@pedroitan.com
+Expires: 2026-12-31T23:59:59Z
+Preferred-Languages: pt, en
+Canonical: https://pedroitan.com/.well-known/security.txt
+Policy: https://pedroitan.com/security-policy

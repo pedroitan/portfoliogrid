@@ -6,6 +6,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/Header";
+import StructuredData from "@/components/StructuredData";
 import "../globals.css";
 
 const poppins = Poppins({
@@ -32,24 +33,85 @@ export async function generateMetadata({
   const { locale } = await params;
 
   const titles: Record<string, string> = {
-    pt: "Itan | Creative Director Portfolio",
-    en: "Itan | Creative Director Portfolio",
+    pt: "Itan | Direção Criativa, Produção Musical, Engenharia Audiovisual",
+    en: "Itan | Creative Direction, Music Production, Audiovisual Engineering",
   };
   const descriptions: Record<string, string> = {
-    pt: "Portfolio de Itan — Direção Criativa, Produção Musical, Engenharia Audiovisual.",
-    en: "Portfolio of Itan — Creative Direction, Music Production, Audiovisual Engineering.",
+    pt: "Portfolio de Itan — Diretor Criativo com experiência em shows ao vivo, produção musical e engenharia audiovisual. Projetos com Ludmilla (NBA Finals), Dilsinho, Paula Fernandes e mais.",
+    en: "Portfolio of Itan — Creative Director with experience in live shows, music production and audiovisual engineering. Projects with Ludmilla (NBA Finals), Dilsinho, Paula Fernandes and more.",
+  };
+  const keywords: Record<string, string> = {
+    pt: "direção criativa, produção musical, engenharia audiovisual, shows ao vivo, Ludmilla, NBA Finals, Dilsinho, Paula Fernandes, Grammy Latino, diretor criativo Brasil",
+    en: "creative direction, music production, audiovisual engineering, live shows, Ludmilla, NBA Finals, Dilsinho, Paula Fernandes, Latin Grammy, creative director Brazil",
   };
 
+  const ogImages = [
+    {
+      url: `/images/profile.jpg`,
+      width: 1200,
+      height: 630,
+      alt: locale === 'pt' ? 'Itan - Direção Criativa' : 'Itan - Creative Direction',
+    },
+  ];
+
   return {
-    title: titles[locale] ?? titles.pt,
+    metadataBase: new URL(BASE_URL),
+    title: {
+      default: titles[locale] ?? titles.pt,
+      template: "%s | Itan",
+    },
     description: descriptions[locale] ?? descriptions.pt,
-    alternates: {
-      canonical: `${BASE_URL}/${locale}`,
-      languages: {
-        pt: `${BASE_URL}/pt`,
-        en: `${BASE_URL}/en`,
+    keywords: keywords[locale] ?? keywords.pt,
+    authors: [{ name: "Itan", url: BASE_URL }],
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "32x32" },
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      ],
+      apple: [
+        { url: "/apple-icon.png", sizes: "180x180" },
+      ],
+    },
+    creator: "Itan",
+    publisher: "Itan",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        pt: "/pt",
+        en: "/en",
+      },
+    },
+    openGraph: {
+      type: "website",
+      locale: locale === 'pt' ? 'pt_BR' : 'en_US',
+      url: `/${locale}`,
+      siteName: "Itan",
+      title: titles[locale] ?? titles.pt,
+      description: descriptions[locale] ?? descriptions.pt,
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: titles[locale] ?? titles.pt,
+      description: descriptions[locale] ?? descriptions.pt,
+      images: ogImages,
+      creator: "@itan",
+    },
+    verification: {
+      google: "your-google-verification-code", // Add when available
+    },
+    category: locale === 'pt' ? 'Portfólio Criativo' : 'Creative Portfolio',
   };
 }
 
@@ -70,6 +132,10 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${satoshi.variable} ${poppins.variable}`}>
+      <head>
+        <StructuredData type="person" />
+        <StructuredData type="website" />
+      </head>
       <body className="antialiased bg-black text-white">
         <NextIntlClientProvider messages={messages}>
           <Header />

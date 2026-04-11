@@ -1,0 +1,16 @@
+/* TEAM */
+Creative Director: Itan
+Contact: contato@pedroitan.com
+From: Salvador, Brasil
+
+/* THANKS */
+Name: Ludmilla, Dilsinho, Paula Fernandes
+Name: NBA, Budweiser, Latin Grammy
+
+/* SITE */
+Last update: 2025
+Standards: Next.js 15, React 18, TypeScript, Tailwind CSS
+Components: Framer Motion, next-intl, Lucide Icons
+Software: VS Code, Figma, Adobe Creative Suite
+Language: Portuguese / English
+Doctype: HTML5
