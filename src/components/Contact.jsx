@@ -65,6 +65,7 @@ export default function Contact() {
                   <input
                     type="text"
                     name="name"
+                    autoComplete="name"
                     value={form.name}
                     onChange={handleChange}
                     placeholder={t('namePlaceholder')}
@@ -76,6 +77,7 @@ export default function Contact() {
                   <input
                     type="email"
                     name="email"
+                    autoComplete="email"
                     value={form.email}
                     onChange={handleChange}
                     placeholder={t('emailPlaceholder')}
