@@ -133,6 +133,8 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${satoshi.variable} ${poppins.variable}`}>
       <head>
+        {/* Google Search Console Verification */}
+        <meta name="google-site-verification" content="w6gaqVNkxEpApTQ550BdcWEMMO6dSlM0hGR3ew2KfTU" />
         <StructuredData type="person" />
         <StructuredData type="website" />
       </head>
