@@ -135,11 +135,11 @@ export default async function LocaleLayout({
       <head>
         {/* Google Search Console Verification */}
         <meta name="google-site-verification" content="w6gaqVNkxEpApTQ550BdcWEMMO6dSlM0hGR3ew2KfTU" />
-        <StructuredData type="person" />
-        <StructuredData type="website" />
       </head>
       <body className="antialiased bg-black text-white">
         <NextIntlClientProvider messages={messages}>
+          <StructuredData type="person" />
+          <StructuredData type="website" />
           <Header />
           {children}
         </NextIntlClientProvider>
