@@ -133,11 +133,6 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${satoshi.variable} ${poppins.variable}`}>
       <head>
-        {/* Content Security Policy - permite Framer Motion e scripts necessários */}
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://itan.b-cdn.net https://www.youtube.com https://player.vimeo.com https://www.youtube-nocookie.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://itan.b-cdn.net https://i.ytimg.com https://img.youtube.com https://vumbnail.com https://i.vimeocdn.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; connect-src 'self' https://itan.b-cdn.net; media-src 'self' https://itan.b-cdn.net; frame-src 'self' https://www.youtube.com https://player.vimeo.com https://www.youtube-nocookie.com;"
-        />
         {/* Google Search Console Verification */}
         <meta name="google-site-verification" content="w6gaqVNkxEpApTQ550BdcWEMMO6dSlM0hGR3ew2KfTU" />
         <StructuredData type="person" />
