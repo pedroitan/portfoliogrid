@@ -4,7 +4,7 @@ import { routing } from '@/i18n/routing';
 const BASE_URL = 'https://pedroitan.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '#portfolio', '#bio', '#contact'];
+  const routes = ['', 'about', '#portfolio', '#bio', '#contact'];
   
   const sitemapEntries: MetadataRoute.Sitemap = [];
   

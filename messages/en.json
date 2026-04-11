@@ -49,6 +49,67 @@
     "tagline": "Art × Technology × Strategy",
     "email": "contato@pedroitan.com"
   },
+  "about": {
+    "metaTitle": "About | Itan - Creative Director",
+    "metaDescription": "Meet Itan, Brazilian creative director specialized in live shows, music production and audiovisual engineering. Projects with Ludmilla, NBA Finals, Dilsinho, Paula Fernandes and Latin Grammy nomination.",
+    "title": "itan",
+    "subtitle": "Creative Direction × Music Production × Audiovisual Engineering",
+    "intro": "Brazilian creative director specialized in transforming ideas into memorable audiovisual experiences. With over a decade of experience, I have worked with some of the biggest names in Brazilian and international music, creating shows and productions that connect artists and audiences in unique ways.",
+    "philosophy": {
+      "title": "Work Philosophy",
+      "p1": "I believe every great experience starts with a simple idea: the desire to communicate a feeling that words cannot express. It is in this space between concept and emotion that magic happens.",
+      "p2": "My approach combines artistic vision with technical precision. Each project is a collaboration between creativity, technology and strategy, where nothing is done alone. I work side by side with artists, technical teams and partners to create something greater than the sum of its parts.",
+      "p3": "From the NBA Finals stage to the recording studio, my mission is always the same: to create moments that resonate with the audience and remain in memory."
+    },
+    "projects": {
+      "title": "Notable Projects",
+      "nba": {
+        "title": "NBA Finals Halftime Show with Ludmilla",
+        "role": "Creative Direction and Audiovisual Production",
+        "description": "Creative direction of the NBA Finals halftime show, featuring Ludmilla and sponsored by Budweiser. A spectacle that united Brazilian music, cutting-edge technology and world-class production, reaching millions of viewers globally at one of the world's biggest sporting events."
+      },
+      "grammy": {
+        "title": "Latin Grammy Nomination",
+        "role": "Music Production",
+        "description": "Music production for the track 'Me Ensina' by Dilsinho and Paula Fernandes, work that received a Latin Grammy nomination. A collaboration that demonstrated my ability to unite different styles and artists into a cohesive, award-winning production."
+      }
+    },
+    "services": {
+      "title": "Services",
+      "creative": {
+        "title": "Creative Direction",
+        "description": "Conception and direction of audiovisual experiences for live shows, corporate events and special projects."
+      },
+      "music": {
+        "title": "Music Production",
+        "description": "Complete music production, from composition and arrangements to final mixing for artists and audiovisual projects."
+      },
+      "technical": {
+        "title": "Audiovisual Engineering",
+        "description": "Technical planning, system integration and execution of complex audio, video and lighting projects."
+      }
+    },
+    "methodology": {
+      "title": "Methodology",
+      "discovery": {
+        "title": "Discovery and Immersion",
+        "description": "Every project begins with a deep immersion into the artist's vision. We understand not just what you want to create, but why you want to create it. This fundamental understanding guides all creative and technical decisions."
+      },
+      "creation": {
+        "title": "Collaborative Creation",
+        "description": "Nothing great is done alone. We assemble the right team of collaborators — from musicians and technicians to designers and engineers — to bring your vision to life. Collaboration is at the heart of our process."
+      },
+      "execution": {
+        "title": "Precise Execution",
+        "description": "We transform concepts into reality with technical precision and meticulous attention to detail. From the first rehearsal to the final show, we ensure every element works in perfect harmony."
+      }
+    },
+    "cta": {
+      "title": "Let's create something extraordinary",
+      "description": "Whether it's a live show, music production or an ambitious audiovisual project, I'm ready to turn your vision into reality.",
+      "button": "Get in touch"
+    }
+  },
   "header": {
     "openMenu": "Open menu",
     "switchLang": "PT"

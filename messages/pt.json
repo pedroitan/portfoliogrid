@@ -49,6 +49,67 @@
     "tagline": "Arte × Tecnologia × Estratégia",
     "email": "contato@pedroitan.com"
   },
+  "about": {
+    "metaTitle": "Sobre | Itan - Diretor Criativo",
+    "metaDescription": "Conheça Itan, diretor criativo brasileiro especializado em shows ao vivo, produção musical e engenharia audiovisual. Projetos com Ludmilla, NBA Finals, Dilsinho, Paula Fernandes e indicação ao Latin Grammy.",
+    "title": "itan",
+    "subtitle": "Direção Criativa × Produção Musical × Engenharia Audiovisual",
+    "intro": "Diretor criativo brasileiro especializado em transformar ideias em experiências audiovisuais memoráveis. Com mais de uma década de experiência, trabalhei com alguns dos maiores nomes da música brasileira e internacional, criando shows e produções que conectam artistas e públicos de forma única.",
+    "philosophy": {
+      "title": "Filosofia de Trabalho",
+      "p1": "Acredito que toda grande experiência começa com uma ideia simples: o desejo de comunicar um sentimento que palavras não conseguem expressar. É nesse espaço entre o conceito e a emoção que a magia acontece.",
+      "p2": "Minha abordagem combina visão artística com precisão técnica. Cada projeto é uma colaboração entre criatividade, tecnologia e estratégia, onde nada é feito sozinho. Trabalho lado a lado com artistas, equipes técnicas e parceiros para criar algo maior que a soma das partes.",
+      "p3": "Do palco da NBA Finals ao estúdio de gravação, minha missão é sempre a mesma: criar momentos que ressoem com o público e permaneçam na memória."
+    },
+    "projects": {
+      "title": "Projetos Notáveis",
+      "nba": {
+        "title": "NBA Finals Halftime Show com Ludmilla",
+        "role": "Direção Criativa e Produção Audiovisual",
+        "description": "Direção criativa do halftime show da final da NBA, apresentado por Ludmilla e patrocinado pela Budweiser. Um espetáculo que uniu música brasileira, tecnologia de ponta e produção de classe mundial, alcançando milhões de espectadores globalmente em um dos maiores eventos esportivos do mundo."
+      },
+      "grammy": {
+        "title": "Indicação ao Latin Grammy",
+        "role": "Produção Musical",
+        "description": "Produção musical da faixa 'Me Ensina' de Dilsinho e Paula Fernandes, trabalho que recebeu indicação ao Latin Grammy. Uma colaboração que demonstrou minha capacidade de unir diferentes estilos e artistas em uma produção coesa e premiada."
+      }
+    },
+    "services": {
+      "title": "Serviços",
+      "creative": {
+        "title": "Direção Criativa",
+        "description": "Concepção e direção de experiências audiovisuais para shows ao vivo, eventos corporativos e projetos especiais."
+      },
+      "music": {
+        "title": "Produção Musical",
+        "description": "Produção musical completa, desde composição e arranjos até mixagem final para artistas e projetos audiovisuais."
+      },
+      "technical": {
+        "title": "Engenharia Audiovisual",
+        "description": "Planejamento técnico, integração de sistemas e execução de projetos complexos de áudio, vídeo e iluminação."
+      }
+    },
+    "methodology": {
+      "title": "Metodologia",
+      "discovery": {
+        "title": "Descoberta e Imersão",
+        "description": "Cada projeto começa com uma imersão profunda na visão do artista. Entendemos não apenas o que você quer criar, mas por que você quer criar. Essa compreensão fundamental guia todas as decisões criativas e técnicas."
+      },
+      "creation": {
+        "title": "Criação Colaborativa",
+        "description": "Nada de grande é feito sozinho. Montamos a equipe certa de colaboradores — desde músicos e técnicos até designers e engenheiros — para dar vida à sua visão. A colaboração é o coração do nosso processo."
+      },
+      "execution": {
+        "title": "Execução Precisa",
+        "description": "Transformamos conceitos em realidade com precisão técnica e atenção meticulosa aos detalhes. Do primeiro ensaio ao show final, garantimos que cada elemento funcione em harmonia perfeita."
+      }
+    },
+    "cta": {
+      "title": "Vamos criar algo extraordinário",
+      "description": "Seja um show ao vivo, uma produção musical ou um projeto audiovisual ambicioso, estou pronto para transformar sua visão em realidade.",
+      "button": "Entre em contato"
+    }
+  },
   "header": {
     "openMenu": "Abrir menu",
     "switchLang": "EN"
