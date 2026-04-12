@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/Header";
 import StructuredData from "@/components/StructuredData";
+import { Analytics } from "@vercel/analytics/next";
 import "../globals.css";
 
 const poppins = Poppins({
@@ -143,6 +144,7 @@ export default async function LocaleLayout({
           <Header />
           {children}
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );
