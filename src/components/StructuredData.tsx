@@ -85,10 +85,30 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
       {
         "@type": "Event",
         "name": "NBA Finals Halftime Show com Ludmilla",
-        "startDate": "2023",
+        "description": isPT
+          ? "Direção criativa do halftime show da NBA Finals com Ludmilla, patrocinado pela Budweiser"
+          : "Creative direction of the NBA Finals halftime show featuring Ludmilla, sponsored by Budweiser",
+        "startDate": "2023-06-12",
+        "endDate": "2023-06-12",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "image": "https://pedroitan.com/images/profile.jpg",
+        "performer": {
+          "@type": "Person",
+          "name": "Ludmilla"
+        },
+        "organizer": {
+          "@type": "Organization",
+          "name": "NBA",
+          "url": "https://www.nba.com"
+        },
         "location": {
           "@type": "Place",
-          "name": "NBA Finals"
+          "name": "NBA Finals Arena",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "US"
+          }
         }
       }
     ],
