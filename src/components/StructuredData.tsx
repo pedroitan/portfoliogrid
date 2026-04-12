@@ -102,6 +102,14 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           "name": "NBA",
           "url": "https://www.nba.com"
         },
+        "offers": {
+          "@type": "Offer",
+          "name": isPT ? "Evento Corporativo" : "Corporate Event",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/LimitedAvailability",
+          "url": "https://pedroitan.com"
+        },
         "location": {
           "@type": "Place",
           "name": "NBA Finals Arena",
