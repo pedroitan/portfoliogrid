@@ -141,6 +141,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <StructuredData type="person" />
           <StructuredData type="website" />
+          <StructuredData type="video" />
           <Header />
           {children}
         </NextIntlClientProvider>

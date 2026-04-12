@@ -3,7 +3,7 @@
 import { useLocale } from 'next-intl';
 
 interface StructuredDataProps {
-  type: 'person' | 'website' | 'creativework';
+  type: 'person' | 'website' | 'creativework' | 'video';
   data?: Record<string, unknown>;
 }
 
@@ -156,6 +156,41 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
     ...data
   });
 
+  const getVideoSchema = () => ({
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": isPT
+      ? "Portfólio Direção Criativa / Audiovisual de Pedro Itan"
+      : "Pedro Itan Creative Direction / Audiovisual Portfolio",
+    "description": isPT
+      ? "Vídeo portfólio de Pedro Itan — diretor criativo e produtor musical especializado em shows ao vivo, engenharia audiovisual e direção criativa. Projetos com Ludmilla (NBA Finals), Iza, Dilsinho, Paula Fernandes e indicação ao Latin Grammy."
+      : "Video portfolio of Pedro Itan — creative director and music producer specialized in live shows, audiovisual engineering and creative direction. Projects with Ludmilla (NBA Finals), Iza, Dilsinho, Paula Fernandes and Latin Grammy nomination.",
+    "thumbnailUrl": "https://pedroitan.com/images/video-thumbnail.jpg",
+    "uploadDate": "2026-04-06T00:00:00-03:00",
+    "duration": "PT2M",
+    "contentUrl": "https://itan.b-cdn.net/PORTFOLIO_V5_BR_ICON.mp4",
+    "embedUrl": "https://pedroitan.com/pt",
+    "url": "https://pedroitan.com/pt",
+    "inLanguage": ["pt-BR", "en-US"],
+    "genre": isPT ? "Portfólio Criativo" : "Creative Portfolio",
+    "keywords": isPT
+      ? "direção criativa, produção musical, shows ao vivo, Ludmilla, NBA Finals, Iza, Dilsinho, Paula Fernandes"
+      : "creative direction, music production, live shows, Ludmilla, NBA Finals, Iza, Dilsinho, Paula Fernandes",
+    "author": {
+      "@id": "https://pedroitan.com/#person"
+    },
+    "creator": {
+      "@id": "https://pedroitan.com/#person"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Itan",
+      "url": "https://pedroitan.com"
+    },
+    "regionsAllowed": "BR, US, PT",
+    ...data
+  });
+
   const getCreativeWorkSchema = () => ({
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -177,6 +212,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
     person: getPersonSchema(),
     website: getWebsiteSchema(),
     creativework: getCreativeWorkSchema(),
+    video: getVideoSchema(),
   };
 
   const schema = schemas[type];
