@@ -6,13 +6,17 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const autoReplyContent = {
   pt: {
     subject: 'Recebi sua mensagem! ✉️',
-    html: (name: string) => `
+    html: (name: string, message: string) => `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111;">
         <h2 style="font-size:22px;margin-bottom:8px;">Olá, ${name}! 👋</h2>
         <p style="font-size:15px;line-height:1.6;color:#333;">
           Recebi sua mensagem e agradeço muito o contato!<br/>
           Entrarei em contato em breve para conversarmos melhor.
         </p>
+        <div style="margin:24px 0;padding:16px;background:#f5f5f5;border-left:3px solid #ccc;border-radius:4px;">
+          <p style="font-size:12px;color:#999;margin:0 0 8px;">Sua mensagem:</p>
+          <p style="font-size:14px;color:#444;margin:0;white-space:pre-wrap;">${message}</p>
+        </div>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;"/>
         <p style="font-size:13px;color:#888;">
           — Itan<br/>
@@ -23,13 +27,17 @@ const autoReplyContent = {
   },
   en: {
     subject: 'Got your message! ✉️',
-    html: (name: string) => `
+    html: (name: string, message: string) => `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111;">
         <h2 style="font-size:22px;margin-bottom:8px;">Hi, ${name}! 👋</h2>
         <p style="font-size:15px;line-height:1.6;color:#333;">
           I received your message — thank you for reaching out!<br/>
           I'll get back to you shortly.
         </p>
+        <div style="margin:24px 0;padding:16px;background:#f5f5f5;border-left:3px solid #ccc;border-radius:4px;">
+          <p style="font-size:12px;color:#999;margin:0 0 8px;">Your message:</p>
+          <p style="font-size:14px;color:#444;margin:0;white-space:pre-wrap;">${message}</p>
+        </div>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;"/>
         <p style="font-size:13px;color:#888;">
           — Itan<br/>
@@ -62,7 +70,7 @@ export async function POST(req: NextRequest) {
         from: 'Itan <contato@pedroitan.com>',
         to: [email],
         subject: autoReplyContent[lang].subject,
-        html: autoReplyContent[lang].html(name),
+        html: autoReplyContent[lang].html(name, message),
       }),
     ]);
 
