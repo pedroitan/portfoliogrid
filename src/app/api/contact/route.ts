@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     const { data, error } = await resend.emails.send({
       from: 'Portfolio <onboarding@resend.dev>',
-      to: ['contato@pedroitan.com'],
+      to: ['pedroitan@gmail.com'],
       replyTo: email,
       subject: `Contato via portfólio — ${name}`,
       text: `Nome: ${name}\nEmail: ${email}\n\n${message}`,
