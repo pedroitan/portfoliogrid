@@ -44,8 +44,9 @@ function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement 
     if (!muted) return;
 
     const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('#contact, input, textarea, select, label, form')) return;
       if (userExplicitlyMutedRef.current) {
-        const target = e.target as HTMLElement;
         if (target.closest('a, button, [role="button"]')) return;
         if (window.getComputedStyle(target).cursor === 'pointer') return;
       }
