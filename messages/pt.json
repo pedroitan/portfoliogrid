@@ -39,7 +39,9 @@
     "emailPlaceholder": "E-mail",
     "messagePlaceholder": "Mensagem",
     "submit": "Enviar Mensagem",
-    "sentFeedback": "✓ Abrindo cliente de email..."
+    "sentFeedback": "✓ Abrindo cliente de email...",
+    "whatsappLabel": "WhatsApp",
+    "whatsappMessage": "Olá Pedro! Vi seu portfólio em pedroitan.com e gostaria de conversar sobre um projeto."
   },
   "portfolio": {
     "button": "Portfolio"
