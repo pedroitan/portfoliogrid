@@ -54,7 +54,7 @@ export default function Contact() {
                 {t('whatsappLabel')}
               </a>
               <div className="flex justify-center space-x-4 mt-4">
-                <a href="https://instagram.com/pedroitan" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 transition" aria-label="Instagram">
+                <a href="https://instagram.com/pedro.itan" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 transition" aria-label="Instagram">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>

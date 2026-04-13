@@ -21,7 +21,7 @@ export default function Footer() {
             {t('email')}
           </a>
           <a
-            href="https://instagram.com/pedroitan"
+            href="https://instagram.com/pedro.itan"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
