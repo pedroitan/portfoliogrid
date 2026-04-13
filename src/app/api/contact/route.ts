@@ -11,17 +11,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Campos obrigatórios ausentes.' }, { status: 400 });
     }
 
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'Portfolio <onboarding@resend.dev>',
-      to: 'contato@pedroitan.com',
+      to: ['contato@pedroitan.com'],
       replyTo: email,
       subject: `Contato via portfólio — ${name}`,
       text: `Nome: ${name}\nEmail: ${email}\n\n${message}`,
     });
 
     if (error) {
+      console.error('[Resend error]', JSON.stringify(error));
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    console.log('[Resend success]', data);
 
     return NextResponse.json({ success: true });
   } catch {
