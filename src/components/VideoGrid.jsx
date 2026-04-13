@@ -31,7 +31,7 @@ export default function VideoGrid() {
   return (
     <section id="portfolio" className="py-4 min-h-screen w-full scroll-mt-16 relative z-10">
       <div className="w-full">
-        <TagFilter tags={allTags} activeTag={activeTag} setActiveTag={handleTagChange} />
+        {/* <TagFilter tags={allTags} activeTag={activeTag} setActiveTag={handleTagChange} /> */}
 
         <motion.div
           layout

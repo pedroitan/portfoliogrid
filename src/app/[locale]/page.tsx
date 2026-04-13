@@ -13,11 +13,10 @@ export default function Home() {
       <div className="min-h-screen text-white">
         <HeroVideoDynamic />
         <main>
-          <ExpertiseSwipeContainer>
+          {/* <ExpertiseSwipeContainer>
             <div className="m-0 p-0" style={{ height: 0, minHeight: 0, marginBottom: '-10px' }} />
-            {/* <VideoCarousel /> */}
             <ExpertiseDescriptions />
-          </ExpertiseSwipeContainer>
+          </ExpertiseSwipeContainer> */}
           <VideoGrid />
           <Bio />
           <Contact />
