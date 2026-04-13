@@ -39,7 +39,9 @@
     "emailPlaceholder": "Email",
     "messagePlaceholder": "Message",
     "submit": "Send Message",
-    "sentFeedback": "✓ Opening email client...",
+    "sentFeedback": "✓ Message sent!",
+    "sendingFeedback": "Sending...",
+    "errorFeedback": "Failed to send. Please try again.",
     "whatsappLabel": "WhatsApp",
     "whatsappMessage": "Hi Itan! I saw your portfolio at pedroitan.com and would like to discuss a project."
   },

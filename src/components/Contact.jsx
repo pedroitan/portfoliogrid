@@ -8,19 +8,32 @@ export default function Contact() {
   const t = useTranslations('contact');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, message } = form;
-    const subject = encodeURIComponent(`Contato via portfólio — ${name}`);
-    const body = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\n${message}`);
-    window.location.href = `mailto:contato@pedroitan.com?subject=${subject}&body=${body}`;
-    setSent(true);
-    setTimeout(() => setSent(false), 5000);
+    setSending(true);
+    setError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error();
+      setSent(true);
+      setForm({ name: '', email: '', message: '' });
+      setTimeout(() => setSent(false), 5000);
+    } catch {
+      setError(t('errorFeedback'));
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -108,13 +121,15 @@ export default function Contact() {
                     className="w-full p-2 bg-black/50 border border-gray-700 rounded focus:outline-none focus:border-white"
                   ></textarea>
                 </div>
+                {error && <p className="text-red-400 text-sm">{error}</p>}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-full py-2 bg-white text-black font-medium rounded hover:bg-gray-200 transition disabled:opacity-50"
                   type="submit"
+                  disabled={sending}
                 >
-                  {sent ? t('sentFeedback') : t('submit')}
+                  {sent ? t('sentFeedback') : sending ? t('sendingFeedback') : t('submit')}
                 </motion.button>
               </form>
             </div>
