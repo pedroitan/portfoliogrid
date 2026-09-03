@@ -150,9 +150,9 @@ export default function OficinaPage() {
             <ChatInterface />
           </div>
           <div className="relative -mt-12 md:-mt-16 flex justify-center z-10">
-            <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-purple-500/50 shadow-[0_0_40px_rgba(168,85,247,0.4)] bg-black">
+            <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-purple-500/50 shadow-[0_0_50px_rgba(168,85,247,0.5)] bg-black">
               <Image
-                src="/images/profile.jpg"
+                src="/images/oficina/pedro-itan.jpg"
                 alt="Pedro Itan"
                 fill
                 className="object-cover"
@@ -170,10 +170,14 @@ export default function OficinaPage() {
           <p className="text-white/60 font-poppins tracking-widest uppercase text-sm mb-6">
             Facilitador · pedroitan.com
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <span className="px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white font-poppins text-sm flex items-center gap-2">
-              <Music size={16} className="text-cyan-400" /> Ableton Certified Trainer
-            </span>
+          <div className="flex flex-wrap justify-center items-center gap-4">
+            <Image
+              src="/images/oficina/ableton-certified-trainer.png"
+              alt="Ableton Certified Trainer"
+              width={220}
+              height={40}
+              className="h-8 md:h-10 w-auto object-contain"
+            />
             <span className="px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white font-poppins text-sm">
               Indicado ao Grammy Latino
             </span>
@@ -356,17 +360,13 @@ export default function OficinaPage() {
       <section className="py-12 px-4 border-t border-white/10">
         <div className="max-w-5xl mx-auto text-center">
           <p className="text-xs tracking-[0.3em] uppercase text-white/40 mb-8 font-poppins">
-            Parceiros
+            Apoio:
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {['HITLAB', 'arteQ transforma', 'DoCa', 'California Studios'].map((p) => (
-              <span
-                key={p}
-                className="text-white/80 text-sm md:text-base uppercase tracking-widest font-poppins font-bold"
-              >
-                {p}
-              </span>
-            ))}
+            <PartnerLogo src="/images/oficina/hitlab.png" alt="HITLAB" width={120} />
+            <PartnerLogo src="/images/oficina/arteq.webp" alt="arteQ transforma" width={140} />
+            <PartnerLogo src="/images/oficina/doca.jpg" alt="DoCa" width={90} />
+            <PartnerLogo src="/images/oficina/california-studios.jpeg" alt="California Studios" width={150} />
           </div>
         </div>
       </section>
@@ -521,5 +521,18 @@ function WhatsAppIcon({ size = 20 }: { size?: number }) {
     >
       <path d="M12.04 2C6.516 2 2 6.518 2 12.04a10.04 10.04 0 0 0 1.513 5.286L2.04 22l4.753-.473A10.04 10.04 0 0 0 12.04 22c5.523 0 10.04-4.517 10.04-10.04S17.563 2 12.04 2zm5.835 14.24c-.254.715-1.44 1.485-2.005 1.586-.534.096-1.038.27-3.53-.74-2.984-1.175-4.915-4.14-5.065-4.338-.15-.198-1.21-1.614-1.21-3.078 0-1.465.76-2.182 1.044-2.49.283-.308.624-.393.834-.393.21 0 .42.002.603.003.193.002.452-.073.707.542.258.623.88 2.155.96 2.31.078.153.13.332.026.536-.105.204-.315.33-.525.548-.21.22-.443.494-.633.664-.2.18-.407.375-.293.74.113.363.535 1.77 2.58 2.864 1.76.94 2.295 1.017 2.854.857.56-.16.798-.66.908-1.055.112-.393.05-.65-.075-.855-.123-.205-.473-.58-.99-.93-.516-.352-.99-.485-1.155-.63-.166-.146-.08-.34-.04-.463.04-.123.292-.73.52-1.03.228-.3.495-.35.69-.39.195-.04.54-.04.87.07.33.11 1.87.98 2.19 2.12.32 1.14.143 1.77-.11 2.486z" />
     </svg>
+  );
+}
+
+function PartnerLogo({ src, alt, width }: { src: string; alt: string; width: number }) {
+  return (
+    <div className="relative h-10 md:h-12 w-auto" style={{ width }}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-contain opacity-80 hover:opacity-100 transition"
+      />
+    </div>
   );
 }
