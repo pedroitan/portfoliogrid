@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { getPaymentStatus } from '@/lib/mercadopago';
-import { sendConfirmationEmail } from '@/lib/email';
+import { sendConfirmationEmail, sendAdminPaymentConfirmation } from '@/lib/email';
 
 export async function GET(req: NextRequest) {
   const paymentId = req.nextUrl.searchParams.get('payment_id');
@@ -47,6 +47,15 @@ export async function GET(req: NextRequest) {
             date: '19/09/2026',
             time: '14h as 17h',
             location: 'Docas · Studio do Forte · Salvador',
+          });
+
+          await sendAdminPaymentConfirmation({
+            name: enrollment.name,
+            email: enrollment.email,
+            phone: enrollment.phone,
+            cpf: enrollment.cpf,
+            paymentId,
+            amount: enrollment.amount,
           });
 
           await supabase

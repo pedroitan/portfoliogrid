@@ -98,9 +98,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Envia notificacao para o admin (nao bloqueia o fluxo)
-    sendAdminNotification({ name, email: normalizedEmail, phone: phoneDigits }).catch((err) => {
-      console.error('[Email admin error]', err);
-    });
+    sendAdminNotification({ name, email: normalizedEmail, phone: phoneDigits, cpf: cpfDigits }).catch(
+      (err) => {
+        console.error('[Email admin error]', err);
+      }
+    );
 
     return NextResponse.json({
       id: enrollment.id,

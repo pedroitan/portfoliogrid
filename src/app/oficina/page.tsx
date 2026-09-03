@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Copy, Check, Loader2, Music, Calendar, MapPin, Clock } from 'lucide-react';
+import { Copy, Check, Loader2, Music } from 'lucide-react';
 
 type Step = 'form' | 'pix' | 'success';
 
@@ -45,7 +45,7 @@ export default function OficinaPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao criar inscrição.');
+        throw new Error(data.error || 'Erro ao criar inscricao.');
       }
 
       setEnrollment(data);
@@ -107,72 +107,99 @@ export default function OficinaPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      {/* Hero */}
-      <section className="relative py-20 md:py-28 px-4 overflow-hidden">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <p className="text-xs tracking-[0.3em] uppercase text-cyan-400 mb-4 font-poppins">
-            Oficina presencial · Salvador
-          </p>
-          <h1 className="text-4xl md:text-6xl font-bold font-satoshi lowercase tracking-tight mb-6">
-            Producao Musical com IA
+    <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      {/* Equalizador + Hero */}
+      <section className="relative pt-12 pb-8 px-4">
+        <div className="max-w-5xl mx-auto text-center">
+          <Equalizer />
+
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black font-satoshi uppercase tracking-tight leading-[0.95] mb-4">
+            Producao Musical
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500">
+              Com IA
+            </span>
           </h1>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-8 font-poppins">
-            Aprenda a criar musicas, trilhas e locucoes utilizando IA como ferramenta
+
+          <p className="text-cyan-300 text-lg md:text-2xl font-poppins font-semibold mb-8 max-w-2xl mx-auto leading-snug">
+            Aprenda a criar musicas, trilhas e locucoes
+            <br className="hidden sm:block" />
+            utilizando IA como ferramenta
           </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-white/60 font-poppins">
-            <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-              <Calendar size={16} /> 19/09/2026
+
+          <div className="flex flex-wrap justify-center gap-3 text-xs md:text-sm font-poppins text-white/70">
+            {['Ableton Live 12', 'Suno', 'Splice', 'LANDR', 'ElevenLabs', 'ChatGPT', 'Claude'].map(
+              (tool) => (
+                <span
+                  key={tool}
+                  className="px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm"
+                >
+                  {tool}
+                </span>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Interfaces visuais */}
+      <section className="relative py-8 px-4">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-4 items-center">
+            <AbletonInterface />
+            <ChatInterface />
+          </div>
+          <div className="relative -mt-12 md:-mt-16 flex justify-center z-10">
+            <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-purple-500/50 shadow-[0_0_40px_rgba(168,85,247,0.4)] bg-black">
+              <Image
+                src="/images/profile.jpg"
+                alt="Pedro Itan"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Facilitador */}
+      <section className="py-8 px-4 text-center">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-3xl md:text-5xl font-black font-satoshi mb-1">Pedro Itan</p>
+          <p className="text-white/60 font-poppins tracking-widest uppercase text-sm mb-6">
+            Facilitador · pedroitan.com
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <span className="px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white font-poppins text-sm flex items-center gap-2">
+              <Music size={16} className="text-cyan-400" /> Ableton Certified Trainer
             </span>
-            <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-              <Clock size={16} /> 14h as 17h
-            </span>
-            <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-              <MapPin size={16} /> Docas · Studio do Forte
+            <span className="px-4 py-2 rounded-lg border border-white/20 bg-white/5 text-white font-poppins text-sm">
+              Indicado ao Grammy Latino
             </span>
           </div>
         </div>
       </section>
 
-      {/* Info grid */}
+      {/* Data e local */}
       <section className="py-12 px-4 border-t border-white/10">
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold font-satoshi mb-4">Sobre a oficina</h2>
-            <p className="text-white/70 leading-relaxed font-poppins mb-4">
-              Uma imersao pratica de 3 horas para voce produzir musicas, trilhas e locucoes com
-              ferramentas de IA. Do conceito ao arquivo final, passando por arranjo, som e voz.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {['Ableton Live 12', 'Suno', 'Splice', 'LANDR', 'ElevenLabs', 'ChatGPT', 'Claude'].map(
-                (tool) => (
-                  <span
-                    key={tool}
-                    className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/70 font-poppins"
-                  >
-                    {tool}
-                  </span>
-                )
-              )}
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+            <div>
+              <p className="text-7xl md:text-9xl font-black text-purple-500 leading-none font-satoshi tracking-tighter">
+                19/09
+              </p>
             </div>
-          </div>
-
-          <div className="bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold font-satoshi mb-4">Facilitador</h2>
-            <div className="flex items-center gap-4">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden bg-white/10">
-                <Image
-                  src="/images/profile.jpg"
-                  alt="Pedro Itan"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <p className="text-xl font-bold font-poppins">Pedro Itan</p>
-                <p className="text-sm text-white/60 font-poppins">Ableton Certified Trainer</p>
-                <p className="text-sm text-white/60 font-poppins">Indicado ao Grammy Latino</p>
-              </div>
+            <div className="text-left">
+              <p className="text-xl md:text-2xl font-bold font-poppins uppercase tracking-wider">
+                SABADO
+              </p>
+              <p className="text-2xl md:text-3xl font-bold text-cyan-300 font-poppins">
+                14h as 17h
+              </p>
+              <p className="text-white/60 font-poppins mt-2">
+                Docas · Studio do Forte · Salvador
+              </p>
             </div>
           </div>
         </div>
@@ -183,8 +210,12 @@ export default function OficinaPage() {
         <div className="max-w-xl mx-auto">
           {step === 'form' && (
             <div className="bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8">
-              <h2 className="text-2xl font-bold font-satoshi mb-2">Garanta sua vaga</h2>
-              <p className="text-white/60 font-poppins mb-6">Investimento: R$ 1,00 · 20 vagas (valor de teste)</p>
+              <h2 className="text-3xl font-black font-satoshi mb-2 text-center">
+                Garanta sua vaga
+              </h2>
+              <p className="text-white/60 font-poppins mb-8 text-center">
+                Investimento: R$ 1,00 · 20 vagas (valor de teste)
+              </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -258,15 +289,7 @@ export default function OficinaPage() {
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white font-poppins py-3 rounded-full hover:bg-white/10 transition"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M12.04 2C6.516 2 2 6.518 2 12.04a10.04 10.04 0 0 0 1.513 5.286L2.04 22l4.753-.473A10.04 10.04 0 0 0 12.04 22c5.523 0 10.04-4.517 10.04-10.04S17.563 2 12.04 2zm5.835 14.24c-.254.715-1.44 1.485-2.005 1.586-.534.096-1.038.27-3.53-.74-2.984-1.175-4.915-4.14-5.065-4.338-.15-.198-1.21-1.614-1.21-3.078 0-1.465.76-2.182 1.044-2.49.283-.308.624-.393.834-.393.21 0 .42.002.603.003.193.002.452-.073.707.542.258.623.88 2.155.96 2.31.078.153.13.332.026.536-.105.204-.315.33-.525.548-.21.22-.443.494-.633.664-.2.18-.407.375-.293.74.113.363.535 1.77 2.58 2.864 1.76.94 2.295 1.017 2.854.857.56-.16.798-.66.908-1.055.112-.393.05-.65-.075-.855-.123-.205-.473-.58-.99-.93-.516-.352-.99-.485-1.155-.63-.166-.146-.08-.34-.04-.463.04-.123.292-.73.52-1.03.228-.3.495-.35.69-.39.195-.04.54-.04.87.07.33.11 1.87.98 2.19 2.12.32 1.14.143 1.77-.11 2.486z" />
-                  </svg>
+                  <WhatsAppIcon size={20} />
                   Prefiro falar no WhatsApp
                 </a>
 
@@ -331,11 +354,16 @@ export default function OficinaPage() {
 
       {/* Parceiros */}
       <section className="py-12 px-4 border-t border-white/10">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs tracking-[0.3em] uppercase text-white/40 mb-6 font-poppins">Parceiros</p>
-          <div className="flex flex-wrap justify-center gap-6 text-white/70 font-poppins">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-xs tracking-[0.3em] uppercase text-white/40 mb-8 font-poppins">
+            Parceiros
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {['HITLAB', 'arteQ transforma', 'DoCa', 'California Studios'].map((p) => (
-              <span key={p} className="text-sm uppercase tracking-wider">
+              <span
+                key={p}
+                className="text-white/80 text-sm md:text-base uppercase tracking-widest font-poppins font-bold"
+              >
                 {p}
               </span>
             ))}
@@ -343,5 +371,155 @@ export default function OficinaPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+function Equalizer() {
+  const bars = [
+    { h: 40, c: '#22d3ee' },
+    { h: 80, c: '#a855f7' },
+    { h: 60, c: '#d946ef' },
+    { h: 100, c: '#22d3ee' },
+    { h: 50, c: '#a855f7' },
+    { h: 90, c: '#d946ef' },
+    { h: 70, c: '#22d3ee' },
+    { h: 110, c: '#a855f7' },
+    { h: 55, c: '#d946ef' },
+    { h: 85, c: '#22d3ee' },
+    { h: 45, c: '#a855f7' },
+    { h: 95, c: '#d946ef' },
+    { h: 65, c: '#22d3ee' },
+    { h: 75, c: '#a855f7' },
+    { h: 100, c: '#d946ef' },
+    { h: 55, c: '#22d3ee' },
+    { h: 85, c: '#a855f7' },
+    { h: 45, c: '#d946ef' },
+    { h: 95, c: '#22d3ee' },
+    { h: 70, c: '#a855f7' },
+    { h: 110, c: '#d946ef' },
+    { h: 60, c: '#22d3ee' },
+    { h: 80, c: '#a855f7' },
+    { h: 50, c: '#d946ef' },
+  ];
+
+  return (
+    <div className="flex justify-center items-end gap-[3px] md:gap-1 h-24 md:h-32 mb-6">
+      {bars.map((bar, i) => (
+        <div
+          key={i}
+          className="w-1 md:w-1.5 rounded-t-sm"
+          style={{
+            backgroundColor: bar.c,
+            height: `${bar.h}%`,
+            animation: `eqPulse ${1.2 + (i % 5) * 0.15}s ease-in-out infinite alternate`,
+            animationDelay: `${i * 0.05}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function AbletonInterface() {
+  const tracks = [
+    { color: '#22d3ee', name: 'Kick' },
+    { color: '#a855f7', name: 'Synth' },
+    { color: '#d946ef', name: 'Vox' },
+    { color: '#22d3ee', name: 'Bass' },
+  ];
+
+  return (
+    <div className="rounded-xl overflow-hidden border border-white/10 bg-[#121212] shadow-2xl">
+      <div className="h-6 bg-[#1a1a1a] flex items-center px-3 gap-1.5">
+        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+      </div>
+      <div className="p-3">
+        <div className="flex gap-1 mb-3">
+          {['File', 'Edit', 'Create', 'View'].map((m) => (
+            <span key={m} className="text-[9px] text-white/40 font-poppins px-1">
+              {m}
+            </span>
+          ))}
+        </div>
+        <div className="space-y-2">
+          {tracks.map((t, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div
+                className="w-3 h-3 rounded-sm"
+                style={{ backgroundColor: t.color }}
+              />
+              <span className="text-[10px] text-white/50 w-10 font-poppins">{t.name}</span>
+              <div className="flex-1 h-6 rounded bg-black/40 flex items-center px-1 gap-[2px]">
+                {Array.from({ length: 16 }).map((_, j) => (
+                  <div
+                    key={j}
+                    className="flex-1 h-3 rounded-sm"
+                    style={{
+                      backgroundColor: j % 4 === i ? t.color : 'rgba(255,255,255,0.05)',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChatInterface() {
+  return (
+    <div className="rounded-xl overflow-hidden border border-white/10 bg-[#0f1115] shadow-2xl">
+      <div className="h-10 bg-[#1a1d24] flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-400 text-xs font-bold">
+            AI
+          </div>
+          <span className="text-xs text-white/70 font-poppins">AI Chat</span>
+        </div>
+        <div className="flex gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+        </div>
+      </div>
+      <div className="p-4 space-y-3 min-h-[140px]">
+        <div className="flex justify-end">
+          <div className="bg-purple-500/20 text-purple-200 text-xs font-poppins px-3 py-2 rounded-2xl rounded-tr-sm max-w-[85%]">
+            Como fazer um arranjo para uma musica Pop?
+          </div>
+        </div>
+        <div className="flex">
+          <div className="bg-white/5 text-white/80 text-xs font-poppins px-3 py-2 rounded-2xl rounded-tl-sm max-w-[90%]">
+            Aqui esta uma sugestao de arranjo e forma para musica Pop.
+          </div>
+        </div>
+      </div>
+      <div className="px-4 pb-4">
+        <div className="h-9 rounded-full bg-white/5 border border-white/10 flex items-center px-3">
+          <span className="text-[10px] text-white/30 font-poppins flex-1">Mensagem para a IA...</span>
+          <div className="w-5 h-5 rounded-full bg-cyan-400 flex items-center justify-center text-black text-[10px] font-bold">
+            &gt;
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WhatsAppIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M12.04 2C6.516 2 2 6.518 2 12.04a10.04 10.04 0 0 0 1.513 5.286L2.04 22l4.753-.473A10.04 10.04 0 0 0 12.04 22c5.523 0 10.04-4.517 10.04-10.04S17.563 2 12.04 2zm5.835 14.24c-.254.715-1.44 1.485-2.005 1.586-.534.096-1.038.27-3.53-.74-2.984-1.175-4.915-4.14-5.065-4.338-.15-.198-1.21-1.614-1.21-3.078 0-1.465.76-2.182 1.044-2.49.283-.308.624-.393.834-.393.21 0 .42.002.603.003.193.002.452-.073.707.542.258.623.88 2.155.96 2.31.078.153.13.332.026.536-.105.204-.315.33-.525.548-.21.22-.443.494-.633.664-.2.18-.407.375-.293.74.113.363.535 1.77 2.58 2.864 1.76.94 2.295 1.017 2.854.857.56-.16.798-.66.908-1.055.112-.393.05-.65-.075-.855-.123-.205-.473-.58-.99-.93-.516-.352-.99-.485-1.155-.63-.166-.146-.08-.34-.04-.463.04-.123.292-.73.52-1.03.228-.3.495-.35.69-.39.195-.04.54-.04.87.07.33.11 1.87.98 2.19 2.12.32 1.14.143 1.77-.11 2.486z" />
+    </svg>
   );
 }
