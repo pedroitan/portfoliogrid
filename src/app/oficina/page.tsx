@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Copy, Check, Loader2, Music } from 'lucide-react';
+import Link from 'next/link';
+import { Copy, Check, Loader2, Music, ArrowLeft } from 'lucide-react';
 
 type Step = 'form' | 'pix' | 'success';
 
@@ -108,6 +109,22 @@ export default function OficinaPage() {
 
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      {/* Header */}
+      <header className="relative z-50 flex items-center justify-between px-4 md:px-8 py-4">
+        <Link
+          href="/"
+          className="text-white text-2xl font-bold font-satoshi tracking-tight lowercase"
+        >
+          itan
+        </Link>
+        <Link
+          href="/"
+          className="flex items-center gap-1 text-sm text-white/60 font-poppins hover:text-cyan-300 transition"
+        >
+          <ArrowLeft size={16} /> portfólio
+        </Link>
+      </header>
+
       {/* Equalizador + Hero */}
       <section className="relative pt-12 pb-8 px-4">
         <div className="max-w-5xl mx-auto text-center">
