@@ -144,6 +144,13 @@ export default function OficinaPage() {
             utilizando IA como ferramenta
           </p>
 
+          <a
+            href="#inscricao"
+            className="inline-flex items-center gap-2 bg-cyan-400 text-black font-bold font-poppins text-base md:text-lg px-8 py-4 rounded-full hover:bg-cyan-300 transition shadow-[0_0_30px_rgba(34,211,238,0.35)] mb-8"
+          >
+            <Music size={20} /> Inscreva-se agora!
+          </a>
+
           <div className="flex flex-wrap justify-center gap-3 text-xs md:text-sm font-poppins text-white/70">
             {['Ableton Live 12', 'Suno', 'Splice', 'LANDR', 'ElevenLabs', 'ChatGPT', 'Claude'].map(
               (tool) => (
@@ -387,9 +394,9 @@ export default function OficinaPage() {
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             <PartnerLogo src="/images/oficina/hitlab.png" alt="HITLAB" width={120} />
-            <PartnerLogo src="/images/oficina/arteq.webp" alt="arteQ transforma" width={140} />
-            <PartnerLogo src="/images/oficina/doca.jpg" alt="DoCa" width={90} />
-            <PartnerLogo src="/images/oficina/california-studios.jpeg" alt="California Studios" width={150} />
+            <PartnerLogo src="/images/oficina/arteq.webp" alt="arteQ transforma" width={140} invert />
+            <PartnerLogo src="/images/oficina/doca.jpg" alt="DoCa" width={90} invert />
+            <PartnerLogo src="/images/oficina/california-studios.jpeg" alt="California Studios" width={150} invert />
           </div>
         </div>
       </section>
@@ -457,14 +464,25 @@ function WhatsAppIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-function PartnerLogo({ src, alt, width }: { src: string; alt: string; width: number }) {
+function PartnerLogo({
+  src,
+  alt,
+  width,
+  invert = false,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  invert?: boolean;
+}) {
   return (
     <div className="relative h-10 md:h-12 w-auto" style={{ width }}>
       <Image
         src={src}
         alt={alt}
         fill
-        className="object-contain opacity-80 hover:opacity-100 transition"
+        className="object-contain"
+        style={invert ? { filter: 'grayscale(1) invert(1)', mixBlendMode: 'screen' } : undefined}
       />
     </div>
   );
