@@ -1,10 +1,11 @@
 import { Resend } from 'resend';
+import { escapeHtml } from './validation';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendConfirmationEmail({
   to,
-  name,
+  name: rawName,
   courseTitle,
   date,
   time,
@@ -21,6 +22,8 @@ export async function sendConfirmationEmail({
     console.error('[Resend] RESEND_API_KEY nao configurada.');
     throw new Error('RESEND_API_KEY nao configurada.');
   }
+
+  const name = escapeHtml(rawName);
 
   console.log('[Resend] Enviando confirmacao para', to);
   const result = await resend.emails.send({
@@ -56,12 +59,7 @@ export async function sendConfirmationEmail({
   return result;
 }
 
-export async function sendAdminNotification({
-  name,
-  email,
-  phone,
-  cpf,
-}: {
+export async function sendAdminNotification(input: {
   name: string;
   email: string;
   phone: string;
@@ -71,6 +69,11 @@ export async function sendAdminNotification({
     console.error('[Resend] RESEND_API_KEY nao configurada.');
     throw new Error('RESEND_API_KEY nao configurada.');
   }
+
+  const name = escapeHtml(input.name);
+  const email = escapeHtml(input.email);
+  const phone = escapeHtml(input.phone);
+  const cpf = escapeHtml(input.cpf);
 
   console.log('[Resend] Enviando notificacao admin');
   const result = await resend.emails.send({
@@ -96,14 +99,7 @@ export async function sendAdminNotification({
   return result;
 }
 
-export async function sendAdminPaymentConfirmation({
-  name,
-  email,
-  phone,
-  cpf,
-  paymentId,
-  amount,
-}: {
+export async function sendAdminPaymentConfirmation(input: {
   name: string;
   email: string;
   phone: string;
@@ -116,7 +112,13 @@ export async function sendAdminPaymentConfirmation({
     throw new Error('RESEND_API_KEY nao configurada.');
   }
 
-  const value = (amount / 100).toLocaleString('pt-BR', {
+  const name = escapeHtml(input.name);
+  const email = escapeHtml(input.email);
+  const phone = escapeHtml(input.phone);
+  const cpf = escapeHtml(input.cpf);
+  const paymentId = escapeHtml(input.paymentId);
+
+  const value = (input.amount / 100).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   });

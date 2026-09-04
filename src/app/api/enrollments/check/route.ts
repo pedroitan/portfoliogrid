@@ -2,12 +2,22 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { getPaymentStatus } from '@/lib/mercadopago';
 import { sendConfirmationEmail, sendAdminPaymentConfirmation } from '@/lib/email';
+import { getClientIp, rateLimit } from '@/lib/rate-limit';
 
 export async function GET(req: NextRequest) {
+  const ip = getClientIp(req);
+  const limit = rateLimit(`check:${ip}`, 30, 60 * 1000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Muitas requisicoes.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
+    );
+  }
+
   const paymentId = req.nextUrl.searchParams.get('payment_id');
 
-  if (!paymentId) {
-    return NextResponse.json({ error: 'payment_id ausente.' }, { status: 400 });
+  if (!paymentId || !/^\d{1,30}$/.test(paymentId)) {
+    return NextResponse.json({ error: 'payment_id invalido.' }, { status: 400 });
   }
 
   try {
@@ -74,9 +84,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (err: unknown) {
     console.error('[GET /api/enrollments/check]', err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Erro ao verificar pagamento.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao verificar pagamento.' }, { status: 500 });
   }
 }

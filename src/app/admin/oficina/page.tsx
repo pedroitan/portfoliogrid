@@ -16,57 +16,101 @@ type Enrollment = {
 };
 
 export default function AdminOficina() {
-  const [token, setToken] = useState('');
+  const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const loadEnrollments = useCallback(async () => {
     setLoading(true);
+    setError('');
     try {
-      const res = await fetch('/api/admin/enrollments', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch('/api/admin/enrollments');
 
+      if (res.status === 401) {
+        setAuthenticated(false);
+        return;
+      }
       if (!res.ok) {
         throw new Error('Erro ao carregar inscricoes.');
       }
 
       const data = await res.json();
       setEnrollments(data);
+      setAuthenticated(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar inscricoes.');
     } finally {
       setLoading(false);
+      setCheckingSession(false);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
-    if (!authenticated) return;
     loadEnrollments();
-  }, [authenticated, loadEnrollments]);
+  }, [loadEnrollments]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erro ao entrar.');
+      setPassword('');
+      await loadEnrollments();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro ao entrar.');
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    await fetch('/api/admin/login', { method: 'DELETE' });
+    setAuthenticated(false);
+    setEnrollments([]);
+  };
+
+  if (checkingSession) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+        <Loader2 className="animate-spin text-cyan-400" size={32} />
+      </main>
+    );
+  }
 
   if (!authenticated) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center px-4">
-        <div className="w-full max-w-sm bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-6">
+        <form
+          onSubmit={handleLogin}
+          className="w-full max-w-sm bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-6"
+        >
           <h1 className="text-2xl font-bold font-satoshi mb-4">Admin · Oficina</h1>
           <input
             type="password"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="Token de acesso"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Senha de acesso"
+            autoComplete="current-password"
             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/30 mb-4 focus:outline-none focus:border-cyan-400"
           />
           <button
-            onClick={() => setAuthenticated(true)}
-            className="w-full bg-cyan-400 text-black font-bold py-3 rounded-lg hover:bg-cyan-300 transition"
+            type="submit"
+            disabled={loading || !password}
+            className="w-full bg-cyan-400 text-black font-bold py-3 rounded-lg hover:bg-cyan-300 transition disabled:opacity-50"
           >
-            Entrar
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
           {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
-        </div>
+        </form>
       </main>
     );
   }
@@ -81,12 +125,21 @@ export default function AdminOficina() {
           Confirmadas: {confirmedCount} / 20
         </p>
 
-        <button
-          onClick={loadEnrollments}
-          className="mb-6 bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/10 transition"
-        >
-          Atualizar
-        </button>
+        <div className="flex gap-3 mb-6">
+          <button
+            onClick={loadEnrollments}
+            className="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/10 transition"
+          >
+            Atualizar
+          </button>
+          <button
+            onClick={handleLogout}
+            className="bg-white/5 border border-white/10 text-white/60 px-4 py-2 rounded-lg hover:bg-white/10 transition"
+          >
+            Sair
+          </button>
+        </div>
+        {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
         {loading ? (
           <div className="flex items-center justify-center py-12">

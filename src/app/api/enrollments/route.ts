@@ -2,22 +2,53 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { createPixPayment } from '@/lib/mercadopago';
 import { sendAdminNotification } from '@/lib/email';
+import { getClientIp, rateLimit } from '@/lib/rate-limit';
+import {
+  isValidCPF,
+  isValidEmail,
+  isValidName,
+  isValidPhone,
+  normalizeEmail,
+  normalizeName,
+  onlyDigits,
+} from '@/lib/validation';
 
 const COURSE_PRICE = 1;
 
 export async function POST(req: NextRequest) {
-  try {
-    const { name, email, phone, cpf } = await req.json();
+  const ip = getClientIp(req);
+  const limit = rateLimit(`enroll:${ip}`, 5, 60 * 1000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Muitas tentativas. Aguarde um minuto e tente novamente.' },
+      { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
+    );
+  }
 
-    if (!name || !email || !phone || !cpf) {
-      return NextResponse.json({ error: 'Preencha todos os campos.' }, { status: 400 });
+  try {
+    const body = await req.json().catch(() => null);
+    if (!body) {
+      return NextResponse.json({ error: 'Requisicao invalida.' }, { status: 400 });
     }
 
-    const normalizedEmail = email.toLowerCase().trim();
-    const phoneDigits = phone.replace(/\D/g, '');
-    const cpfDigits = cpf.replace(/\D/g, '');
+    const name = normalizeName(body.name);
+    const normalizedEmail = normalizeEmail(body.email);
+    const phoneDigits = onlyDigits(body.phone);
+    const cpfDigits = onlyDigits(body.cpf);
 
-    if (cpfDigits.length !== 11) {
+    if (!name || !normalizedEmail || !phoneDigits || !cpfDigits) {
+      return NextResponse.json({ error: 'Preencha todos os campos.' }, { status: 400 });
+    }
+    if (!isValidName(name)) {
+      return NextResponse.json({ error: 'Nome invalido.' }, { status: 400 });
+    }
+    if (!isValidEmail(normalizedEmail)) {
+      return NextResponse.json({ error: 'E-mail invalido.' }, { status: 400 });
+    }
+    if (!isValidPhone(phoneDigits)) {
+      return NextResponse.json({ error: 'WhatsApp invalido.' }, { status: 400 });
+    }
+    if (!isValidCPF(cpfDigits)) {
       return NextResponse.json({ error: 'CPF invalido.' }, { status: 400 });
     }
 
@@ -114,7 +145,7 @@ export async function POST(req: NextRequest) {
   } catch (err: unknown) {
     console.error('[POST /api/enrollments]', err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Erro interno do servidor.' },
+      { error: 'Nao foi possivel processar a inscricao. Tente novamente.' },
       { status: 500 }
     );
   }

@@ -1,16 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createHmac, timingSafeEqual } from 'crypto';
 import { supabase } from '@/lib/supabase';
 import { getPaymentStatus } from '@/lib/mercadopago';
 import { sendConfirmationEmail, sendAdminPaymentConfirmation } from '@/lib/email';
 
+/**
+ * Valida a assinatura do webhook conforme documentacao do Mercado Pago:
+ * header x-signature = "ts=<timestamp>,v1=<hmac>"
+ * manifest = "id:<data.id>;request-id:<x-request-id>;ts:<ts>;"
+ */
+function verifySignature(req: NextRequest, dataId: string) {
+  const secret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+  if (!secret) {
+    console.warn('[Webhook] MERCADOPAGO_WEBHOOK_SECRET nao configurado; assinatura nao validada.');
+    return true;
+  }
+
+  const signature = req.headers.get('x-signature') ?? '';
+  const requestId = req.headers.get('x-request-id') ?? '';
+  const parts = Object.fromEntries(
+    signature.split(',').map((p) => p.trim().split('=') as [string, string])
+  );
+  const ts = parts.ts;
+  const v1 = parts.v1;
+  if (!ts || !v1) return false;
+
+  const manifest = `id:${dataId.toLowerCase()};request-id:${requestId};ts:${ts};`;
+  const expected = createHmac('sha256', secret).update(manifest).digest('hex');
+
+  const a = Buffer.from(expected);
+  const b = Buffer.from(v1);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const paymentId = body.data?.id?.toString();
-    const type = body.type;
+    const body = await req.json().catch(() => null);
+    const paymentId: string | undefined =
+      req.nextUrl.searchParams.get('data.id') ?? body?.data?.id?.toString();
+    const type = body?.type ?? req.nextUrl.searchParams.get('type');
 
     if (!paymentId || type !== 'payment') {
       return NextResponse.json({ ok: true });
+    }
+
+    if (!verifySignature(req, paymentId)) {
+      console.warn('[Webhook] Assinatura invalida para payment', paymentId);
+      return NextResponse.json({ error: 'Assinatura invalida.' }, { status: 401 });
     }
 
     const payment = await getPaymentStatus(paymentId);
@@ -71,9 +107,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (err: unknown) {
     console.error('[POST /api/webhooks/mercadopago]', err);
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : 'Erro no webhook.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro no webhook.' }, { status: 500 });
   }
 }
