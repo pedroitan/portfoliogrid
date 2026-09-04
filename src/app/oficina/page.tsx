@@ -145,9 +145,15 @@ export default function OficinaPage() {
       {/* Interfaces visuais */}
       <section className="relative py-8 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-4 items-center">
-            <AbletonInterface />
-            <ChatInterface />
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-purple-500/10">
+            <Image
+              src="/images/oficina/tela-live.png"
+              alt="Tela do Ableton Live e chat com IA"
+              width={1200}
+              height={700}
+              className="w-full h-auto object-cover"
+              priority
+            />
           </div>
           <div className="relative -mt-12 md:-mt-16 flex justify-center z-10">
             <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-purple-500/50 shadow-[0_0_50px_rgba(168,85,247,0.5)] bg-black">
@@ -416,96 +422,6 @@ function Equalizer() {
           }}
         />
       ))}
-    </div>
-  );
-}
-
-function AbletonInterface() {
-  const tracks = [
-    { color: '#22d3ee', name: 'Kick' },
-    { color: '#a855f7', name: 'Synth' },
-    { color: '#d946ef', name: 'Vox' },
-    { color: '#22d3ee', name: 'Bass' },
-  ];
-
-  return (
-    <div className="rounded-xl overflow-hidden border border-white/10 bg-[#121212] shadow-2xl">
-      <div className="h-6 bg-[#1a1a1a] flex items-center px-3 gap-1.5">
-        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-      </div>
-      <div className="p-3">
-        <div className="flex gap-1 mb-3">
-          {['File', 'Edit', 'Create', 'View'].map((m) => (
-            <span key={m} className="text-[9px] text-white/40 font-poppins px-1">
-              {m}
-            </span>
-          ))}
-        </div>
-        <div className="space-y-2">
-          {tracks.map((t, i) => (
-            <div key={i} className="flex items-center gap-2">
-              <div
-                className="w-3 h-3 rounded-sm"
-                style={{ backgroundColor: t.color }}
-              />
-              <span className="text-[10px] text-white/50 w-10 font-poppins">{t.name}</span>
-              <div className="flex-1 h-6 rounded bg-black/40 flex items-center px-1 gap-[2px]">
-                {Array.from({ length: 16 }).map((_, j) => (
-                  <div
-                    key={j}
-                    className="flex-1 h-3 rounded-sm"
-                    style={{
-                      backgroundColor: j % 4 === i ? t.color : 'rgba(255,255,255,0.05)',
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ChatInterface() {
-  return (
-    <div className="rounded-xl overflow-hidden border border-white/10 bg-[#0f1115] shadow-2xl">
-      <div className="h-10 bg-[#1a1d24] flex items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center text-cyan-400 text-xs font-bold">
-            AI
-          </div>
-          <span className="text-xs text-white/70 font-poppins">AI Chat</span>
-        </div>
-        <div className="flex gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-        </div>
-      </div>
-      <div className="p-4 space-y-3 min-h-[140px]">
-        <div className="flex justify-end">
-          <div className="bg-purple-500/20 text-purple-200 text-xs font-poppins px-3 py-2 rounded-2xl rounded-tr-sm max-w-[85%]">
-            Como fazer um arranjo para uma musica Pop?
-          </div>
-        </div>
-        <div className="flex">
-          <div className="bg-white/5 text-white/80 text-xs font-poppins px-3 py-2 rounded-2xl rounded-tl-sm max-w-[90%]">
-            Aqui esta uma sugestao de arranjo e forma para musica Pop.
-          </div>
-        </div>
-      </div>
-      <div className="px-4 pb-4">
-        <div className="h-9 rounded-full bg-white/5 border border-white/10 flex items-center px-3">
-          <span className="text-[10px] text-white/30 font-poppins flex-1">Mensagem para a IA...</span>
-          <div className="w-5 h-5 rounded-full bg-cyan-400 flex items-center justify-center text-black text-[10px] font-bold">
-            &gt;
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
