@@ -25,6 +25,23 @@ export default function OficinaPage() {
     payment_id: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [priceLabel, setPriceLabel] = useState('R$ 10,00');
+
+  useEffect(() => {
+    fetch('/api/course')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.price_centavos) {
+          setPriceLabel(
+            (data.price_centavos / 100).toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,7 +265,7 @@ export default function OficinaPage() {
                 Garanta sua vaga
               </h2>
               <p className="text-white/60 font-poppins mb-8 text-center">
-                Investimento: R$ 10,00 · 20 vagas
+                Investimento: {priceLabel}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">

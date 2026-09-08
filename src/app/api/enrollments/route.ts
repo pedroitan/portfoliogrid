@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { createPixPayment } from '@/lib/mercadopago';
 import { sendAdminNotification } from '@/lib/email';
+import { getCoursePriceCentavos } from '@/lib/course';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
 import {
   isValidCPF,
@@ -12,8 +13,6 @@ import {
   normalizeName,
   onlyDigits,
 } from '@/lib/validation';
-
-const COURSE_PRICE = 10;
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -66,9 +65,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const priceCentavos = await getCoursePriceCentavos();
+
     // Cria pagamento no Mercado Pago
     const payment = await createPixPayment({
-      amount: COURSE_PRICE,
+      amount: priceCentavos / 100,
       email: normalizedEmail,
       name,
       cpf: cpfDigits,
@@ -89,7 +90,7 @@ export async function POST(req: NextRequest) {
       cpf: cpfDigits,
       payment_status: payment.status || 'pending',
       mercado_pago_payment_id: payment.id,
-      amount: COURSE_PRICE * 100,
+      amount: priceCentavos,
       qr_code: payment.qr_code,
       qr_code_base64: payment.qr_code_base64,
       ticket_url: payment.ticket_url,

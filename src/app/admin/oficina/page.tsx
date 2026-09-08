@@ -22,6 +22,39 @@ export default function AdminOficina() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [price, setPrice] = useState('');
+  const [savingPrice, setSavingPrice] = useState(false);
+  const [priceMsg, setPriceMsg] = useState('');
+
+  const loadPrice = useCallback(async () => {
+    const res = await fetch('/api/admin/settings');
+    if (res.ok) {
+      const data = await res.json();
+      setPrice((data.price_centavos / 100).toFixed(2).replace('.', ','));
+    }
+  }, []);
+
+  const savePrice = async () => {
+    const value = Number(price.replace('.', '').replace(',', '.')) || Number(price.replace(',', '.'));
+    if (!Number.isFinite(value) || value <= 0) {
+      setPriceMsg('Valor invalido.');
+      return;
+    }
+    setSavingPrice(true);
+    setPriceMsg('');
+    const res = await fetch('/api/admin/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ price_reais: value }),
+    });
+    if (res.status === 401) {
+      setAuthenticated(false);
+      setSavingPrice(false);
+      return;
+    }
+    setPriceMsg(res.ok ? `Preco atualizado para R$ ${value.toFixed(2).replace('.', ',')}.` : 'Erro ao salvar.');
+    setSavingPrice(false);
+  };
 
   const loadEnrollments = useCallback(async () => {
     setLoading(true);
@@ -50,7 +83,8 @@ export default function AdminOficina() {
 
   useEffect(() => {
     loadEnrollments();
-  }, [loadEnrollments]);
+    loadPrice();
+  }, [loadEnrollments, loadPrice]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -191,6 +225,30 @@ export default function AdminOficina() {
           </button>
         </div>
         {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+
+        <div className="bg-black/20 border border-white/10 backdrop-blur-sm rounded-2xl p-5 mb-8 max-w-sm">
+          <label className="block text-sm text-white/70 font-poppins mb-2">
+            Valor da inscricao (R$)
+          </label>
+          <div className="flex gap-3">
+            <input
+              type="text"
+              inputMode="decimal"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="10,00"
+              className="w-32 bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/30 focus:outline-none focus:border-cyan-400"
+            />
+            <button
+              onClick={savePrice}
+              disabled={savingPrice}
+              className="bg-cyan-400 text-black font-bold px-4 py-2 rounded-lg hover:bg-cyan-300 transition disabled:opacity-50"
+            >
+              {savingPrice ? 'Salvando...' : 'Salvar'}
+            </button>
+          </div>
+          {priceMsg && <p className="text-sm text-white/60 mt-2">{priceMsg}</p>}
+        </div>
 
         {loading ? (
           <div className="flex items-center justify-center py-12">

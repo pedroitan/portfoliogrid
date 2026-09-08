@@ -28,3 +28,22 @@ create policy "Allow service role full access" on enrollments
   to service_role
   using (true)
   with check (true);
+
+-- Configuracoes gerais (preco da oficina, etc.)
+create table if not exists settings (
+  key text primary key,
+  value text not null
+);
+
+alter table settings enable row level security;
+
+create policy "Allow service role full access" on settings
+  for all
+  to service_role
+  using (true)
+  with check (true);
+
+-- Preco da oficina em centavos (1000 = R$ 10,00)
+insert into settings (key, value)
+values ('course_price_centavos', '1000')
+on conflict (key) do nothing;
