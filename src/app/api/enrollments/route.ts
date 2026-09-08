@@ -13,7 +13,7 @@ import {
   onlyDigits,
 } from '@/lib/validation';
 
-const COURSE_PRICE = 1;
+const COURSE_PRICE = 10;
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);

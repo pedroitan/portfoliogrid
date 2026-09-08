@@ -248,7 +248,7 @@ export default function OficinaPage() {
                 Garanta sua vaga
               </h2>
               <p className="text-white/60 font-poppins mb-8 text-center">
-                Investimento: R$ 1,00 · 20 vagas (valor de teste)
+                Investimento: R$ 10,00 · 20 vagas
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
