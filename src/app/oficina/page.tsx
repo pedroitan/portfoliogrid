@@ -210,12 +210,180 @@ export default function OficinaPage() {
         </div>
       </section>
 
+      {/* Objetivo */}
+      <section className="py-12 px-4 border-t border-white/10">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-black font-satoshi mb-4">Objetivo</h2>
+          <p className="text-white/70 font-poppins text-base md:text-lg leading-relaxed">
+            Mostrar, na pratica, como integrar Inteligencia Artificial ao fluxo de producao
+            musical — geracao de ideias, sound design, texto, voz, mixagem e masterizacao — sem
+            abrir mao da autoria do produtor. A IA e tratada como{' '}
+            <span className="text-cyan-300 font-semibold">instrumento de trabalho</span>, nao como
+            substituta do processo criativo.
+          </p>
+        </div>
+      </section>
+
+      {/* O que voce vai aprender */}
+      <section className="py-12 px-4 border-t border-white/10">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-black font-satoshi mb-2 text-center">
+            O que voce vai aprender
+          </h2>
+          <p className="text-white/50 font-poppins text-center mb-8">
+            Para criadores de todos os niveis — musicos ou nao, sem pre-requisitos.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              ['Ableton Live 12', 'Recursos nativos de IA: separacao de stems, busca de sons por similaridade e geradores de MIDI.'],
+              ['Suno', 'Geracao de ideias, melodias e texturas sonoras unicas com IA.'],
+              ['Splice', 'Bancos de samples e sound design assistidos por IA.'],
+              ['ElevenLabs', 'Geracao de voz e narracao com IA.'],
+              ['ChatGPT', 'Criacao de letras, conceitos e organizacao do fluxo de trabalho.'],
+              ['Claude', 'Controle da DAW por comandos e apoio para tirar duvidas do programa.'],
+              ['LANDR', 'Mixagem e masterizacao assistidas por IA, dentro do fluxo do Ableton.'],
+            ].map(([tool, desc]) => (
+              <div
+                key={tool}
+                className="bg-black/20 border border-white/10 backdrop-blur-sm rounded-xl p-5"
+              >
+                <p className="text-cyan-300 font-poppins text-xs tracking-widest uppercase mb-2">
+                  {tool}
+                </p>
+                <p className="text-white/80 text-sm font-poppins leading-relaxed">{desc}</p>
+              </div>
+            ))}
+            <a
+              href="#inscricao"
+              className="bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-400/30 rounded-xl p-5 flex flex-col items-center justify-center text-center hover:border-cyan-400/60 transition"
+            >
+              <p className="text-white font-bold font-poppins text-sm mb-1">Quero aprender tudo isso</p>
+              <p className="text-cyan-300 font-poppins text-sm flex items-center gap-1">
+                Inscreva-se agora <Music size={14} />
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Conteudo programatico */}
+      <section className="py-12 px-4 border-t border-white/10">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-black font-satoshi mb-8 text-center">
+            Conteudo programatico
+          </h2>
+          <div className="border-l-2 border-white/10 ml-2">
+            {[
+              {
+                time: '14h00 – 14h25',
+                title: 'Abertura e contexto',
+                desc: 'Panorama de onde a IA ja esta no fluxo de producao musical hoje: geracao de ideias, stems, mixagem, masterizacao, sound design, letras e voz.',
+              },
+              {
+                time: '14h25 – 15h00',
+                title: 'Geracao de ideias e sound design com IA',
+                desc: 'Melodias, harmonias e letras a partir de prompts. Criacao de texturas e samples unicos. Separacao de stems de referencias para estudo de arranjo.',
+              },
+              {
+                time: '15h00 – 15h40',
+                title: 'Producao assistida por IA no Ableton Live 12',
+                desc: 'Recursos nativos de IA: separacao de stems, busca de sons por similaridade e geradores de MIDI. Onde a IA erra — e por que o ouvido humano ainda decide.',
+              },
+              {
+                time: '15h40 – 16h50',
+                title: 'Pratica dos alunos',
+                desc: 'Producao de um trecho autoral de 30–60s usando pelo menos duas ferramentas de IA no processo. Acompanhamento individual.',
+                tag: '1h10 de pratica guiada',
+              },
+              {
+                time: '16h50 – 17h00',
+                title: 'Escuta coletiva e encerramento',
+                desc: 'Play dos trechos produzidos por voluntarios, feedback coletivo e recomendacoes para continuar explorando.',
+              },
+            ].map((block) => (
+              <div key={block.time} className="relative pl-6 pb-8 last:pb-0">
+                <span
+                  className={`absolute -left-[7px] top-1.5 w-3 h-3 rounded-full border-2 bg-black ${
+                    block.tag ? 'border-cyan-400' : 'border-purple-500'
+                  }`}
+                />
+                <p
+                  className={`font-poppins text-xs tracking-widest mb-1 ${
+                    block.tag ? 'text-cyan-300' : 'text-purple-400'
+                  }`}
+                >
+                  {block.time}
+                </p>
+                <h3 className="font-satoshi font-bold text-lg text-white mb-1">{block.title}</h3>
+                <p className="text-white/60 text-sm font-poppins leading-relaxed">{block.desc}</p>
+                {block.tag && (
+                  <span className="inline-block mt-2 px-3 py-1 rounded-full border border-cyan-400/30 text-cyan-300 text-xs font-poppins">
+                    {block.tag}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <a
+              href="#inscricao"
+              className="inline-flex items-center gap-2 bg-cyan-400 text-black font-bold font-poppins px-8 py-4 rounded-full hover:bg-cyan-300 transition shadow-[0_0_30px_rgba(34,211,238,0.35)]"
+            >
+              <Music size={20} /> Garantir minha vaga
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Para quem e */}
+      <section className="py-10 px-4 border-t border-white/10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-black font-satoshi mb-6">Para quem e</h2>
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            {[
+              'Musicos e nao musicos',
+              'Criadores de todos os niveis',
+              'Sem pre-requisitos',
+              'Nao precisa conhecer o Ableton',
+              'Traga notebook e fones',
+            ].map(
+              (item) => (
+                <span
+                  key={item}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/80 text-sm font-poppins"
+                >
+                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                  {item}
+                </span>
+              )
+            )}
+          </div>
+          <p className="text-white/50 text-sm font-poppins">
+            Nao tem o Ableton Live 12.4?{' '}
+            <a
+              href="https://www.ableton.com/en/trial/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-300 underline underline-offset-2 hover:text-cyan-200"
+            >
+              Baixe a versao completa, gratis por 30 dias
+            </a>
+            .
+          </p>
+        </div>
+      </section>
+
       {/* Facilitador */}
       <section className="py-8 px-4 text-center">
         <div className="max-w-3xl mx-auto">
           <p className="text-3xl md:text-5xl font-black font-satoshi mb-1">Pedro Itan</p>
-          <p className="text-white/60 font-poppins tracking-widest uppercase text-sm mb-6">
+          <p className="text-white/60 font-poppins tracking-widest uppercase text-sm mb-4">
             Facilitador · pedroitan.com
+          </p>
+          <p className="text-white/60 font-poppins text-sm md:text-base max-w-xl mx-auto mb-6 leading-relaxed">
+            Produtor musical, engenheiro eletronico e Ableton Certified Trainer, indicado ao
+            Grammy Latino, com trabalhos ao lado de Ludmilla, IZA, Sony Music, Universal Music e
+            Warner Music.
           </p>
           <div className="flex flex-wrap justify-center items-center gap-4">
             <Image
@@ -250,6 +418,9 @@ export default function OficinaPage() {
               </p>
               <p className="text-white/60 font-poppins mt-2">
                 Docas · Studio do Forte · Salvador
+              </p>
+              <p className="text-white/40 font-poppins text-sm mt-1">
+                Av. da Franca, S/N, Comercio
               </p>
             </div>
           </div>
