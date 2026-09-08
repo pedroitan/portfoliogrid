@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Volume2, VolumeX } from "lucide-react";
 import { useExpertise } from "../context/ExpertiseContext";
 import ItalExpertiseNav from './ItalExpertiseNav';
+import CourseBanner from './CourseBanner';
 
 function MuteControl({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement | null> }) {
   const [muted, setMuted] = useState(true);
@@ -236,6 +237,11 @@ export default function HeroVideoDynamic() {
       >
         itan
       </h1>
+
+      {/* Workshop banner near the top */}
+      <div className="absolute top-24 md:top-28 left-0 w-full z-30">
+        <CourseBanner />
+      </div>
 
       {/* Scroll down message at the bottom with animation restored */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center animate-bounce text-white opacity-90 select-none">

@@ -1,12 +1,30 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
-import { Music, Calendar, ArrowRight, Sparkles } from 'lucide-react';
+import { Music, Calendar, ArrowRight, Sparkles, X } from 'lucide-react';
 
 export default function CourseBanner() {
+  const [visible, setVisible] = useState(true);
+
+  const dismiss = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setVisible(false);
+  };
+
+  if (!visible) return null;
+
   return (
     <section className="relative z-10 pt-6 pb-4 px-4">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto relative">
+        <button
+          onClick={dismiss}
+          aria-label="Fechar aviso da oficina"
+          className="absolute -top-2 -right-2 z-20 w-7 h-7 rounded-full bg-black/70 border border-white/20 text-white/60 flex items-center justify-center hover:text-white hover:bg-black/90 transition"
+        >
+          <X size={14} />
+        </button>
         <Link
           href="/oficina"
           className="block group relative overflow-hidden rounded-2xl border border-cyan-400/40 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-md p-5 md:p-6 hover:border-cyan-400/70 transition-all duration-300 shadow-[0_0_30px_rgba(34,211,238,0.15)]"
