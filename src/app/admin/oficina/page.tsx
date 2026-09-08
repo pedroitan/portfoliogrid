@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Loader2, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Loader2, CheckCircle, XCircle, Clock, Trash2 } from 'lucide-react';
 
 type Enrollment = {
   id: string;
@@ -78,6 +78,51 @@ export default function AdminOficina() {
     setEnrollments([]);
   };
 
+  const deleteEnrollment = async (id: string, name: string) => {
+    if (!window.confirm(`Remover a inscricao de "${name}"? Essa acao nao pode ser desfeita.`)) {
+      return;
+    }
+    setError('');
+    const res = await fetch('/api/admin/enrollments', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    if (res.status === 401) {
+      setAuthenticated(false);
+      return;
+    }
+    if (!res.ok) {
+      setError('Erro ao remover inscricao.');
+      return;
+    }
+    setEnrollments((prev) => prev.filter((e) => e.id !== id));
+  };
+
+  const clearAll = async () => {
+    if (!window.confirm('Isso vai APAGAR TODAS as inscricoes do banco. Tem certeza?')) {
+      return;
+    }
+    if (!window.confirm('Confirma novamente: zerar todo o banco de inscricoes?')) {
+      return;
+    }
+    setError('');
+    const res = await fetch('/api/admin/enrollments', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ all: true }),
+    });
+    if (res.status === 401) {
+      setAuthenticated(false);
+      return;
+    }
+    if (!res.ok) {
+      setError('Erro ao limpar inscricoes.');
+      return;
+    }
+    setEnrollments([]);
+  };
+
   if (checkingSession) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -138,6 +183,12 @@ export default function AdminOficina() {
           >
             Sair
           </button>
+          <button
+            onClick={clearAll}
+            className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/20 transition flex items-center gap-2"
+          >
+            <Trash2 size={16} /> Zerar inscricoes
+          </button>
         </div>
         {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
@@ -155,6 +206,7 @@ export default function AdminOficina() {
                   <th className="p-4">E-mail</th>
                   <th className="p-4">WhatsApp</th>
                   <th className="p-4">Status</th>
+                  <th className="p-4"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
@@ -180,6 +232,16 @@ export default function AdminOficina() {
                           <XCircle size={16} /> {e.payment_status}
                         </span>
                       )}
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => deleteEnrollment(e.id, e.name)}
+                        className="text-white/40 hover:text-red-400 transition"
+                        title="Remover inscricao"
+                        aria-label={`Remover inscricao de ${e.name}`}
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </td>
                   </tr>
                 ))}
