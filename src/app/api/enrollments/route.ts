@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
-import { createPixPayment } from '@/lib/mercadopago';
+import { createPixPayment, createCardPreference } from '@/lib/mercadopago';
 import { sendAdminNotification } from '@/lib/email';
 import { getCoursePriceCentavos } from '@/lib/course';
 import { getClientIp, rateLimit } from '@/lib/rate-limit';
@@ -66,8 +66,82 @@ export async function POST(req: NextRequest) {
     }
 
     const priceCentavos = await getCoursePriceCentavos();
+    const paymentMethod = body.payment_method === 'card' ? 'card' : 'pix';
 
-    // Cria pagamento no Mercado Pago
+    if (paymentMethod === 'card') {
+      // Salva inscricao primeiro para usar o id como external_reference
+      const cardPayload = {
+        name,
+        email: normalizedEmail,
+        phone: phoneDigits,
+        cpf: cpfDigits,
+        payment_method: 'card',
+        payment_status: 'pending',
+        amount: priceCentavos,
+        confirmed: false,
+        email_sent: false,
+      };
+
+      let enrollmentId: string;
+
+      if (existing) {
+        const { data, error } = await supabase
+          .from('enrollments')
+          .update(cardPayload)
+          .eq('email', normalizedEmail)
+          .select('id')
+          .single();
+
+        if (error) {
+          console.error('[Supabase update error]', error);
+          return NextResponse.json({ error: 'Erro ao atualizar inscricao.' }, { status: 500 });
+        }
+        enrollmentId = data.id;
+      } else {
+        const { data, error } = await supabase
+          .from('enrollments')
+          .insert(cardPayload)
+          .select('id')
+          .single();
+
+        if (error) {
+          console.error('[Supabase insert error]', error);
+          return NextResponse.json({ error: 'Erro ao salvar inscricao.' }, { status: 500 });
+        }
+        enrollmentId = data.id;
+      }
+
+      const preference = await createCardPreference({
+        amount: priceCentavos / 100,
+        email: normalizedEmail,
+        name,
+        cpf: cpfDigits,
+        enrollmentId,
+        origin: req.nextUrl.origin,
+      });
+
+      if (!preference.init_point) {
+        return NextResponse.json(
+          { error: 'Erro ao gerar pagamento. Tente novamente.' },
+          { status: 500 }
+        );
+      }
+
+      await supabase
+        .from('enrollments')
+        .update({ mercado_pago_preference_id: preference.id })
+        .eq('id', enrollmentId);
+
+      sendAdminNotification({ name, email: normalizedEmail, phone: phoneDigits, cpf: cpfDigits }).catch(
+        (err) => {
+          console.error('[Email admin error]', err);
+        }
+      );
+
+      return NextResponse.json({ id: enrollmentId, redirect: preference.init_point });
+    }
+
+    // Cria pagamento PIX no Mercado Pago
     const payment = await createPixPayment({
       amount: priceCentavos / 100,
       email: normalizedEmail,
@@ -88,6 +162,7 @@ export async function POST(req: NextRequest) {
       email: normalizedEmail,
       phone: phoneDigits,
       cpf: cpfDigits,
+      payment_method: 'pix',
       payment_status: payment.status || 'pending',
       mercado_pago_payment_id: payment.id,
       amount: priceCentavos,

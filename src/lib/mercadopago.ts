@@ -65,6 +65,80 @@ export async function createPixPayment({
   };
 }
 
+export async function createCardPreference({
+  amount,
+  email,
+  name,
+  cpf,
+  enrollmentId,
+  origin,
+}: {
+  amount: number;
+  email: string;
+  name: string;
+  cpf?: string;
+  enrollmentId: string;
+  origin: string;
+}) {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || origin).replace(/\/$/, '');
+
+  const body = {
+    items: [
+      {
+        id: 'oficina-ia',
+        title: 'Inscricao - Oficina Producao Musical com IA',
+        quantity: 1,
+        unit_price: amount,
+        currency_id: 'BRL',
+      },
+    ],
+    payer: {
+      name,
+      email,
+      identification: cpf ? { type: 'CPF', number: cpf } : undefined,
+    },
+    payment_methods: {
+      excluded_payment_types: [
+        { id: 'ticket' },
+        { id: 'bank_transfer' },
+        { id: 'atm' },
+        { id: 'prepaid_card' },
+      ],
+      installments: 12,
+    },
+    back_urls: {
+      success: `${base}/oficina?pagamento=aprovado`,
+      pending: `${base}/oficina?pagamento=pendente`,
+      failure: `${base}/oficina?pagamento=falhou`,
+    },
+    auto_return: 'approved',
+    external_reference: enrollmentId,
+    notification_url: `${base}/api/webhooks/mercadopago`,
+    statement_descriptor: 'PEDRO ITAN',
+  };
+
+  const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Mercado Pago preference error: ${response.status} ${text}`);
+  }
+
+  const data = await response.json();
+
+  return {
+    id: data.id ?? '',
+    init_point: data.init_point ?? data.sandbox_init_point ?? '',
+  };
+}
+
 export async function getPaymentStatus(paymentId: string) {
   const response = await fetch(`${BASE_URL}/payments/${paymentId}`, {
     method: 'GET',
@@ -85,6 +159,7 @@ export async function getPaymentStatus(paymentId: string) {
     id: data.id?.toString() ?? paymentId,
     status: data.status ?? '',
     status_detail: data.status_detail ?? '',
+    external_reference: data.external_reference ?? '',
     raw: data,
   };
 }

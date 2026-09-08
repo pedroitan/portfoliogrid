@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Copy, Check, Loader2, Music, ArrowLeft } from 'lucide-react';
+import { Copy, Check, Loader2, Music, ArrowLeft, CreditCard } from 'lucide-react';
 
 type Step = 'form' | 'pix' | 'success';
+type PayMethod = 'pix' | 'card';
 
 export default function OficinaPage() {
   const [step, setStep] = useState<Step>('form');
@@ -26,6 +27,25 @@ export default function OficinaPage() {
   } | null>(null);
   const [copied, setCopied] = useState(false);
   const [priceLabel, setPriceLabel] = useState('R$ 10,00');
+  const [payMethod, setPayMethod] = useState<PayMethod>('pix');
+  const [cardNotice, setCardNotice] = useState('');
+
+  // Trata retorno do Checkout Pro (?pagamento=aprovado|pendente|falhou)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('pagamento');
+    if (!status) return;
+
+    if (status === 'aprovado') {
+      setStep('success');
+    } else if (status === 'pendente') {
+      setCardNotice('Pagamento em analise. Voce recebera a confirmacao por e-mail assim que for aprovado.');
+    } else if (status === 'falhou') {
+      setCardNotice('O pagamento nao foi concluido. Voce pode tentar novamente.');
+    }
+
+    window.history.replaceState(null, '', window.location.pathname + '#inscricao');
+  }, []);
 
   useEffect(() => {
     fetch('/api/course')
@@ -57,6 +77,7 @@ export default function OficinaPage() {
           email: form.email,
           phone: form.phone,
           cpf: form.cpf.replace(/\D/g, ''),
+          payment_method: payMethod,
         }),
       });
 
@@ -64,6 +85,11 @@ export default function OficinaPage() {
 
       if (!res.ok) {
         throw new Error(data.error || 'Erro ao criar inscricao.');
+      }
+
+      if (data.redirect) {
+        window.location.href = data.redirect;
+        return;
       }
 
       setEnrollment(data);
@@ -488,6 +514,42 @@ export default function OficinaPage() {
                   />
                 </div>
 
+                {cardNotice && (
+                  <p className="bg-cyan-400/10 border border-cyan-400/30 text-cyan-200 text-sm font-poppins p-3 rounded-lg">
+                    {cardNotice}
+                  </p>
+                )}
+
+                <div>
+                  <label className="block text-sm text-white/70 mb-2 font-poppins">Forma de pagamento</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setPayMethod('pix')}
+                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border transition font-poppins text-sm ${
+                        payMethod === 'pix'
+                          ? 'border-cyan-400 bg-cyan-400/10 text-cyan-300'
+                          : 'border-white/10 bg-white/5 text-white/60 hover:text-white'
+                      }`}
+                    >
+                      <Check size={16} className={payMethod === 'pix' ? 'opacity-100' : 'opacity-0'} />
+                      PIX
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPayMethod('card')}
+                      className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border transition font-poppins text-sm ${
+                        payMethod === 'card'
+                          ? 'border-cyan-400 bg-cyan-400/10 text-cyan-300'
+                          : 'border-white/10 bg-white/5 text-white/60 hover:text-white'
+                      }`}
+                    >
+                      <Check size={16} className={payMethod === 'card' ? 'opacity-100' : 'opacity-0'} />
+                      Cartao
+                    </button>
+                  </div>
+                </div>
+
                 {error && (
                   <p className="text-red-400 text-sm font-poppins">{error}</p>
                 )}
@@ -499,10 +561,16 @@ export default function OficinaPage() {
                 >
                   {loading ? (
                     <Loader2 className="animate-spin" size={20} />
-                  ) : (
+                  ) : payMethod === 'pix' ? (
                     <Music size={20} />
+                  ) : (
+                    <CreditCard size={20} />
                   )}
-                  {loading ? 'Processando...' : 'Quero pagar com PIX'}
+                  {loading
+                    ? 'Processando...'
+                    : payMethod === 'pix'
+                      ? 'Quero pagar com PIX'
+                      : 'Pagar com cartao'}
                 </button>
 
                 <a

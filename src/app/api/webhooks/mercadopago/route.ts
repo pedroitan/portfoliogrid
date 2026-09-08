@@ -52,11 +52,21 @@ export async function POST(req: NextRequest) {
     const payment = await getPaymentStatus(paymentId);
     const wasApproved = payment.status === 'approved';
 
-    const { data: enrollment } = await supabase
+    let { data: enrollment } = await supabase
       .from('enrollments')
       .select('*')
       .eq('mercado_pago_payment_id', paymentId)
       .maybeSingle();
+
+    // Pagamentos via Checkout Pro chegam com external_reference = id da inscricao
+    if (!enrollment && payment.external_reference) {
+      const { data } = await supabase
+        .from('enrollments')
+        .select('*')
+        .eq('id', payment.external_reference)
+        .maybeSingle();
+      enrollment = data;
+    }
 
     if (!enrollment) {
       return NextResponse.json({ ok: true });
@@ -67,8 +77,9 @@ export async function POST(req: NextRequest) {
       .update({
         payment_status: payment.status,
         confirmed: wasApproved,
+        mercado_pago_payment_id: paymentId,
       })
-      .eq('mercado_pago_payment_id', paymentId);
+      .eq('id', enrollment.id);
 
     if (updateError) {
       console.error('[Webhook update error]', updateError);
