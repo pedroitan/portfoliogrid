@@ -139,6 +139,40 @@ export async function createCardPreference({
   };
 }
 
+export async function getMerchantOrder(orderId: string) {
+  const response = await fetch(`${BASE_URL}/merchant_orders/${orderId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Mercado Pago merchant order error: ${response.status} ${text}`);
+  }
+
+  const data = await response.json();
+
+  return {
+    id: data.id?.toString() ?? orderId,
+    external_reference: data.external_reference ?? '',
+    status: data.order_status ?? '',
+    payments: ((data.payments ?? []) as Array<{
+      id?: number | string;
+      status?: string;
+      transaction_amount?: number;
+      total_paid_amount?: number;
+    }>).map((p) => ({
+      id: p.id?.toString() ?? '',
+      status: p.status ?? '',
+      amount: p.transaction_amount ?? p.total_paid_amount ?? 0,
+    })),
+    raw: data,
+  };
+}
+
 export async function getPaymentStatus(paymentId: string) {
   const response = await fetch(`${BASE_URL}/payments/${paymentId}`, {
     method: 'GET',

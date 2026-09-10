@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { supabase } from '@/lib/supabase';
-import { getPaymentStatus } from '@/lib/mercadopago';
+import { getPaymentStatus, getMerchantOrder } from '@/lib/mercadopago';
 import { sendConfirmationEmail, sendAdminPaymentConfirmation } from '@/lib/email';
 
 /**
@@ -36,48 +36,80 @@ function verifySignature(req: NextRequest, dataId: string) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => null);
-    const paymentId: string | undefined =
+    const dataId: string | undefined =
       req.nextUrl.searchParams.get('data.id') ?? body?.data?.id?.toString();
     const type = body?.type ?? req.nextUrl.searchParams.get('type');
 
-    if (!paymentId || type !== 'payment') {
+    if (!dataId || (type !== 'payment' && type !== 'merchant_order')) {
       return NextResponse.json({ ok: true });
     }
 
-    if (!verifySignature(req, paymentId)) {
-      console.warn('[Webhook] Assinatura invalida para payment', paymentId);
+    if (!verifySignature(req, dataId)) {
+      console.warn('[Webhook] Assinatura invalida para', type, dataId);
       return NextResponse.json({ error: 'Assinatura invalida.' }, { status: 401 });
     }
 
-    const payment = await getPaymentStatus(paymentId);
-    const wasApproved = payment.status === 'approved';
+    let paymentStatus = '';
+    let paymentId = '';
+    let externalReference = '';
+
+    if (type === 'payment') {
+      const payment = await getPaymentStatus(dataId);
+      paymentStatus = payment.status;
+      paymentId = payment.id;
+      externalReference = payment.external_reference;
+    } else if (type === 'merchant_order') {
+      const order = await getMerchantOrder(dataId);
+      paymentId = order.payments[0]?.id ?? '';
+      paymentStatus = order.payments[0]?.status ?? order.status ?? '';
+      externalReference = order.external_reference;
+
+      // Se a order informou o id do pagamento, busca o status mais recente
+      if (paymentId) {
+        try {
+          const payment = await getPaymentStatus(paymentId);
+          paymentStatus = payment.status || paymentStatus;
+          externalReference = payment.external_reference || externalReference;
+        } catch (err) {
+          console.warn('[Webhook] Nao foi possivel buscar status do pagamento', paymentId, err);
+        }
+      }
+    }
+
+    if (!paymentStatus) {
+      console.warn('[Webhook] Status de pagamento nao identificado', type, dataId);
+      return NextResponse.json({ ok: true });
+    }
+
+    const wasApproved = paymentStatus === 'approved';
 
     let { data: enrollment } = await supabase
       .from('enrollments')
       .select('*')
-      .eq('mercado_pago_payment_id', paymentId)
+      .eq('mercado_pago_payment_id', paymentId || dataId)
       .maybeSingle();
 
-    // Pagamentos via Checkout Pro chegam com external_reference = id da inscricao
-    if (!enrollment && payment.external_reference) {
+    // Checkout Pro envia merchant_order/payment com external_reference = id da inscricao
+    if (!enrollment && externalReference) {
       const { data } = await supabase
         .from('enrollments')
         .select('*')
-        .eq('id', payment.external_reference)
+        .eq('id', externalReference)
         .maybeSingle();
       enrollment = data;
     }
 
     if (!enrollment) {
+      console.warn('[Webhook] Inscricao nao encontrada', type, dataId, paymentId, externalReference);
       return NextResponse.json({ ok: true });
     }
 
     const { error: updateError } = await supabase
       .from('enrollments')
       .update({
-        payment_status: payment.status,
+        payment_status: paymentStatus,
         confirmed: wasApproved,
-        mercado_pago_payment_id: paymentId,
+        mercado_pago_payment_id: paymentId || enrollment.mercado_pago_payment_id,
       })
       .eq('id', enrollment.id);
 
@@ -102,14 +134,14 @@ export async function POST(req: NextRequest) {
           email: enrollment.email,
           phone: enrollment.phone,
           cpf: enrollment.cpf,
-          paymentId,
+          paymentId: paymentId || dataId,
           amount: enrollment.amount,
         });
 
         await supabase
           .from('enrollments')
           .update({ email_sent: true })
-          .eq('mercado_pago_payment_id', paymentId);
+          .eq('id', enrollment.id);
       } catch (emailErr) {
         console.error('[Webhook email error]', emailErr);
       }
