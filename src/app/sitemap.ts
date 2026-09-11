@@ -27,5 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
   
+  sitemapEntries.push({
+    url: `${BASE_URL}/oficina`,
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 0.9,
+  });
+
   return sitemapEntries;
 }
